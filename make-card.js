@@ -93,11 +93,18 @@ class MakeCard extends HTMLElement
             </header>
             <div class="box">
                 <article class="card-info">
-                
+                    <input type="text" name="startDate" placeholder="2023.12.12">
+                    <input type="text" name="startTime" placeholder="17:40">
+                    <hr>
+                    Interval
                 </article>
-                <article class="card-info">2</article>
-                <article class="card-info">3</article>
-                <article class="card-info">4</article>
+                <article class="card-info">
+                    <input type="text" name="title" placeholder="title">
+                </article>
+                <article class="card-info">
+                    checkTime
+                </article>
+                <article class="card-info">info</article>
             </div>
         </section>
       `;  
