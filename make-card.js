@@ -24,28 +24,44 @@ class MakeCard extends HTMLElement
     if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
     if(node.className.match(/command-move-prev/))
     {
-        this.shadowRoot.querySelector('.command-move-next').disabled = false;
+        this.querySelector('.command-move-next').disabled = false;
         this.currentPage--;
-        if(this.currentPage <= 0) node.disabled = true;
-        else node.disabled = false;
+        if(this.currentPage <= 0) 
+        {
+            this.querySelector('.command-close-window').style.display = 'block';
+            node.style.display = 'none';
+        }
+        else
+        {
+            this.querySelector('.command-close-window').style.display = 'none';
+            node.style.display = 'block';
+        }
         
-        const card_info_list = this.shadowRoot.querySelectorAll('article.card-info');
+        const card_info_list = this.querySelectorAll('article.card-info');
         card_info_list.forEach((card, index)=>{
             card.style.left = `${(this.currentPage-index) * 100}vw`;
         })
     }
     if(node.className.match(/command-move-next/))
     {
+        this.querySelector('.command-close-window').style.display = 'none';
+        console.log(this.querySelector('.command-close-window'))
+        this.querySelector('.command-move-prev').style.display = 'block';
         this.currentPage++;
-        this.shadowRoot.querySelector('.command-move-prev').disabled = false;
+ 
         if(this.currentPage >= 3)  node.disabled = true;
         else node.disabled = false;
         
-        const card_info_list = this.shadowRoot.querySelectorAll('article.card-info');
+        const card_info_list = this.querySelectorAll('article.card-info');
         card_info_list.forEach((card, index)=>{
             card.style.left = `${(this.currentPage-index) * -100}vw`;
          })
     }
+    if(node.className.match(/command-close-window/))
+    {
+        this.remove();
+    }
+    
     });
   }
 
@@ -66,8 +82,7 @@ class MakeCard extends HTMLElement
   {
     if(util.isEmptyObject(this.data)) console.log("empty data")
     const template = this.#getTemplate();
-    const shadowRoot = this.attachShadow({mode: 'open'});
-    shadowRoot.appendChild(template.content.cloneNode(true)); 
+    if(template) this.appendChild(template.content.cloneNode(true)); 
   }
 
 
@@ -75,38 +90,44 @@ class MakeCard extends HTMLElement
   {
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
-        <style>
-            section{display: flex; flex-direction: column; width: 100vw; position: fixed; top :300px; left:0;}
-            header{display: flex; justify-content: space-between;}
-            .box{display: flex; flex-direction: row; width:400vw; position: relative;}
-            article.card-info{width:100%;position: absolute;}
-            article.card-info:nth-child(1){left:0}
-            article.card-info:nth-child(2){left:100vw}
-            article.card-info:nth-child(3){left:200vw}
-            article.card-info:nth-child(4){left:300vw}
-        </style>
-        <section>
-            <header>
-                <button type="button" class="command-move-prev" disabled>이전</button>
-                <span>Make Card</span>
-                <button type="button" class="command-move-next">다음</button>
-            </header>
-            <div class="box">
-                <article class="card-info">
-                    <input type="text" name="startDate" placeholder="2023.12.12">
-                    <input type="text" name="startTime" placeholder="17:40">
-                    <hr>
-                    Interval
-                </article>
-                <article class="card-info">
-                    <input type="text" name="title" placeholder="title">
-                </article>
-                <article class="card-info">
-                    checkTime
-                </article>
-                <article class="card-info">info</article>
+      <style>
+      make-card{position:fixed; top:0; left:0; width:100vw; height:100vh;z-index:1024; background-color:white;}
+      make-card header{display: flex; justify-content: space-between;align-items: center;}
+      make-card .carousel-control-prev-icon, make-card .carousel-control-next-icon {filter: invert(1) grayscale(100);}
+      make-card header .command-move-prev{display:none;}
+      make-card header .btn-close {}
+      make-card header button{border:none; background:none;}  
+      </style>
+      <section>
+        <header>
+            <button class="btn-close command-close-window" type="button">
+                <span class="" aria-hidden="true"></span>
+             </button>
+            <button class="command-move-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="command-move-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </header>
+        <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                </div>
             </div>
-        </section>
+            
+            
+        </div>
+      </section>
       `;  
       return tempalate;
   }
