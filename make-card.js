@@ -32,7 +32,7 @@ class MakeCard extends HTMLElement
         const card_info_list = this.shadowRoot.querySelectorAll('article.card-info');
         card_info_list.forEach((card, index)=>{
             card.style.left = `${(this.currentPage-index) * 100}vw`;
-                })
+        })
     }
     if(node.className.match(/command-move-next/))
     {
