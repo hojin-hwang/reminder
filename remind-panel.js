@@ -60,6 +60,7 @@ class RemindPanel extends HTMLElement
       <style>
         panel{
         display:block; padding:12px 8px; padding-bottom: 8px; border: 1px solid #eee;
+        max-width:85vw;
         }
         article.fish{display: flex; position: relative;}
         .fish > .head{min-width: 64px; padding-right: 12px;}
@@ -84,6 +85,7 @@ class RemindPanel extends HTMLElement
                         <span>2023.04.11 12:20</span>
                         <span>23일 남았어요</span>
                     </div>
+
                     <div class="tail">
                         <span>일주일 마다</span>
                     </div>

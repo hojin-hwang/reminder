@@ -18,7 +18,7 @@ class MakeCard extends HTMLElement
   static get observedAttributes() {return ['type']; }
 
   handleClick(e) {
-    e.preventDefault();
+    //e.preventDefault();
     e.composedPath().find((node)=>{
     if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
     if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
@@ -91,7 +91,7 @@ class MakeCard extends HTMLElement
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
       <style>
-      make-card{position:fixed; top:0; left:0; width:100vw; height:100vh;z-index:1024; background-color:white;}
+      make-card{position:fixed; top:0; left:0; right:0; height:100vh;z-index:100; background-color:white;}
       make-card header{display: flex; justify-content: space-between;align-items: center;}
       make-card .carousel-control-prev-icon, make-card .carousel-control-next-icon {filter: invert(1) grayscale(100);}
       make-card header .command-move-prev{display:none;}
@@ -115,13 +115,46 @@ class MakeCard extends HTMLElement
         <div id="carouselExample" class="carousel slide">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                    <h4 class="mb-3">Schedule Date</h4>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="missionDate" class="form-label">Date</label>
+                            <input type="text" class="form-control" id="missionDate" data-rome-id="0" readonly="">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="missionTime" class="form-label">Time</label>
+                            <input type="text" readonly class="form-control" id="missionTime" placeholder="" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+                    <h4 class="mb-3">Payment</h4>
+                    <div class="row g-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                            Default radio
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                            Default checked radio
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="carousel-item">
-                <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                    <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                    <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
                 </div>
             </div>
             
