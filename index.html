@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/css/calendar/rome.css">
     <link rel="stylesheet" href="/css/calendar/style.css">
 
-    <link type="text/css" href="/css/bootrap/bootstrap-timepicker.css" />
+    <link rel="stylesheet" href="/css/calendar/tui-time-picker.min.css" />
     <style>
         :root {
             --bs-body-bg: var(--bs-gray-100);
@@ -56,34 +56,30 @@
     </nav>
 
     <div class="container">
-      <make-card></make-card>
-      <remind-panel></remind-panel>
       
-      <div class="input-group bootstrap-timepicker timepicker">
-        <input id="timepicker1" type="text" class="form-control input-small">
-        <span class="input-group-addon"><i class="glyphicon glyphicon-time">fdfdfd</i></span>
-    </div>
-
-    
+      <remind-panel></remind-panel>
+      <remind-panel></remind-panel>
 
     </div>
 
     <script src="/js/bootstrap/bootstrap.bundle.min.js" ></script>
     <script src="/js/calendar/jquery-3.3.1.min.js"></script>
-    <script src="util.js"></script>
+    <script src="/js/util.js"></script>
     <script src="make-card.js"></script>
     <script src="remind-panel.js"></script>
 
     
     <script src="/js/calendar/popper.min.js"></script>
     <script src="/js/calendar/rome.js"></script>
-
-    <script src="/js/calendar/main.js"></script>
+    <script src="/js/calendar/tui-time-picker.min.js"></script>
 
     <script src="/js/bootstrap/bootstrap-timepicker.js" ></script>
     <script type="text/javascript">
       $(document).ready(function () {
-        $('#timepicker1').timepicker();
+
+        const makeCard = new MakeCard();
+        document.querySelector('.container').appendChild(makeCard);
+        
       });
       
   </script>

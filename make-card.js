@@ -1,5 +1,6 @@
 // Data
 // title
+// startDate
 // startTime
 // interval
 // checkTime
@@ -11,6 +12,9 @@ class MakeCard extends HTMLElement
       super();
       this.addEventListener('click', this.handleClick);
       this.data =  {...data};
+      this.data.startTime = '11:40';
+      this.data.category = 'play';
+     
       this.id = self.crypto.randomUUID();
       this.currentPage = 0;
   }
@@ -45,7 +49,6 @@ class MakeCard extends HTMLElement
     if(node.className.match(/command-move-next/))
     {
         this.querySelector('.command-close-window').style.display = 'none';
-        console.log(this.querySelector('.command-close-window'))
         this.querySelector('.command-move-prev').style.display = 'block';
         this.currentPage++;
  
@@ -60,6 +63,20 @@ class MakeCard extends HTMLElement
     if(node.className.match(/command-close-window/))
     {
         this.remove();
+    }
+    
+    if(node.className.match(/command-select-category/))
+    {
+        const _categoryButtons = this.querySelectorAll('.category-btn');
+        _categoryButtons.forEach(button=>button.classList.remove('active'));
+        node.classList.add('active');
+    }
+
+    if(node.className.match(/command-create-card/)){
+        this.data.startDate = this.querySelector('#startDate').value;
+        const _intervalCase = this.querySelector('form').interval.value;
+        const _cardDate = `${this.data.startDate} ${this.data.startTime}`;
+        this.#setIntervalData(_cardDate, _intervalCase);
     }
     
     });
@@ -83,7 +100,190 @@ class MakeCard extends HTMLElement
     if(util.isEmptyObject(this.data)) console.log("empty data")
     const template = this.#getTemplate();
     if(template) this.appendChild(template.content.cloneNode(true)); 
+    
+    this.#setDatePicker();
+    this.#setTimePicker();
+    this.#setTitle();
+    this.#setCategory();
   }
+
+  #setDatePicker()
+  {
+    const _day = (this.data.startDate)?  this.data.startDate : util.getDayDashFormat(new Date());
+    this.querySelector('#startDate').value = _day;
+    rome(startDate, { time: false });
+  }
+
+  #setTimePicker(){
+
+    const _hour = (this.data.startTime)? this.#getHour() : new Date().getHours();
+    const _minute = (this.data.startTime)? this.#getMinute() : 30;
+
+    const tpSpinboxWithStep = new tui.TimePicker('#missionTime', {
+        initialHour: _hour,
+        initialMinute: _minute,
+        inputType: 'spinbox',
+        showMeridiem: false,
+        hourStep: 1,
+        minuteStep: 10
+    });
+
+    tpSpinboxWithStep.on('change', (e) => {
+        this.data.startTime = `${e.hour}:${e.minute}`;
+      });
+  }
+
+  #getHour()
+  {
+    return parseInt(this.data.startTime.split(":")[0]);
+  }
+
+  #getMinute()
+  {
+    return parseInt(this.data.startTime.split(":")[1]);
+  }
+
+  #setTitle()
+  {
+    const title = (this.data.title)? this.data.title: "-";
+    this.querySelector('input[name=title]').value = title;
+  }
+
+  #setCategory()
+  {
+    const _category = (this.data.category)? this.data.category : 'default';
+    const _categoryButtons = this.querySelectorAll('.category-btn');
+    _categoryButtons.forEach(button => {if(button.dataset.category === _category) button.classList.add('active') });
+  }
+
+  #setIntervalData(date, interval)
+  {
+    const _key = interval.split("-")[1];
+    const _value = interval.split("-")[0];
+    let _intervalDateSet = null;
+    switch(_key)
+    {
+        case 'hour':
+            _intervalDateSet = this.#getIntervalDateByHour(date, _value);
+        break;
+        case 'day':
+            _intervalDateSet = this.#getIntervalDateByDay(date, _value);
+        break;
+        case 'month':
+            _intervalDateSet = this.#getIntervalDateByMonth(date, _value);
+        break;
+        case 'year':
+            _intervalDateSet = this.#getIntervalDateByYear(date, _value);
+        break;
+        default:
+            _intervalDateSet = this.#getIntervalDateByHour(date, _value);
+        break;
+    }
+
+    const _scheduledPanelData = this.#makePanelData(_intervalDateSet.scheduledDataArray);
+    const _waitingPanelData = this.#makePanelData(_intervalDateSet.waitingDataArray);
+    console.log(_scheduledPanelData)
+    console.log(_waitingPanelData)
+  }
+
+  
+
+  #getIntervalDateByHour(preDate, interval)
+  {
+    const intervalDateSet = {};
+    const _waitingDataArray = [];
+    const _scheduledDataArray = [];
+
+    if(parseInt(interval) === 0)
+    {
+        if(util.isFutureDate(preDate)) _scheduledDataArray.push(new Date(preDate));
+        else _waitingDataArray.push(new Date(preDate));
+
+        intervalDateSet.waitingDataArray = _waitingDataArray;
+        intervalDateSet.scheduledDataArray = _scheduledDataArray;
+        return intervalDateSet;
+    }
+
+    for(let i=0; i< 10; i++)
+    {
+        const _preDate = new Date(preDate);
+        const _nextDate = _preDate.setHours( _preDate.getHours() + i * parseInt(interval))
+        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push(_nextDate);
+        else _waitingDataArray.push(_nextDate);
+    }
+
+    intervalDateSet.waitingDataArray = _waitingDataArray;
+    intervalDateSet.scheduledDataArray = _scheduledDataArray;
+    return intervalDateSet;
+  }
+
+  #getIntervalDateByDay(preDate, interval)
+  {
+    const intervalDateSet = {};
+    const _waitingDataArray = [];
+    const _scheduledDataArray = [];
+
+    for(let i=0; i<10; i++)
+    {
+        const _preDate = new Date(preDate);
+        const _nextDate = _preDate.setDate( _preDate.getDate() +  i * parseInt(interval))
+        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push(_nextDate);
+        else _waitingDataArray.push(_nextDate);
+    }
+    intervalDateSet.waitingDataArray = _waitingDataArray;
+    intervalDateSet.scheduledDataArray = _scheduledDataArray;
+    return intervalDateSet;
+  }
+
+  #getIntervalDateByMonth(preDate, interval)
+  {
+    const intervalDateSet = {};
+    const _waitingDataArray = [];
+    const _scheduledDataArray = [];
+
+    for(let i=0; i<10; i++)
+    {
+        const _preDate = new Date(preDate);
+        const _nextDate = _preDate.setMonth( _preDate.getMonth() +  i * parseInt(interval))
+        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push(_nextDate);
+        else _waitingDataArray.push(_nextDate);
+    }
+    intervalDateSet.waitingDataArray = _waitingDataArray;
+    intervalDateSet.scheduledDataArray = _scheduledDataArray;
+    return intervalDateSet;
+  }
+
+  #getIntervalDateByYear(preDate, interval)
+  {
+    const intervalDateSet = {};
+    const _waitingDataArray = [];
+    const _scheduledDataArray = [];
+
+    for(let i=0; i<10; i++)
+    {
+        const _preDate = new Date(preDate);
+        const _nextDate = _preDate.setFullYear( _preDate.getFullYear() +  i * parseInt(interval))
+        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push(_nextDate);
+        else _waitingDataArray.push(_nextDate);
+    }
+    intervalDateSet.waitingDataArray = _waitingDataArray;
+    intervalDateSet.scheduledDataArray = _scheduledDataArray;
+    return intervalDateSet;
+  }
+
+  #makePanelData(intervalDataArray)
+  {
+    const panelDataArray = [];
+    intervalDataArray.forEach(data=>{
+        const _data = {};
+        _data.cardId = this.id;
+        _data.id = self.crypto.randomUUID();
+        _data.scheduledTime = data;
+        panelDataArray.push(_data);
+    })
+    return panelDataArray;
+  }  
+    
 
 
   #getTemplate()
@@ -118,41 +318,123 @@ class MakeCard extends HTMLElement
                     <h4 class="mb-3">Schedule Date</h4>
                     <div class="row g-3">
                         <div class="col-sm-6">
-                            <label for="missionDate" class="form-label">Date</label>
-                            <input type="text" class="form-control" id="missionDate" data-rome-id="0" readonly="">
+                            <label for="startDate" class="form-label">Date</label>
+                            <input type="text" class="form-control" id="startDate" data-rome-id="0" readonly="">
                         </div>
                         <div class="col-sm-6">
                             <label for="missionTime" class="form-label">Time</label>
-                            <input type="text" readonly class="form-control" id="missionTime" placeholder="" value="" required="">
-                            <div class="invalid-feedback">
-                                Valid last name is required.
-                            </div>
+                            <div id="missionTime"></div>
                         </div>
                     </div>
 
                     <hr class="my-4">
                     <h4 class="mb-3">Payment</h4>
                     <div class="row g-3">
+                    <form class="interval">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                            Default radio
+                            <input class="form-check-input" type="radio" name="interval" id="0-hour-interval" value="0-hour">
+                            <label class="form-check-label" for="0-hour-interval">
+                            반복없음
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                            Default checked radio
+                            <input class="form-check-input" type="radio" name="interval" id="1-hour-interval" value="1-hour">
+                            <label class="form-check-label" for="1-hour-interval">
+                            1시간
                             </label>
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="interval" id="3-hour-interval" value="3-hour">
+                            <label class="form-check-label" for="3-hour-interval" >
+                            3시간
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="interval" id="6-hour-interval" value="6-hour">
+                            <label class="form-check-label" for="6-hour-interval">
+                            6시간
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="interval" id="12-hour-interval" value="12-hour">
+                            <label class="form-check-label" for="12-hour-interval">
+                            12시간
+                            </label>
+                        </div>
+                        <hr>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="interval" id="1-day-interval" checked value="1-day">
+                            <label class="form-check-label" for="1-day-interval">
+                            매일
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="interval" id="7-day-interval" value="7-day">
+                            <label class="form-check-label" for="7-day-interval">
+                            매주
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="interval" id="1-month-interval" value="1-month">
+                            <label class="form-check-label" for="1-month-interval">
+                            매월
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="interval" id="1-year-interval" value="1-year">
+                            <label class="form-check-label" for="1-year-interval">
+                            매년
+                            </label>
+                        </div>
+                    </form>    
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                    <h4 class="mb-3">Title</h4>
+                    <div class="col-sm-6">
+                        <label for="missionTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="missionTitle" name="title" >
+                    </div>
+                    <div> 
+                        <h4 class="mb-3">Category</h4>
+
+                        <button type="button" data-category="default" class="command-select-category category-btn btn btn-outline-primary btn-sm">일단하자</button>
+                        <button type="button" data-category="gym" class="command-select-category category-btn btn btn-outline-primary btn-sm">운동</button>
+                        <button type="button" data-category="study" class="command-select-category category-btn btn btn-outline-primary btn-sm">공부</button>
+                        <button type="button" data-category="play" class="command-select-category category-btn btn btn-outline-primary btn-sm">음악</button>
+                        <button type="button" data-category="reading" class="command-select-category category-btn btn btn-outline-primary btn-sm">독서</button>
+                        <button type="button" data-category="draw" class="command-select-category category-btn btn btn-outline-primary btn-sm">그림</button>
+                    </div>           
                 </div>
                 <div class="carousel-item">
-                    <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
+                    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
+                        <div class="border-bottom">
+                            <span class="fs-5 fw-semibold">Memo</span>
+                        </div>    
+                        <div class="list-group list-group-flush border-bottom scrollarea" style="max-height: 400px;
+                        overflow-y: auto;">
+                            <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+                                <div class=" mb-1 small d-flex w-100 align-items-center justify-content-between">
+                                    <span>2023.12.12 12:22</span>
+                                    <small>Wed</small>
+                                </div>
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                    <span class="mb-1">List group item heading</span>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+                                <div class=" mb-1 small d-flex w-100 align-items-center justify-content-between">
+                                    <span>2023.12.12 12:22</span>
+                                    <button type="button" class="btn-close" aria-label="Close"></button>
+                                </div>
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                    <span class="mb-1">List group item heading</span>
+                                </div>
+                            </a>
+                    </div>
+                    <button type="button" class="command-create-card btn btn-primary btn-lg px-4 gap-3">Save Card</button>
                 </div>
+
                 <div class="carousel-item">
                     <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
                 </div>
