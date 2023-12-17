@@ -274,6 +274,20 @@ util.setLocalStorage = function(key, value)
   localStorage.setItem(key, value);
 }
 
+//Set setLocalStorageForArray
+util.setLocalStorageForArray = function(key, value)
+{
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+//Get getLocalStorageForArray
+util.getLocalStorageForArray = function(key)
+{
+  return JSON.parse(localStorage.geItem(key));
+}
+
+
+
 util.numberWithCommas = function(amount)
 {
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

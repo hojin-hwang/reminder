@@ -310,3 +310,15 @@ util.secureRandom = function()
     return window.msCrypto.getRandomValues(new Uint32Array(1))[0];
   }
 }
+
+util.setLocalStorage = function(key, value)
+{
+  console.log(value)
+  //localStorage.setItem(key, JSON.stringify(value));
+}
+
+util.getLocalStorage = function(key)
+{
+  const _value = localStorage.getItem(key);
+  return JSON.parse(_value);
+}

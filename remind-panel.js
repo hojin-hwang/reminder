@@ -50,7 +50,7 @@ class RemindPanel extends HTMLElement
 
   #setData()
   {
-     this.data.title = "여긴 제목이 들어가고 2줄까지 표현됩니다요.";
+     this.data.title = "여긴 제목이 들어가고 1줄까지...";
   }
 
   #getTemplate()

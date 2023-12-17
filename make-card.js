@@ -70,14 +70,31 @@ class MakeCard extends HTMLElement
         const _categoryButtons = this.querySelectorAll('.category-btn');
         _categoryButtons.forEach(button=>button.classList.remove('active'));
         node.classList.add('active');
+        this.data.category = node.dataset.category;
     }
 
     if(node.className.match(/command-create-card/)){
         this.data.startDate = this.querySelector('#startDate').value;
-        const _intervalCase = this.querySelector('form').interval.value;
         const _cardDate = `${this.data.startDate} ${this.data.startTime}`;
-        this.#setIntervalData(_cardDate, _intervalCase);
-    }
+
+        const _card = {};
+        _card.id = this.id;
+        _card.title = this.querySelector('form.info').title.value;
+        _card.category = this.data.category;
+        _card.startDate = _cardDate ;
+        _card.interval = this.querySelector('form').interval.value;
+        _card.checktime = this.querySelector('form.check-form').checktime.value;
+        _card.url = '';
+        _card.memo = '';
+        _card.checkingId = '';
+        
+        const result = this.#setIntervalData(_cardDate, _card.interval, _card.checktime);
+
+        window.postMessage({msg:"REQUEST_NEW_CARD_DATA", data:_card}, location.origin);
+        window.postMessage({msg:"REQUEST_NEW_SCHEDULED_LIST_DATA", data:result.scheduledDataArray}, location.origin);
+        window.postMessage({msg:"REQUEST_NEW_CHACKING_DATA", data:result.checkingDate}, location.origin);
+        this.remove();
+     }
     
     });
   }
@@ -156,7 +173,7 @@ class MakeCard extends HTMLElement
     _categoryButtons.forEach(button => {if(button.dataset.category === _category) button.classList.add('active') });
   }
 
-  #setIntervalData(date, interval)
+  #setIntervalData(date, interval, checktime)
   {
     const _key = interval.split("-")[1];
     const _value = interval.split("-")[0];
@@ -164,52 +181,60 @@ class MakeCard extends HTMLElement
     switch(_key)
     {
         case 'hour':
-            _intervalDateSet = this.#getIntervalDateByHour(date, _value);
+            _intervalDateSet = this.#getIntervalDateByHour(date, _value, checktime);
         break;
         case 'day':
-            _intervalDateSet = this.#getIntervalDateByDay(date, _value);
+            _intervalDateSet = this.#getIntervalDateByDay(date, _value, checktime);
         break;
         case 'month':
-            _intervalDateSet = this.#getIntervalDateByMonth(date, _value);
+            _intervalDateSet = this.#getIntervalDateByMonth(date, _value, checktime);
         break;
         case 'year':
-            _intervalDateSet = this.#getIntervalDateByYear(date, _value);
+            _intervalDateSet = this.#getIntervalDateByYear(date, _value, checktime);
         break;
         default:
-            _intervalDateSet = this.#getIntervalDateByHour(date, _value);
+            _intervalDateSet = this.#getIntervalDateByHour(date, _value, checktime);
         break;
     }
 
     const _scheduledPanelData = this.#makePanelData(_intervalDateSet.scheduledDataArray);
-    const _waitingPanelData = this.#makePanelData(_intervalDateSet.waitingDataArray);
-    console.log(_scheduledPanelData)
-    console.log(_waitingPanelData)
+    const _waitingPanelData = this.#makeCheckingData(_intervalDateSet.waitingDataArray);
+
+    return {scheduledDataArray:_scheduledPanelData, checkingDate : _waitingPanelData};
   }
 
   
 
-  #getIntervalDateByHour(preDate, interval)
+  #getIntervalDateByHour(preDate, interval, checktime)
   {
     const intervalDateSet = {};
     const _waitingDataArray = [];
     const _scheduledDataArray = [];
-
+    let countOfSchedule = 10;
     if(parseInt(interval) === 0)
     {
-        if(util.isFutureDate(preDate)) _scheduledDataArray.push(new Date(preDate));
-        else _waitingDataArray.push(new Date(preDate));
+        const _checkingDate = new Date(preDate).setSeconds( new Date(preDate).getSeconds() + parseInt(checktime))
+        if(util.isFutureDate(preDate)) _scheduledDataArray.push({scheduledDate:new Date(preDate), checkingDate:_checkingDate});
+        else _waitingDataArray.push({scheduledDate:new Date(preDate), checkingDate:_checkingDate});
 
         intervalDateSet.waitingDataArray = _waitingDataArray;
         intervalDateSet.scheduledDataArray = _scheduledDataArray;
         return intervalDateSet;
     }
 
-    for(let i=0; i< 10; i++)
+    for(let i=0; i< countOfSchedule; i++)
     {
         const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setHours( _preDate.getHours() + i * parseInt(interval))
-        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push(_nextDate);
-        else _waitingDataArray.push(_nextDate);
+        const _nextDate = _preDate.setHours( _preDate.getHours() + i * parseInt(interval));
+        const __nextDate = new Date(_nextDate);
+        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
+
+        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
+        else 
+        {
+            _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
+            countOfSchedule++;
+        }
     }
 
     intervalDateSet.waitingDataArray = _waitingDataArray;
@@ -217,7 +242,7 @@ class MakeCard extends HTMLElement
     return intervalDateSet;
   }
 
-  #getIntervalDateByDay(preDate, interval)
+  #getIntervalDateByDay(preDate, interval, checktime)
   {
     const intervalDateSet = {};
     const _waitingDataArray = [];
@@ -226,16 +251,19 @@ class MakeCard extends HTMLElement
     for(let i=0; i<10; i++)
     {
         const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setDate( _preDate.getDate() +  i * parseInt(interval))
-        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push(_nextDate);
-        else _waitingDataArray.push(_nextDate);
+        const _nextDate = _preDate.setDate( _preDate.getDate() +  i * parseInt(interval));
+        const __nextDate = new Date(_nextDate);
+        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
+
+        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
+        else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
     }
     intervalDateSet.waitingDataArray = _waitingDataArray;
     intervalDateSet.scheduledDataArray = _scheduledDataArray;
     return intervalDateSet;
   }
 
-  #getIntervalDateByMonth(preDate, interval)
+  #getIntervalDateByMonth(preDate, interval, checktime)
   {
     const intervalDateSet = {};
     const _waitingDataArray = [];
@@ -244,16 +272,19 @@ class MakeCard extends HTMLElement
     for(let i=0; i<10; i++)
     {
         const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setMonth( _preDate.getMonth() +  i * parseInt(interval))
-        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push(_nextDate);
-        else _waitingDataArray.push(_nextDate);
+        const _nextDate = _preDate.setMonth( _preDate.getMonth() +  i * parseInt(interval));
+        const __nextDate = new Date(_nextDate);
+        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
+
+        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
+        else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
     }
     intervalDateSet.waitingDataArray = _waitingDataArray;
     intervalDateSet.scheduledDataArray = _scheduledDataArray;
     return intervalDateSet;
   }
 
-  #getIntervalDateByYear(preDate, interval)
+  #getIntervalDateByYear(preDate, interval, checktime)
   {
     const intervalDateSet = {};
     const _waitingDataArray = [];
@@ -262,9 +293,12 @@ class MakeCard extends HTMLElement
     for(let i=0; i<10; i++)
     {
         const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setFullYear( _preDate.getFullYear() +  i * parseInt(interval))
-        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push(_nextDate);
-        else _waitingDataArray.push(_nextDate);
+        const _nextDate = _preDate.setFullYear( _preDate.getFullYear() +  i * parseInt(interval));
+        const __nextDate = new Date(_nextDate);
+        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
+
+        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
+        else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
     }
     intervalDateSet.waitingDataArray = _waitingDataArray;
     intervalDateSet.scheduledDataArray = _scheduledDataArray;
@@ -278,12 +312,27 @@ class MakeCard extends HTMLElement
         const _data = {};
         _data.cardId = this.id;
         _data.id = self.crypto.randomUUID();
-        _data.scheduledTime = data;
+        _data.scheduledDate = data.scheduledDate;
+        _data.checkingDate =  data.checkingDate;
         panelDataArray.push(_data);
     })
     return panelDataArray;
+  }
+
+  #makeCheckingData(intervalDataArray)
+  {
+    if(intervalDataArray && intervalDataArray.length > 0)
+    {
+        const length = intervalDataArray.length -1;
+        const _data = {};
+        _data.cardId = this.id;
+        _data.id = self.crypto.randomUUID();
+        _data.scheduledDate = intervalDataArray[length].scheduledDate;
+        _data.checkingDate =  intervalDataArray[length].checkingDate;
+        return  _data;
+    }
+    else return null;
   }  
-    
 
 
   #getTemplate()
@@ -391,6 +440,7 @@ class MakeCard extends HTMLElement
                 </div>
                 <div class="carousel-item">
                     <h4 class="mb-3">Title</h4>
+                    <form class="info">
                     <div class="col-sm-6">
                         <label for="missionTitle" class="form-label">Title</label>
                         <input type="text" class="form-control" id="missionTitle" name="title" >
@@ -404,7 +454,8 @@ class MakeCard extends HTMLElement
                         <button type="button" data-category="play" class="command-select-category category-btn btn btn-outline-primary btn-sm">음악</button>
                         <button type="button" data-category="reading" class="command-select-category category-btn btn btn-outline-primary btn-sm">독서</button>
                         <button type="button" data-category="draw" class="command-select-category category-btn btn btn-outline-primary btn-sm">그림</button>
-                    </div>           
+                    </div>
+                    </form>           
                 </div>
                 <div class="carousel-item">
                     <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
@@ -432,6 +483,28 @@ class MakeCard extends HTMLElement
                                 </div>
                             </a>
                     </div>
+                    <form class="check-form">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="checktime" id="check-now" value="5">
+                            <label class="form-check-label" for="check-now">동시에</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="checktime" id="check-10-minute" value="600" checked>
+                            <label class="form-check-label" for="check-10-minute">10분후에</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="checktime" id="check-30-minute" value="1800">
+                            <label class="form-check-label" for="check-30-minute">30분 후에</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="checktime" id="check-1-hour" value="3600">
+                            <label class="form-check-label" for="check-1-hour">1시간 후에</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="checktime" id="check-2-hour" value="7200">
+                            <label class="form-check-label" for="check-2-hour">2시간 후에</label>
+                        </div>
+                    </form>
                     <button type="button" class="command-create-card btn btn-primary btn-lg px-4 gap-3">Save Card</button>
                 </div>
 
