@@ -332,3 +332,66 @@ util.isFutureDate = function(compareDate)
   if(now > _compareDate) return false;
   else return true;
 }
+
+util.diffDay = function(preDate)
+{
+  const diff = new Date(preDate).getTime() - new Date().getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+util.diffHour = function(preDate)
+{
+  const diff = new Date(preDate).getTime() - new Date().getTime();
+  return Math.floor((diff / (1000 * 60 * 60)) % 24);
+}
+
+util.diffMin = function(preDate)
+{
+  const diff = new Date(preDate).getTime() - new Date().getTime();
+  return Math.floor((diff / (1000 * 60))  % 60);
+}
+
+util.remainTimeToScheduledTime = function(scheduledTime)
+{
+  const _dayMemnt = util.diffDay(scheduledTime);
+  const _hourMemnt = util.diffHour(scheduledTime);
+  const _minuteMemnt = util.diffMin(scheduledTime);
+  let nextRemainTime = (_dayMemnt > 0)? `${_dayMemnt}일 ` : "";
+  nextRemainTime += (_hourMemnt > 0)? `${_hourMemnt}시간 ` : "";
+  nextRemainTime += (_minuteMemnt > 0)? `${_minuteMemnt}분 ` : "";
+  return nextRemainTime;
+}
+
+util.formatDate = function(dateTime) {
+  const _date = new Date(dateTime)
+  return _date.getFullYear() + '년 ' + 
+    (_date.getMonth() + 1) + '월 ' + 
+    _date.getDate() + '일 ' + 
+    _date.getHours() + '시 ' + 
+    _date.getMinutes() + '분';
+}
+
+util.intervalComment = function(interval)
+{
+  const _value = interval.split("-")[0];
+  const _key = interval.split("-")[1];
+  let _ment = '';
+  switch(_key)
+  {
+      case 'hour':
+          _ment = `${_value}시간`
+      break;
+      case 'day':
+          if(_value === "1") _ment = `일`;
+          else if(_value === "7") _ment = `주`;
+          else _ment = `${_value}일`
+      break;
+      case 'month':
+          _ment = `월`
+      break;
+      case 'year':
+          _ment = `년`
+      break;
+  }
+  return _ment;
+}

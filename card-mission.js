@@ -47,37 +47,11 @@ class CardMission extends HTMLElement
 
   #render()
   {
-    this.intervalComment = this.#getIntervalComment();
+    this.intervalComment = util.intervalComment(this.data.interval);
     // this.categoryName = this.#getCategoryName();
-    this.nextRemainTime = this.#getNextRemainTime();
-    console.log(this.data)
+    this.#getNextRemainTime();
     const template = this.#getTemplate();
     if(template) this.appendChild(template.content.cloneNode(true)); 
-  }
-  
-  #getIntervalComment()
-  {
-    const _value = this.data.interval.split("-")[0];
-    const _key = this.data.interval.split("-")[1];
-    let _ment = '';
-    switch(_key)
-    {
-        case 'hour':
-            _ment = `매 ${_value}시간마다`
-        break;
-        case 'day':
-            if(_value === "1") _ment = `매일마다`;
-            else if(_value === "7") _ment = `매주마다`;
-            else _ment = `${_value}일마다`
-        break;
-        case 'month':
-            _ment = `매월마다`
-        break;
-        case 'year':
-            _ment = `매년마다`
-        break;
-    }
-    return _ment;
   }
 
   #getNextRemainTime()
@@ -89,10 +63,12 @@ class CardMission extends HTMLElement
     const _scheduledListForCardOrder = _scheduledListForCard.sort(function(a, b) {
         return a.scheduledDate - b.scheduledDate;
       });
-    console.log(_scheduledListForCardOrder[0]);
-    //checking Date를 확보하고
-    //현재 시간과 checking Date간의 차이를 리턴한다.
-
+    
+    this.nextRemainTime = "";
+    if(_scheduledListForCardOrder && _scheduledListForCardOrder.length > 0)  
+    {
+        this.nextRemainTime = util.remainTimeToScheduledTime(_scheduledListForCardOrder[0].scheduledDate)
+    }
   }
 
 
@@ -113,11 +89,10 @@ class CardMission extends HTMLElement
                     <h5 class="card-title">${this.data.title}</h5>
                     <p class="card-text">
                     시작일은 ${this.data.startDate} 입니다. <br>
-                    ${this.intervalComment} 마다 반복됩니다.
+                    매 ${this.intervalComment} 마다 반복됩니다.
                     </p>
-                    <p class="card-text"><small class="text-body-secondary">다음 알람시간은 2시간 10분 남았습니다.</small></p>
-                    <button class="btn btn-success rounded-pill px-3 btn-sm" type="button">카테고리</button>
-                    
+                    <p class="card-text"><small class="text-body-secondary">다음 알람시간까지 ${this.nextRemainTime} 남았습니다.</small></p>
+                    <button class="btn btn-success rounded-pill px-3 btn-sm" type="button">${this.data.category}</button>
                     <button class="btn btn-primary" type="button">자세히 보기</button>
                 </div>
                 </div>

@@ -8,11 +8,14 @@
 
 class RemindPanel extends HTMLElement
 {
-  constructor(data = null)
+  constructor(cardData, data = null)
   {
       super();
       this.addEventListener('click', this.handleClick);
+      this.cardData =  {...cardData};
       this.data =  {...data};
+      console.log(this.cardData);
+      console.log(this.data)
       this.id = self.crypto.randomUUID();
   }
 
@@ -78,22 +81,22 @@ class RemindPanel extends HTMLElement
             </div>
             <div class="body">
                 <div class="fin">
-                    <span>${this.data.title}</span>
+                    <span>${this.cardData.title}</span>
                 </div>
                 <div class="belly">
                     <div class="front">
-                        <span>2023.04.11 12:20</span>
-                        <span>23일 남았어요</span>
+                        <span>${util.formatDate(this.data.scheduledDate)}</span>
+                        <span>${util.remainTimeToScheduledTime(this.data.scheduledDate)} 남았어요</span>
                     </div>
 
                     <div class="tail">
-                        <span>일주일 마다</span>
+                        <span>${util.intervalComment(this.cardData.interval)} 마다</span>
                     </div>
                 </div>
             </div>
-            <div class="sail">
-                <span>핫해요</span>
-            </div>
+            <!-- <div class="sail">
+            //     <span>핫해요</span>
+            // </div>-->
         </article>
         </panel>
       `;  
