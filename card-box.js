@@ -26,8 +26,6 @@ class CardBox extends HTMLElement
         switch(event.data.msg)
         {
             case "DONE_APPEND_CARD_DATA":
-              console.log(event.data.data);
-              console.log(globalThis.store.cardMap);
               const _card = new CardMission(event.data.data);
               this.querySelector('.card-list').appendChild(_card);
             break;
@@ -52,21 +50,28 @@ class CardBox extends HTMLElement
   {
     const template = this.#getTemplate();
     if(template) this.appendChild(template.content.cloneNode(true)); 
+  }
 
+  appendCardList()
+  {
+    for (let cardIfo of globalThis.store.cardMap.values()) {
+      const _card = new CardMission(cardIfo);
+      this.querySelector('.card-list').appendChild(_card);
+    }
   }
 
   #getTemplate()
   {
-      const tempalate = document.createElement('template');
-      tempalate.innerHTML = `
-      <section class="card-box">
-        <header></header>
-        <div class="card-list">
-        
-        </div>
-      </section>
-      `;  
-      return tempalate;
+    const tempalate = document.createElement('template');
+    tempalate.innerHTML = `
+    <section class="card-box">
+      <header></header>
+      <div class="card-list">
+      
+      </div>
+    </section>
+    `;  
+    return tempalate;
   }
 }
 customElements.define('card-box', CardBox);

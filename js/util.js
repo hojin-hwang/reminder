@@ -283,7 +283,13 @@ util.setLocalStorageForArray = function(key, value)
 //Get getLocalStorageForArray
 util.getLocalStorageForArray = function(key)
 {
-  return JSON.parse(localStorage.geItem(key));
+  return JSON.parse(localStorage.getItem(key));
+}
+
+//Remove localStorage by Key
+util.removeStorageByKey = function(key)
+{
+  localStorage.removeItem(key)
 }
 
 
@@ -333,29 +339,29 @@ util.isFutureDate = function(compareDate)
   else return true;
 }
 
-util.diffDay = function(preDate)
+util.diffDay = function(preDate, future = true)
 {
-  const diff = new Date(preDate).getTime() - new Date().getTime();
+  const diff = (future)? new Date(preDate).getTime() - new Date().getTime() : new Date().getTime() - new Date(preDate).getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 }
 
-util.diffHour = function(preDate)
+util.diffHour = function(preDate, future = true)
 {
-  const diff = new Date(preDate).getTime() - new Date().getTime();
+  const diff = (future)? new Date(preDate).getTime() - new Date().getTime() : new Date().getTime() - new Date(preDate).getTime();
   return Math.floor((diff / (1000 * 60 * 60)) % 24);
 }
 
-util.diffMin = function(preDate)
+util.diffMin = function(preDate, future = true)
 {
-  const diff = new Date(preDate).getTime() - new Date().getTime();
+  const diff = (future)? new Date(preDate).getTime() - new Date().getTime() : new Date().getTime() - new Date(preDate).getTime();
   return Math.floor((diff / (1000 * 60))  % 60);
 }
 
-util.remainTimeToScheduledTime = function(scheduledTime)
+util.remainTimeToScheduledTime = function(scheduledTime, future = true)
 {
-  const _dayMemnt = util.diffDay(scheduledTime);
-  const _hourMemnt = util.diffHour(scheduledTime);
-  const _minuteMemnt = util.diffMin(scheduledTime);
+  const _dayMemnt = util.diffDay(scheduledTime, future);
+  const _hourMemnt = util.diffHour(scheduledTime, future );
+  const _minuteMemnt = util.diffMin(scheduledTime, future);
   let nextRemainTime = (_dayMemnt > 0)? `${_dayMemnt}일 ` : "";
   nextRemainTime += (_hourMemnt > 0)? `${_hourMemnt}시간 ` : "";
   nextRemainTime += (_minuteMemnt > 0)? `${_minuteMemnt}분 ` : "";

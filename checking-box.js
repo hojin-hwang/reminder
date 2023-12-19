@@ -1,5 +1,5 @@
 
-class RemindBox extends HTMLElement
+class CheckingBox extends HTMLElement
 {
   constructor(data)
   {
@@ -19,30 +19,29 @@ class RemindBox extends HTMLElement
     {
         switch(event.data.msg)
         {
-            case "DONE_UPDATE_SCHEDULED_LIST_DATA":
-                //시간대로 정렬을 한다
-                const _reOrderByData = [...globalThis.store.scheduledList];
+            case "DONE_UPDATE_CHECHING_LIST_DATA":
                 
-                //하나의 카드에 하나의 스케줄만 허용하고
-                const _cardIdSet = new Set();
-                const _panelDataList = [];
-    
-                for(let i=0; i < _reOrderByData.length; i++)
-                {
-                    if(!_cardIdSet.has(_reOrderByData[i].cardId)) 
-                    {
-                        _panelDataList.push(_reOrderByData[i]);
-                        _cardIdSet.add(_reOrderByData[i].cardId);
-                    }
-                }
+                //array로 변경한 후
+                const beforeOrderList = Array.from(globalThis.store.checkingMap, function (entry) {
+                    return { key: entry[0], value: entry[1] };
+                });
 
-                this.innerHTML = '';
-                //remind pannel 데이터 을 만들고
-                _panelDataList.forEach(data=>{
-                    const _cardData = globalThis.store.cardMap.get(data.cardId);
-                    const remind_panel = new RemindPanel(_cardData, data);
-                    this.appendChild(remind_panel)
+                //Sorting 한다음
+                const _reOrderByData = beforeOrderList.sort(function(a,b){
+                    return a.value.checkingDate - b.value.checkingDate;
                 })
+
+                //현재 시간보다 지났다면 만들어서 넣는다
+                this.innerHTML = '';
+                _reOrderByData.forEach(data => {
+                    if(!util.isFutureDate(data.value.checkingDate))
+                    {
+                        const _panel = new CheckingPanel(data);
+                        this.appendChild(_panel);
+                    }
+                    
+                });
+                return;
             break;
         }
     }
@@ -77,12 +76,12 @@ class RemindBox extends HTMLElement
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
         <style></style>
-        <div class="remind-bxo"></div>
+        <div class="checking-box"></div>
       `;  
       return tempalate;
   }
 }
-customElements.define('remind-box', RemindBox);
+customElements.define('checking-box', CheckingBox);
 
 
 

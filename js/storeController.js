@@ -6,6 +6,42 @@ class StoreController{
     constructor()
     {
         window.addEventListener("message", this.onMessage.bind(this), false);
+        globalThis.store.cardMap = new Map();
+        globalThis.store.scheduledList = [];
+        globalThis.store.checkingMap  = new Map();
+        
+        this.#getCardMapFromStorage();
+        if(globalThis.store.cardMap.size === 0)
+        {
+          util.removeStorageByKey('scheduledList');
+          util.removeStorageByKey('checkingList');
+        }
+        else
+        {
+          this.#getcheckingMapStorage();
+        }
+        this.#init();
+        
+    }
+
+    #init()
+    {
+      //setting Card Box
+      document.querySelector('card-box').appendCardList();
+      //체크 스케줄, 세팅 리마인드 박스
+      
+      const _list = util.getLocalStorageForArray('scheduledList');
+      const _newList = [];
+      _list.forEach(data=>{
+        if( util.isFutureDate(data.scheduledDate))
+        {
+          _newList.push(data);
+        }
+      })
+      console.log(_list)
+      console.log(_newList)
+      //세팅 체킹 박스
+
     }
 
     onMessage(event)
@@ -31,6 +67,24 @@ class StoreController{
       }
     }
 
+    #getCardMapFromStorage(){
+      const _list = util.getLocalStorageForArray('cardList');
+      
+      if(!_list || _list.length === 0) return;
+      
+      _list.forEach(item=>{
+        globalThis.store.cardMap.set(item.id, item);
+      });
+    }
+
+    #getcheckingMapStorage(){
+      const _list = util.getLocalStorageForArray('checkingList');
+      if(!_list || _list.length === 0) return;
+      _list.forEach(item=>{
+        globalThis.store.checkingMap.set(item.id, item);
+      });
+    }
+
     #appendCardInfo(info)
     {
       //apend Card Map 
@@ -48,9 +102,16 @@ class StoreController{
     #appendScheduledList(list)
     {
       //스케줄 리스트를 등록하고
+      const beforeOrderList = [...globalThis.store.scheduledList];
       list.forEach(element => {
-        globalThis.store.scheduledList.push(element)
+        beforeOrderList.push(element)
       });
+      
+      const _reOrderByData = beforeOrderList.sort(function(a,b){
+        return a.scheduledDate - b.scheduledDate;
+     })
+
+     globalThis.store.scheduledList = [..._reOrderByData];
       //스토리지를 업데이트 하고
       util.setLocalStorageForArray("scheduledList", globalThis.store.scheduledList);
       //업데이트되었음을 알린다.
