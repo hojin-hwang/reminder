@@ -26,22 +26,48 @@ class StoreController{
 
     #init()
     {
-      //setting Card Box
-      document.querySelector('card-box').appendCardList();
-      //체크 스케줄, 세팅 리마인드 박스
       
+      //체크 스케줄, 세팅 리마인드 박스
       const _list = util.getLocalStorageForArray('scheduledList');
+      if(!_list || _list.length === 0) return;
+      const _scheduledMetaData = this.#makeScheduledMetaData(_list)
+
       const _newList = [];
       _list.forEach(data=>{
-        if( util.isFutureDate(data.scheduledDate))
+        if(util.isFutureDate(data.scheduledDate))
         {
           _newList.push(data);
         }
-      })
+        else
+        {
+          const _key = globalThis.store.cardMap.get(data.cardId).interval.split("-")[1];
+          const _value = interval.split("-")[0];
+
+          let newScheduledDate = util.setIntervalDate(data.scheduledDate, _value, _key);
+          while(!util.isFutureDate(newScheduledDate))
+          {
+            newScheduledDate = util.setIntervalDate(newScheduledDate, _value, _key);
+          }
+          
+          if(util.isFutureDate(newScheduledDate))
+          {
+            console.log(new Date(newScheduledDate))
+            //_newList.push(data);
+          }
+          //해당 카드의 새로운 스케줄을 만든다.
+          //뉴리스트에 업데이트 한다.
+          // 메타데이터를 업데이트 한다.
+          //체크맵에 세팅한다.
+        }
+      });
+
       console.log(_list)
       console.log(_newList)
-      this.#makeScheduledMetaData(_list)
+      globalThis.store.scheduledList = [..._newList];
       //세팅 체킹 박스
+
+      //setting Card Box
+      document.querySelector('card-box').appendCardList();
     }
 
     #makeScheduledMetaData(_list)
@@ -55,8 +81,10 @@ class StoreController{
         scheduledMetaData[data.cardId]['index'] = 0;
         const _lastTime = (scheduledMetaData[data.cardId]['lastScheduleDate'])? scheduledMetaData[data.cardId]['lastScheduleDate'] : 0;
         if(_lastTime < data.scheduledDate) scheduledMetaData[data.cardId]['lastScheduleDate'] = data.scheduledDate; 
+        if(!util.isFutureDate(scheduledMetaData[data.cardId]['lastScheduleDate'])) scheduledMetaData[data.cardId]['lastScheduleDate'] = 0;
       })
-      console.log(scheduledMetaData)
+      console.log(scheduledMetaData);
+      return scheduledMetaData;
     }
 
 

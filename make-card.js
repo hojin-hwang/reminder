@@ -210,24 +210,15 @@ class MakeCard extends HTMLElement
     const intervalDateSet = {};
     const _waitingDataArray = [];
     const _scheduledDataArray = [];
-    let countOfSchedule = 10;
-    if(parseInt(interval) === 0)
-    {
-        const _checkingDate = new Date(preDate).setSeconds( new Date(preDate).getSeconds() + parseInt(checktime))
-        if(util.isFutureDate(preDate)) _scheduledDataArray.push({scheduledDate:new Date(preDate), checkingDate:_checkingDate});
-        else _waitingDataArray.push({scheduledDate:new Date(preDate), checkingDate:_checkingDate});
-
-        intervalDateSet.waitingDataArray = _waitingDataArray;
-        intervalDateSet.scheduledDataArray = _scheduledDataArray;
-        return intervalDateSet;
-    }
+    let countOfSchedule = (parseInt(interval) === 0)? 1:10;
 
     for(let i=0; i< countOfSchedule; i++)
     {
-        const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setHours( _preDate.getHours() + i * parseInt(interval));
-        const __nextDate = new Date(_nextDate);
-        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
+        // const _preDate = new Date(preDate);
+        // const _nextDate = _preDate.setHours( _preDate.getHours() + i * parseInt(interval));
+        const _interval = i * parseInt(interval);
+        const _nextDate = util.setIntervalDate(preDate, _interval, 'hour')
+        const _checkingDate = util.setIntervalDate(_nextDate, parseInt(checktime), 'second')
 
         if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
         else 
@@ -250,14 +241,14 @@ class MakeCard extends HTMLElement
 
     for(let i=0; i< 10; i++)
     {
-        const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setDate( _preDate.getDate() +  i * parseInt(interval));
-        const __nextDate = new Date(_nextDate);
-        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
+        const _interval = i * parseInt(interval);
+        const _nextDate = util.setIntervalDate(preDate, _interval, 'day')
+        const _checkingDate = util.setIntervalDate(_nextDate, parseInt(checktime), 'second')
 
         if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
         else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
     }
+    
     intervalDateSet.waitingDataArray = _waitingDataArray;
     intervalDateSet.scheduledDataArray = _scheduledDataArray;
     return intervalDateSet;
@@ -271,10 +262,9 @@ class MakeCard extends HTMLElement
 
     for(let i=0; i<10; i++)
     {
-        const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setMonth( _preDate.getMonth() +  i * parseInt(interval));
-        const __nextDate = new Date(_nextDate);
-        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
+        const _interval = i * parseInt(interval);
+        const _nextDate = util.setIntervalDate(preDate, _interval, 'month')
+        const _checkingDate = util.setIntervalDate(_nextDate, parseInt(checktime), 'second')
 
         if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
         else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
@@ -292,10 +282,9 @@ class MakeCard extends HTMLElement
 
     for(let i=0; i<10; i++)
     {
-        const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setFullYear( _preDate.getFullYear() +  i * parseInt(interval));
-        const __nextDate = new Date(_nextDate);
-        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
+        const _interval = i * parseInt(interval);
+        const _nextDate = util.setIntervalDate(preDate, _interval, 'year');
+        const _checkingDate = util.setIntervalDate(_nextDate, parseInt(checktime), 'second')
 
         if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
         else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});

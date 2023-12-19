@@ -368,6 +368,31 @@ util.remainTimeToScheduledTime = function(scheduledTime, future = true)
   return nextRemainTime;
 }
 
+util.setIntervalDate = function(predate, interval, flag)
+{
+  const _preDate = new Date(predate);
+  let _nextDate = null; 
+  switch(flag)
+  {
+    case 'second':
+      _nextDate = _preDate.setSeconds( _preDate.setSeconds() + interval);
+    break;
+    case 'hour':
+      _nextDate = _preDate.setHours( _preDate.getHours() + interval);
+    break;
+    case 'day':
+      _nextDate = _preDate.setDate( _preDate.getDate() +  interval);
+    break;
+    case 'month':
+      _nextDate = _preDate.setMonth( _preDate.getMonth() +  interval);
+    break;
+    case 'year':
+      _nextDate = _preDate.setFullYear( _preDate.getFullYear() +  interval);
+    break;
+  }
+  return _nextDate;
+}
+
 util.formatDate = function(dateTime) {
   const _date = new Date(dateTime)
   return _date.getFullYear() + '년 ' + 

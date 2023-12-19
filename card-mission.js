@@ -68,6 +68,7 @@ class CardMission extends HTMLElement
     if(_scheduledListForCardOrder && _scheduledListForCardOrder.length > 0)  
     {
         this.nextRemainTime = util.remainTimeToScheduledTime(_scheduledListForCardOrder[0].scheduledDate)
+        console.log(_scheduledListForCardOrder[0].scheduledDate);
     }
   }
 
