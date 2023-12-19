@@ -248,7 +248,7 @@ class MakeCard extends HTMLElement
     const _waitingDataArray = [];
     const _scheduledDataArray = [];
 
-    for(let i=0; i<10; i++)
+    for(let i=0; i< 10; i++)
     {
         const _preDate = new Date(preDate);
         const _nextDate = _preDate.setDate( _preDate.getDate() +  i * parseInt(interval));

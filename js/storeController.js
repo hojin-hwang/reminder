@@ -40,9 +40,26 @@ class StoreController{
       })
       console.log(_list)
       console.log(_newList)
+      this.#makeScheduledMetaData(_list)
       //세팅 체킹 박스
-
     }
+
+    #makeScheduledMetaData(_list)
+    {
+      //scheduledMetaData = { cardId :{ lastScheduleDate, interval, index,  checktime} }
+      const scheduledMetaData = {};       
+      _list.forEach(data => {
+        scheduledMetaData[data.cardId] = {}
+        scheduledMetaData[data.cardId]['interval'] = globalThis.store.cardMap.get(data.cardId).interval;
+        scheduledMetaData[data.cardId]['checktime'] = globalThis.store.cardMap.get(data.cardId).checktime;
+        scheduledMetaData[data.cardId]['index'] = 0;
+        const _lastTime = (scheduledMetaData[data.cardId]['lastScheduleDate'])? scheduledMetaData[data.cardId]['lastScheduleDate'] : 0;
+        if(_lastTime < data.scheduledDate) scheduledMetaData[data.cardId]['lastScheduleDate'] = data.scheduledDate; 
+      })
+      console.log(scheduledMetaData)
+    }
+
+
 
     onMessage(event)
     {
