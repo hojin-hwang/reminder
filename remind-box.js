@@ -20,25 +20,21 @@ class RemindBox extends HTMLElement
         switch(event.data.msg)
         {
             case "DONE_UPDATE_SCHEDULED_LIST_DATA":
-                //시간대로 정렬을 한다
-                const _reOrderByData = [...globalThis.store.scheduledList];
-                
-                //하나의 카드에 하나의 스케줄만 허용하고
-                const _cardIdSet = new Set();
-                const _panelDataList = [];
-    
-                for(let i=0; i < _reOrderByData.length; i++)
-                {
-                    if(!_cardIdSet.has(_reOrderByData[i].cardId)) 
-                    {
-                        _panelDataList.push(_reOrderByData[i]);
-                        _cardIdSet.add(_reOrderByData[i].cardId);
-                    }
+
+                const beforeOrderList = [];
+
+                for (const [name, value] of globalThis.store.scheduledMap) {
+                    beforeOrderList.push(value);
                 }
 
+                //Sorting 한다음
+                const _reOrderByData = beforeOrderList.sort(function(a,b){
+                    return a.scheduledDate - b.scheduledDate;
+                })
+                
                 this.innerHTML = '';
                 //remind pannel 데이터 을 만들고
-                _panelDataList.forEach(data=>{
+                _reOrderByData.forEach(data=>{
                     const _cardData = globalThis.store.cardMap.get(data.cardId);
                     const remind_panel = new RemindPanel(_cardData, data);
                     this.appendChild(remind_panel)

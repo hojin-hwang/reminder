@@ -19,22 +19,32 @@ class CheckingBox extends HTMLElement
     {
         switch(event.data.msg)
         {
-            case "DONE_UPDATE_CHECHING_LIST_DATA":
+            case "DONE_UPDATE_CHECKING_LIST_DATA":
                 
                 //array로 변경한 후
-                const beforeOrderList = Array.from(globalThis.store.checkingMap, function (entry) {
-                    return { key: entry[0], value: entry[1] };
-                });
+                // const beforeOrderList = Array.from(globalThis.store.checkingMap, function (entry) {
+                //     return { key: entry[0], value: entry[1] };
+                // });
+
+                // //Sorting 한다음
+                // const _reOrderByData = beforeOrderList.sort(function(a,b){
+                //     return a.value.checkingDate - b.value.checkingDate;
+                // })
+
+                const beforeOrderList = [];
+                for (const [name, value] of globalThis.store.checkingMap) {
+                    beforeOrderList.push(value);
+                }
 
                 //Sorting 한다음
                 const _reOrderByData = beforeOrderList.sort(function(a,b){
-                    return a.value.checkingDate - b.value.checkingDate;
+                    return a.checkingDate - b.checkingDate;
                 })
 
                 //현재 시간보다 지났다면 만들어서 넣는다
                 this.innerHTML = '';
                 _reOrderByData.forEach(data => {
-                    if(!util.isFutureDate(data.value.checkingDate))
+                    if(!util.isFutureDate(data.checkingDate))
                     {
                         const _panel = new CheckingPanel(data);
                         this.appendChild(_panel);

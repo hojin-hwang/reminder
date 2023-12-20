@@ -14,10 +14,9 @@ class RemindPanel extends HTMLElement
       this.addEventListener('click', this.handleClick);
       this.cardData =  {...cardData};
       this.data =  {...data};
-      console.log(this.cardData);
-      console.log(this.data)
       this.id = self.crypto.randomUUID();
-  }
+      this.nIntervId;
+   }
 
   static get observedAttributes() {return ['type']; }
 
@@ -48,7 +47,15 @@ class RemindPanel extends HTMLElement
     this.#setData();
     const template = this.#getTemplate();
     const shadowRoot = this.attachShadow({mode: 'open'});
-    shadowRoot.appendChild(template.content.cloneNode(true)); 
+    shadowRoot.appendChild(template.content.cloneNode(true));
+    
+    if (!this.nIntervId) {
+        this.nIntervId = setInterval(()=>{
+            this.cardData.startDate = this.data.scheduledDate;
+            //console.log(this.cardData)
+            //globalThis.store.controll.makeNewSchedule(this.cardData);
+        }, 20000);
+    }
   }
 
   #setData()

@@ -88,11 +88,8 @@ class MakeCard extends HTMLElement
         _card.memo = '';
         _card.checkingId = '';
         
-        const result = this.#setIntervalData(_cardDate, _card.interval, _card.checktime);
-
+        //const result = this.#setIntervalData(_card);
         window.postMessage({msg:"REQUEST_NEW_CARD_DATA", data:_card}, location.origin);
-        window.postMessage({msg:"REQUEST_NEW_SCHEDULED_LIST_DATA", data:result.scheduledDataArray}, location.origin);
-        window.postMessage({msg:"REQUEST_NEW_CHACKING_DATA", data:result.checkingDate}, location.origin);
         this.remove();
      }
     
@@ -210,15 +207,24 @@ class MakeCard extends HTMLElement
     const intervalDateSet = {};
     const _waitingDataArray = [];
     const _scheduledDataArray = [];
-    let countOfSchedule = (parseInt(interval) === 0)? 1:10;
+    let countOfSchedule = 10;
+    if(parseInt(interval) === 0)
+    {
+        const _checkingDate = new Date(preDate).setSeconds( new Date(preDate).getSeconds() + parseInt(checktime))
+        if(util.isFutureDate(preDate)) _scheduledDataArray.push({scheduledDate:new Date(preDate), checkingDate:_checkingDate});
+        else _waitingDataArray.push({scheduledDate:new Date(preDate), checkingDate:_checkingDate});
+
+        intervalDateSet.waitingDataArray = _waitingDataArray;
+        intervalDateSet.scheduledDataArray = _scheduledDataArray;
+        return intervalDateSet;
+    }
 
     for(let i=0; i< countOfSchedule; i++)
     {
-        // const _preDate = new Date(preDate);
-        // const _nextDate = _preDate.setHours( _preDate.getHours() + i * parseInt(interval));
-        const _interval = i * parseInt(interval);
-        const _nextDate = util.setIntervalDate(preDate, _interval, 'hour')
-        const _checkingDate = util.setIntervalDate(_nextDate, parseInt(checktime), 'second')
+        const _preDate = new Date(preDate);
+        const _nextDate = _preDate.setHours( _preDate.getHours() + i * parseInt(interval));
+        const __nextDate = new Date(_nextDate);
+        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
 
         if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
         else 
@@ -241,14 +247,14 @@ class MakeCard extends HTMLElement
 
     for(let i=0; i< 10; i++)
     {
-        const _interval = i * parseInt(interval);
-        const _nextDate = util.setIntervalDate(preDate, _interval, 'day')
-        const _checkingDate = util.setIntervalDate(_nextDate, parseInt(checktime), 'second')
+        const _preDate = new Date(preDate);
+        const _nextDate = _preDate.setDate( _preDate.getDate() +  i * parseInt(interval));
+        const __nextDate = new Date(_nextDate);
+        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
 
         if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
         else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
     }
-    
     intervalDateSet.waitingDataArray = _waitingDataArray;
     intervalDateSet.scheduledDataArray = _scheduledDataArray;
     return intervalDateSet;
@@ -262,9 +268,10 @@ class MakeCard extends HTMLElement
 
     for(let i=0; i<10; i++)
     {
-        const _interval = i * parseInt(interval);
-        const _nextDate = util.setIntervalDate(preDate, _interval, 'month')
-        const _checkingDate = util.setIntervalDate(_nextDate, parseInt(checktime), 'second')
+        const _preDate = new Date(preDate);
+        const _nextDate = _preDate.setMonth( _preDate.getMonth() +  i * parseInt(interval));
+        const __nextDate = new Date(_nextDate);
+        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
 
         if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
         else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
@@ -282,9 +289,10 @@ class MakeCard extends HTMLElement
 
     for(let i=0; i<10; i++)
     {
-        const _interval = i * parseInt(interval);
-        const _nextDate = util.setIntervalDate(preDate, _interval, 'year');
-        const _checkingDate = util.setIntervalDate(_nextDate, parseInt(checktime), 'second')
+        const _preDate = new Date(preDate);
+        const _nextDate = _preDate.setFullYear( _preDate.getFullYear() +  i * parseInt(interval));
+        const __nextDate = new Date(_nextDate);
+        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
 
         if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
         else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});

@@ -5,13 +5,39 @@ class CheckingPanel extends HTMLElement
   {
       super();
       window.addEventListener("message", this.onMessage.bind(this), false);
+      this.addEventListener('click', this.handleClick);
       this.data = {...data};
-      console.log(this.data)
       this.#setData();
   }
 
   static get observedAttributes() {return ['type']; }
 
+  handleClick(e) {
+    //e.preventDefault();
+    e.composedPath().find((node)=>{
+      if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
+      if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
+      if(node.className.match(/command-skip-schedule/))
+      {
+        //update skip
+        this.#removeCheckData()
+      }
+      if(node.className.match(/command-done-schedule/))
+      {
+        //update done
+        this.#removeCheckData()
+      }
+    });
+  }
+
+  #removeCheckData()
+  {
+    //map을 지우고
+    globalThis.store.checkingMap.delete(this.data.cardId);
+    globalThis.store.controll.writeLocalStorage('checkingList');
+    window.postMessage({msg:"DONE_UPDATE_CHECKING_LIST_DATA", data:null}, location.origin);
+    //로컬스토리지를 저장한다.
+  }
 
   onMessage(event)
   {
@@ -52,9 +78,9 @@ class CheckingPanel extends HTMLElement
   
   #setData()
   {
-    this.data.passedTime = util.remainTimeToScheduledTime(this.data.value.scheduledDate, false)
-    this.data.fomatedDate = util.formatDate(this.data.value.scheduledDate);
-    this.data.title = globalThis.store.cardMap.get(this.data.key).title;
+    this.data.passedTime = util.remainTimeToScheduledTime(this.data.scheduledDate, false)
+    this.data.fomatedDate = util.formatDate(this.data.scheduledDate);
+    this.data.title = globalThis.store.cardMap.get(this.data.cardId).title;
   }
   
   #getTemplate()
@@ -71,8 +97,8 @@ class CheckingPanel extends HTMLElement
             <div class="toast-body">
                 scheduled Date ${this.data.fomatedDate}
                 <div class="mt-2 pt-2 border-top">
-                <button type="button" class="btn btn-primary btn-sm">Done</button>
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Skip</button>
+                <button type="button" class="btn btn-primary btn-sm command-done-schedule"  data-bs-dismiss="toast">Done</button>
+                <button type="button" class="btn btn-secondary btn-sm command-skip-schedule" data-bs-dismiss="toast">Skip</button>
                 </div>
           </div>
         </div>

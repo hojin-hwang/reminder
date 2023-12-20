@@ -7,6 +7,7 @@ class StoreController{
     {
         window.addEventListener("message", this.onMessage.bind(this), false);
         globalThis.store.cardMap = new Map();
+        globalThis.store.scheduledMap = new Map();
         globalThis.store.scheduledList = [];
         globalThis.store.checkingMap  = new Map();
         
@@ -18,77 +19,83 @@ class StoreController{
         }
         else
         {
+          this.#getScheduledMapStorage();
           this.#getcheckingMapStorage();
+          //스케줄이 현재보다 큰지 확인하고 스케줄을 변경한다.
+          for (let scheduledData of globalThis.store.scheduledMap.values()) {
+            if(!util.isFutureDate(scheduledData.scheduledDate))
+            {
+              const _card = globalThis.store.cardMap.get(scheduledData.cardId);
+              _card.startDate = scheduledData.scheduledDate;
+              this.makeNewSchedule(_card);
+            }
+          }
+
+          //console.log(globalThis.store.scheduledMap)
+          //this.#getcheckingMapStorage();
         }
-        this.#init();
-        
+        //this.#init();
+        document.querySelector('card-box').appendCardList();
+        window.postMessage({msg:"DONE_UPDATE_SCHEDULED_LIST_DATA", data:null}, location.origin);
+        window.postMessage({msg:"DONE_UPDATE_CHECKING_LIST_DATA", data:null}, location.origin);
     }
 
-    #init()
+    makeNewSchedule(card)
     {
-      
-      //체크 스케줄, 세팅 리마인드 박스
-      const _list = util.getLocalStorageForArray('scheduledList');
-      if(!_list || _list.length === 0) return;
-      const _scheduledMetaData = this.#makeScheduledMetaData(_list)
+      const _flag = card.interval.split("-")[1];
+      const _interval = card.interval.split("-")[0];
+      let isContinue = true;
+      const onlyOne = ( card.interval === '0-hour')? true : false;
+      let index = 0;
 
-      const _newList = [];
-      _list.forEach(data=>{
-        if(util.isFutureDate(data.scheduledDate))
+      while(isContinue)
+      {
+        const _nextDate = util.getNextDateByValue(card.startDate, (index * _interval) , _flag)
+        if(util.isFutureDate(_nextDate))
         {
-          _newList.push(data);
+          isContinue = false;
+          this.#setScheduledCheckingMap(_nextDate, card, 'scheduled');
+          const _list = [...this.writeLocalStorage('scheduled')];
+          window.postMessage({msg:"DONE_UPDATE_SCHEDULED_LIST_DATA", data:_list}, location.origin);
         }
         else
         {
-          const _key = globalThis.store.cardMap.get(data.cardId).interval.split("-")[1];
-          const _value = interval.split("-")[0];
-
-          let newScheduledDate = util.setIntervalDate(data.scheduledDate, _value, _key);
-          while(!util.isFutureDate(newScheduledDate))
-          {
-            newScheduledDate = util.setIntervalDate(newScheduledDate, _value, _key);
-          }
-          
-          if(util.isFutureDate(newScheduledDate))
-          {
-            console.log(new Date(newScheduledDate))
-            //_newList.push(data);
-          }
-          //해당 카드의 새로운 스케줄을 만든다.
-          //뉴리스트에 업데이트 한다.
-          // 메타데이터를 업데이트 한다.
-          //체크맵에 세팅한다.
+          index++;
+          if(onlyOne) isContinue = false;
+          //set checking Map
+          // write localstorage
+          this.#setScheduledCheckingMap(_nextDate, card, 'checking');
+          const _list = [...this.writeLocalStorage('checking')];
+          window.postMessage({msg:"DONE_UPDATE_CHECKING_LIST_DATA", data:null}, location.origin);
         }
-      });
-
-      console.log(_list)
-      console.log(_newList)
-      globalThis.store.scheduledList = [..._newList];
-      //세팅 체킹 박스
-
-      //setting Card Box
-      document.querySelector('card-box').appendCardList();
+      }
     }
 
-    #makeScheduledMetaData(_list)
+    #setScheduledCheckingMap(scheduledDate, card, flag)
     {
-      //scheduledMetaData = { cardId :{ lastScheduleDate, interval, index,  checktime} }
-      const scheduledMetaData = {};       
-      _list.forEach(data => {
-        scheduledMetaData[data.cardId] = {}
-        scheduledMetaData[data.cardId]['interval'] = globalThis.store.cardMap.get(data.cardId).interval;
-        scheduledMetaData[data.cardId]['checktime'] = globalThis.store.cardMap.get(data.cardId).checktime;
-        scheduledMetaData[data.cardId]['index'] = 0;
-        const _lastTime = (scheduledMetaData[data.cardId]['lastScheduleDate'])? scheduledMetaData[data.cardId]['lastScheduleDate'] : 0;
-        if(_lastTime < data.scheduledDate) scheduledMetaData[data.cardId]['lastScheduleDate'] = data.scheduledDate; 
-        if(!util.isFutureDate(scheduledMetaData[data.cardId]['lastScheduleDate'])) scheduledMetaData[data.cardId]['lastScheduleDate'] = 0;
-      })
-      console.log(scheduledMetaData);
-      return scheduledMetaData;
+      const _data = {};
+      _data.cardId = card.id;
+      _data.scheduledDate = scheduledDate;
+      _data.checkingDate =  util.getNextDateByValue(scheduledDate, card.checktime , 'second')
+
+      if(flag === 'scheduled') globalThis.store.scheduledMap.set(card.id, _data);
+      else globalThis.store.checkingMap.set(card.id, _data);
     }
 
+    writeLocalStorage(flag)
+    {
+      //flag에 따라서 해당 맵을 로컬에 담는다.
+      const _map = (flag === 'card')? globalThis.store.cardMap : (flag === 'scheduled')? globalThis.store.scheduledMap : globalThis.store.checkingMap;
+      const _key = (flag === 'card')? 'cardList' : (flag === 'scheduled')? 'scheduledList' : 'checkingList';
+      const _list = [];
+      for (let data of _map.values()) {
+        _list.push(data);
+      }
+      util.setLocalStorageForArray(_key, _list);
+      return _list;
+    }
 
-
+    
     onMessage(event)
     {
       const window_url = window.location.hostname;
@@ -100,13 +107,8 @@ class StoreController{
           case "REQUEST_NEW_CARD_DATA":
             this.#appendCardInfo(event.data.data)
           break;
-          case "REQUEST_NEW_SCHEDULED_LIST_DATA":
-            this.#appendScheduledList(event.data.data)
-          break;
-          case "REQUEST_NEW_CHACKING_DATA":
-            this.#appendCheckgingData(event.data.data)
-          break;
-          case "SEND_QUERY_MESSAGE":
+          case "DONE_APPEND_CARD_DATA":
+            this.makeNewSchedule(event.data.data);
           break;            
         }
       }
@@ -114,11 +116,17 @@ class StoreController{
 
     #getCardMapFromStorage(){
       const _list = util.getLocalStorageForArray('cardList');
-      
-      if(!_list || _list.length === 0) return;
-      
+      if(!_list || _list.length === 0) return;   
       _list.forEach(item=>{
         globalThis.store.cardMap.set(item.id, item);
+      });
+    }
+
+    #getScheduledMapStorage(){
+      const _list = util.getLocalStorageForArray('scheduledList');
+      if(!_list || _list.length === 0) return;   
+      _list.forEach(item=>{
+        globalThis.store.scheduledMap.set(item.cardId, item);
       });
     }
 
@@ -126,7 +134,7 @@ class StoreController{
       const _list = util.getLocalStorageForArray('checkingList');
       if(!_list || _list.length === 0) return;
       _list.forEach(item=>{
-        globalThis.store.checkingMap.set(item.id, item);
+        globalThis.store.checkingMap.set(item.cardId, item);
       });
     }
 
@@ -142,41 +150,6 @@ class StoreController{
       util.setLocalStorageForArray("cardList", _cardList);
       //업데이트되었음을 알린다.
       window.postMessage({msg:"DONE_APPEND_CARD_DATA", data:info}, location.origin);
-    }
-
-    #appendScheduledList(list)
-    {
-      //스케줄 리스트를 등록하고
-      const beforeOrderList = [...globalThis.store.scheduledList];
-      list.forEach(element => {
-        beforeOrderList.push(element)
-      });
-      
-      const _reOrderByData = beforeOrderList.sort(function(a,b){
-        return a.scheduledDate - b.scheduledDate;
-     })
-
-     globalThis.store.scheduledList = [..._reOrderByData];
-      //스토리지를 업데이트 하고
-      util.setLocalStorageForArray("scheduledList", globalThis.store.scheduledList);
-      //업데이트되었음을 알린다.
-      window.postMessage({msg:"DONE_UPDATE_SCHEDULED_LIST_DATA", data:null}, location.origin);
-    }
-
-    #appendCheckgingData(info)
-    {
-      if(!info) return;
-      //체킹 Map Set
-      globalThis.store.checkingMap.set(info.cardId, info)
-      //스토리지를 업데이트 하고
-      const _checkingList = [];
-      for (let checingInfo of globalThis.store.checkingMap.values()) {
-        _checkingList.push(checingInfo);
-      }
-      util.setLocalStorageForArray("checkingList", _checkingList);
-
-      //업데이트되었음을 알린다.
-      window.postMessage({msg:"DONE_UPDATE_CHECHING_LIST_DATA", data:null}, location.origin);
     }
 
 }
