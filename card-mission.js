@@ -48,6 +48,15 @@ class CardMission extends HTMLElement
   #render()
   {
     this.intervalComment = util.intervalComment(this.data.interval);
+    if(this.intervalComment === '0')
+    {
+        this.intervalComment = '반복이 없습니다.'
+    }
+    else
+    {
+        this.intervalComment = `매 ${this.intervalComment} 마다 반복됩니다.`;
+    }
+    
     // this.categoryName = this.#getCategoryName();
     this.#getNextRemainTime();
     const template = this.#getTemplate();
@@ -89,7 +98,7 @@ class CardMission extends HTMLElement
                     <h5 class="card-title">${this.data.title}</h5>
                     <p class="card-text">
                     시작일은 ${this.data.startDate} 입니다. <br>
-                    매 ${this.intervalComment} 마다 반복됩니다.
+                    ${this.intervalComment}
                     </p>
                     <p class="card-text"><small class="text-body-secondary">다음 알람시간까지 ${this.nextRemainTime} 남았습니다.</small></p>
                     <button class="btn btn-success rounded-pill px-3 btn-sm" type="button">${this.data.category}</button>

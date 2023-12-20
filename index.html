@@ -97,7 +97,7 @@
         globalThis.store.scheduledList = [];
         globalThis.store.checkingMap = new Map();
 
-        const storeController = new StoreController();
+        globalThis.store.controll = new StoreController();
         //append template to body
  
         window.addEventListener('click', function(e){
@@ -106,7 +106,7 @@
                 if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
                 if(node.className.match(/command-open-make-card/))
                 {
-                    if( globalThis.store.cardMap.size >= 5) return;
+                    if( globalThis.store.cardMap.size >= 100) return;
                     const makeCard = new MakeCard();
                     document.querySelector('.container').appendChild(makeCard);
                 }

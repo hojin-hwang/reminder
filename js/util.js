@@ -377,6 +377,35 @@ util.formatDate = function(dateTime) {
     _date.getMinutes() + '분';
 }
 
+util.getNextDateByValue = function(preDate, interval, flag)
+{
+  const _preDate = new Date(preDate);
+  let _nextDate = null;
+  switch(flag)
+  {
+    case 'second':
+      _nextDate = _preDate.setSeconds( _preDate.getSeconds() + parseInt(interval));
+    break;
+    case 'hour':
+      _nextDate = _preDate.setHours( _preDate.getHours() + parseInt(interval));
+    break;
+    case 'day':
+      _nextDate = _preDate.setDate( _preDate.setDate() + parseInt(interval));
+    break;
+    case 'month':
+      _nextDate = _preDate.setMonth( _preDate.setMonth() + parseInt(interval));
+    break;
+    case 'year':
+      _nextDate = _preDate.setFullYear( _preDate.getFullYear() + parseInt(interval));
+    break;
+    default:
+      _nextDate = new Date().getTime();
+    break;  
+  }
+  return _nextDate;
+  
+}
+
 util.intervalComment = function(interval)
 {
   const _value = interval.split("-")[0];
@@ -385,7 +414,8 @@ util.intervalComment = function(interval)
   switch(_key)
   {
       case 'hour':
-          _ment = `${_value}시간`
+        if(_value === "0") _ment = "0"
+        else _ment = `${_value}시간`
       break;
       case 'day':
           if(_value === "1") _ment = `일`;
