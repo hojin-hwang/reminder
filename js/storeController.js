@@ -22,13 +22,17 @@ class StoreController{
           this.#getScheduledMapStorage();
           //스케줄이 현재보다 큰지 확인하고 스케줄을 변경한다.
           for (let scheduledData of globalThis.store.scheduledMap.values()) {
-            console.log(scheduledData.scheduledDate)
+            if(!util.isFutureDate(scheduledData.scheduledDate))
+            {
+              const _card = globalThis.store.cardMap.get(scheduledData.cardId);
+              _card.startDate = scheduledData.scheduledDate;
+              this.makeNewSchedule(_card);
+            }
           }
 
-console.log(iterator1.next().value);
-// Expected output: Array ["0", "foo"
+          console.log(globalThis.store.checkingMap)
 
-          console.log(globalThis.store.scheduledMap)
+          //console.log(globalThis.store.scheduledMap)
           //this.#getcheckingMapStorage();
         }
         this.#init();
@@ -140,9 +144,9 @@ console.log(iterator1.next().value);
           case "REQUEST_NEW_CARD_DATA":
             this.#appendCardInfo(event.data.data)
           break;
-          // case "REQUEST_NEW_SCHEDULED_LIST_DATA":
-          //   this.#appendScheduledList(event.data.data)
-          // break;
+          case "DONE_UPDATE_CHECKING_LIST_DATA":
+            console.log(globalThis.store.checkingMap)
+          break;
           // case "REQUEST_NEW_CHACKING_DATA":
           //   this.#appendCheckgingData(event.data.data)
           // break;
