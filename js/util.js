@@ -364,7 +364,7 @@ util.remainTimeToScheduledTime = function(scheduledTime, future = true)
   const _minuteMemnt = util.diffMin(scheduledTime, future);
   let nextRemainTime = (_dayMemnt > 0)? `${_dayMemnt}일 ` : "";
   nextRemainTime += (_hourMemnt > 0)? `${_hourMemnt}시간 ` : "";
-  nextRemainTime += (_minuteMemnt > 0)? `${_minuteMemnt}분 ` : "";
+  nextRemainTime += (_minuteMemnt > 0)? `${_minuteMemnt}분 ` : (future)? "1분 이하로" : "방금 ";
   return nextRemainTime;
 }
 

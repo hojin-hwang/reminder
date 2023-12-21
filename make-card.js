@@ -384,6 +384,12 @@ class MakeCard extends HTMLElement
                             </label>
                         </div>
                         <div class="form-check">
+                            <input class="form-check-input" type="radio" name="interval" id="60-second-interval" value="60-second">
+                            <label class="form-check-label" for="60-second-interval">
+                            15초
+                            </label>
+                        </div>
+                        <div class="form-check">
                             <input class="form-check-input" type="radio" name="interval" id="1-hour-interval" value="1-hour">
                             <label class="form-check-label" for="1-hour-interval">
                             1시간

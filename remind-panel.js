@@ -51,10 +51,14 @@ class RemindPanel extends HTMLElement
     
     if (!this.nIntervId) {
         this.nIntervId = setInterval(()=>{
-            this.cardData.startDate = this.data.scheduledDate;
-            //console.log(this.cardData)
-            //globalThis.store.controll.makeNewSchedule(this.cardData);
-        }, 20000);
+            
+            if(!util.isFutureDate(this.data.scheduledDate))
+            {
+                this.cardData.startDate = this.data.scheduledDate;
+                globalThis.store.controll.makeNewSchedule(this.cardData);
+                this.remove();
+            }
+        }, 60000);
     }
   }
 
