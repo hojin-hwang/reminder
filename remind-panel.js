@@ -56,6 +56,7 @@ class RemindPanel extends HTMLElement
             {
                 this.cardData.startDate = this.data.scheduledDate;
                 globalThis.store.controll.makeNewSchedule(this.cardData);
+                console.log("util.isFutureDate");
                 this.remove();
             }
         }, 60000);
