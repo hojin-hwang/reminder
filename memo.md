@@ -25,3 +25,5 @@ scheduledList[ {id, cardId, checkingDate, scheduledDate}]
 
 카드 정보에 따라서 스케줄을 하나하나 만들어 주는 함수가 필요(카드인포에 인터벌 정보필요, case, value)
 
+수정, 삭제 프로세스 
+
