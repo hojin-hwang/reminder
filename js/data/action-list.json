@@ -1,0 +1,28 @@
+[
+    {
+    "id": "a-11",
+    "user": "1234",
+    "ground": "23",
+    "item": "1",
+    "title": "테니스 레슨",
+    "desc": "일주일에 5회 정도 연습이 필요합니다.",
+    "alertDate": "2024-01-14 15:50",
+    "createDate": "2023-01-14 15:50",
+    "interval": "week",
+    "avatar": {},
+    "info": {}
+  },
+  {
+    "id": "a-12",
+    "user": "1234",
+    "ground": "23",
+    "item":"2",
+    "title": "10K 달리기",
+    "desc": "일주일에 한번씩 도전하세요.",
+    "alertDate": "2024-01-14 16:30",
+    "createDate": "2023-01-14 15:50",
+    "interval": "one-week",
+    "avatar": {},
+    "info": {}
+  }
+]

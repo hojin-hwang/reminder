@@ -1,0 +1,46 @@
+[
+    {
+    "id": "r-11",
+    "user": "",
+    "ground": "23",
+    "item": "1",
+    "title": "테니스 레슨",
+    "desc": "일주일에 5회 정도 연습이 필요합니다.",
+    "interval": "week",
+    "avatar": {},
+    "info": {}
+  },
+  {
+    "id": "r-12",
+    "user": "",
+    "ground": "23",
+    "item":"2",
+    "title": "10K 달리기",
+    "desc": "일주일에 한번씩 도전하세요.",
+    "interval": {"case":"one-week", "title":"주 1회"},
+    "avatar": {},
+    "info": {}
+  },
+  {
+    "id": "r-21",
+    "user": "",
+    "ground":"24",
+    "item":"3",
+    "title": "문제풀기",
+    "desc": "매일 꾸준히 3문제 이상 풀어보세요.",
+    "interval": {"case":"week", "title":"매일"},
+    "avatar": {},
+    "info": {}
+  },
+  {
+    "id": "r-22",
+    "user": "",
+    "ground": "24",
+    "item": "4",
+    "title": "역사 연대 이해",
+    "desc": "먼저 국내 역사부터 공부하고 주변 국가 역사로 확장하세요.",
+    "interval": "",
+    "avatar": {},
+    "info": {}
+  }
+]

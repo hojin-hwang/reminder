@@ -1,0 +1,6 @@
+[
+    {"id":"1", "groundId":"23", "title":"테니스"},
+    {"id":"2", "groundId":"23", "title":"달리기"},
+    {"id":"3", "groundId":"24", "title":"수학"},
+    {"id":"4", "groundId":"24", "title":"역사"}
+]

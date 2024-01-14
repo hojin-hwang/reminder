@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="/css/bootrap/bootstrap.min.css" rel="stylesheet" >
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/css/swiper.css">
     <link rel="stylesheet" href="/font/icomoon/style.css">
 
     <link rel="stylesheet" href="/css/calendar/rome.css">
@@ -14,73 +16,122 @@
     <style>
         :root {
             --bs-body-bg: var(--bs-gray-100);
+            
         }
+        *, :after, :before {
+            box-sizing: border-box;
+        }
+        main{
+          --bs-gutter-x: 1.5rem;
+          --bs-gutter-y: 0;
+          width: 100%;
+          padding-right: calc(var(--bs-gutter-x) * .5);
+          padding-left: calc(var(--bs-gutter-x) * .5);
+          margin-right: auto;
+          margin-left: auto;
+          display: flex;
+          flex-direction: column;
+          gap:24px;
+          overflow-x: hidden;
+        }
+
+        section.recommand-box{
+          gap: 1.5rem!important;
+          display: flex;
+          flex-direction: column;
+        }
+
+        article.recommand{
+          padding: 1.5rem!important;
+          display: flex;
+          flex-direction: column;
+        }
+
+        article.check{
+          display: flex; flex-direction: column ; justify-content: flex-start; gap:8px;
+          padding:8px;
+        }
+
+        article.action{
+          display: flex; flex-direction: row; justify-content: flex-start; gap:12px;padding:8px;
+          align-items: center;
+        }
+
+        .wrapper {
+              max-width: 86vw;
+              margin: 0 auto 0 0;
+          }
+        .swiper {
+              max-width: 86vw;
+              width: 100%;
+              position: relative;
+              overflow: visible;
+          }
+
+        .card{box-shadow: 0 0 0.875rem 0 rgba(41,48,66,.05); background-color: white;}
+        .flex-row{display: flex; flex-direction: row;}
+        .justify-content-between{justify-content: space-between;}
     </style>
   </head>
+
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled">Disabled</a>
-            </li>
-          </ul>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
-      </div>
-    </nav>
+      <main>
+        <section class="check-box">
+          <label>Check</label>
+          <div class="wrapper">
+            <div class="swiper checkSwiper">
+              <div class="swiper-wrapper">
+                <article class="card rounded border check swiper-slide">
+                  <div>
+                    <strong>역사 연대표 공부</strong>를 수행하셨나요? 그 결과를 알려주세요
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-primary">수행했어요</button>
+                    <button type="button" class="btn btn-secondary">다음에 할게요</button>
+                    <img src="https://picsum.photos/50/50" style="border-radius: 50%; width:40px; height:40px; float: right!important;">
+                  </div>
+                </article>
 
-    <div class="container">
-      <button type="button" class="command-open-make-card btn btn-primary btn-lg px-4 gap-3">New Card</button>
-      <checking-box>
-        
-      </checking-box>
+                <article class="card rounded border check swiper-slide">
+                  <div>
+                    <strong>역사 연대표 공부</strong>를 수행하셨나요? 그 결과를 알려주세요
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-primary">수행했어요</button>
+                    <button type="button" class="btn btn-secondary">다음에 할게요</button>
+                    <img src="https://picsum.photos/60/60" style="border-radius: 50%; width:40px; height:40px; float: right!important;">
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+          
+          
+        </section>
 
-      <remind-box>
-      </remind-box>
-      
-      <card-box>
-      </card-box>
+        <check-box></check-box>
 
-      
-    </div>
+        <action-box></action-box>
+
+        <recommand-box></recommand-box>
+
+      </main>
+    
 
     <script src="/js/bootstrap/bootstrap.bundle.min.js" ></script>
-    <script src="/js/calendar/jquery-3.3.1.min.js"></script>
+    <!-- <script src="/js/calendar/jquery-3.3.1.min.js"></script> -->
+    <script src="/js/jquery-3.5.0.min.js"></script>
+    <script src="/js/swiper.js"></script>
     <script src="/js/util.js"></script>
     <script src="/js/storeController.js"></script>
-    <script src="make-card.js"></script>
+    <script src="/js/dataController.js"></script>
+    <!-- <script src="make-card.js"></script>
     <script src="checking-box.js"></script>
     <script src="checking-panel.js"></script>
     <script src="remind-box.js"></script>
     <script src="remind-panel.js"></script>
     <script src="card-box.js"></script>
-    <script src="card-mission.js"></script>
+    <script src="card-mission.js"></script> -->
 
     
     <script src="/js/calendar/popper.min.js"></script>
@@ -88,34 +139,41 @@
     <script src="/js/calendar/tui-time-picker.min.js"></script>
 
     <script src="/js/bootstrap/bootstrap-timepicker.js" ></script>
+
+
+    <script src="/js/component/recommand-box.js"></script> 
+    <script src="/js/component/recommand-card.js"></script> 
+
+    <script src="/js/component/action-box.js"></script> 
+    <script src="/js/component/action-card.js"></script> 
+
+    <script src="/js/component/check-box.js"></script> 
+
     <script type="text/javascript">
     window.addEventListener('DOMContentLoaded', ()=>
     {
         console.log("DOMContentLoaded");
         globalThis.store = {};
-        globalThis.store.cardMap = new Map();
-        globalThis.store.scheduledList = [];
-        globalThis.store.checkingMap = new Map();
-
         globalThis.store.controll = new StoreController();
-        //append template to body
- 
-        window.addEventListener('click', function(e){
-             e.composedPath().find((node)=>{
-                if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
-                if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
-                if(node.className.match(/command-open-make-card/))
-                {
-                    if( globalThis.store.cardMap.size >= 100) return;
-                    const makeCard = new MakeCard();
-                    document.querySelector('.container').appendChild(makeCard);
-                }
-            });
-        });
+        globalThis.user = {};
+        globalThis.data = {};
+        globalThis.data.controll = new DataController();
     });
-    $(document).ready(function () {
 
+    window.addEventListener("visibilitychange",()=>{
+      
+      if(document.visibilityState === "visible")
+      {
+        console.log("visibility is back");
+        //window.postMessage({msg:"CHECK_ALERT_DATE", data:null}, location.origin);
+      }
+    });
+
+    $(document).ready(function () {
     
+    const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
+    const check_swiper = this.querySelector('.checkSwiper');
+    new Swiper(check_swiper, swiper_option);
     
     });
       

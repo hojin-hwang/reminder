@@ -1,0 +1,66 @@
+class ActionBox extends HTMLElement
+{
+  constructor()
+  {
+    super();
+  }
+
+  static get observedAttributes(){return [];}
+
+  connectedCallback()
+  {
+    this.render();
+    
+  }
+
+  render()
+  {
+    const template = this.#getTemplate();
+    if(template) this.appendChild(template.content.cloneNode(true));
+    //if(this.list.length === 0) console.log("make new action")
+    //else this.showAction();
+    return;
+  }
+
+  showAction(data)
+  {
+    const _box = this.querySelector('.swiper-wrapper');
+    _box.innerHTML = '';
+    this.list = this.#sortData(data);
+    
+    this.list.forEach(element => {
+      const actionCard = new ActionCard(element);
+      _box.appendChild(actionCard);
+    });
+
+    const action_swiper = this.querySelector('.actionSwiper');
+    const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
+    new Swiper(action_swiper, swiper_option);
+  }
+
+  #sortData(data)
+  {
+    return data;
+  }
+
+  
+  #getTemplate()
+  {
+      const tempalate = document.createElement('template');
+      tempalate.innerHTML = `
+      <section class="action-box">
+        <label>내 액션</label>
+        <div class="wrapper">
+          <div class="swiper actionSwiper">
+            <div class="swiper-wrapper">
+              
+            </div>
+          </div>
+        </div>
+      </section>   
+      `;  
+      return tempalate;
+  }
+}
+customElements.define("action-box", ActionBox);
+
