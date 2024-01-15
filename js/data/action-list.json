@@ -24,5 +24,18 @@
     "interval": "one-week",
     "avatar": {},
     "info": {}
+  },
+  {
+    "id": "a-13",
+    "user": "1234",
+    "ground": "23",
+    "item":"2",
+    "title": "30분 달리기",
+    "desc": "일주일에 한번씩 도전하세요.",
+    "alertDate": "2024-01-15 12:30",
+    "createDate": "2023-01-15 15:50",
+    "interval": "one-week",
+    "avatar": {},
+    "info": {}
   }
 ]

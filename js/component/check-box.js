@@ -55,6 +55,7 @@ class CheckBox extends HTMLElement
       
       //append check card 
       this.querySelector('.swiper-wrapper').appendChild(checkCard)
+      console.log(data.action.id)
 
       const _swiper = this.querySelector('.checkSwiper');
       const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
