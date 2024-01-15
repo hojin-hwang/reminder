@@ -20,6 +20,8 @@ class CheckBox extends HTMLElement
     if(template) this.appendChild(template.content.cloneNode(true));
     //if(this.list.length === 0) console.log("make new action")
     //else this.showAction();
+
+    
     return;
   }
 
@@ -42,10 +44,21 @@ class CheckBox extends HTMLElement
   {
     if(this.#isNotChecked(data.action.id, data.alertTime))
     {
-      //create check-card
-      //append check-card
-      //update checkedList data
-      console.log(data)
+      //make check-data
+      const checkData = {"actionId":data.action.id,"alertDate":data.alertTime}
+      const checkCard =  new CheckCard(checkData);
+      checkCard.classList.add('swiper-slide');
+      
+      //기존에 카드가 있는지 확인
+      const oldCheckCard = this.#hasCheckCard(data.action.id);
+      if(oldCheckCard) oldCheckCard.remove();
+      
+      //append check card 
+      this.querySelector('.swiper-wrapper').appendChild(checkCard)
+
+      const _swiper = this.querySelector('.checkSwiper');
+      const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
+      new Swiper(_swiper, swiper_option);
 
     }
   }
@@ -57,15 +70,34 @@ class CheckBox extends HTMLElement
     return (checkedAction)? false:true;
   }
   
+  #hasCheckCard(actionId)
+  {
+    const _list = this.querySelectorAll('check-card');
+    if(_list.length > 0)
+    {
+      let oldCheckCard = null;
+      _list.forEach(element => {
+        if(element.getActionId() === actionId) oldCheckCard = element;
+      });
+      return oldCheckCard;
+    }
+    else return null;
+  }
+
+
   #getTemplate()
   {
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
-      <label>Check</label>
       <section class="check-box">
-        
-        
-      </section>   
+          <label>Check</label>
+          <div class="wrapper">
+            <div class="swiper checkSwiper">
+              <div class="swiper-wrapper">
+              </div>
+            </div>
+          </div>
+      </section>    
       `;  
       return tempalate;
   }

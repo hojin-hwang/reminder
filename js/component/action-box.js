@@ -33,9 +33,9 @@ class ActionBox extends HTMLElement
       _box.appendChild(actionCard);
     });
 
-    const action_swiper = this.querySelector('.actionSwiper');
+    const _swiper = this.querySelector('.actionSwiper');
     const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
-    new Swiper(action_swiper, swiper_option);
+    new Swiper(_swiper, swiper_option);
   }
 
   #sortData(data)

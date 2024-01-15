@@ -41,7 +41,6 @@ class ActionCard extends HTMLElement
 
   #getGroundData(data)
   {
-    
     return (globalThis.data.groundList.find((ground) => ground.id === data.ground))
   }
 
@@ -78,15 +77,24 @@ class ActionCard extends HTMLElement
   {
     let lastAlertTime = new Date(this.data.alertDate);
     let _nextDate = lastAlertTime.setSeconds( lastAlertTime.getSeconds() + 600);
+    
     while(_nextDate < new Date().getTime())
     {
-        lastAlertTime = util.actionDateFormat(new Date(_nextDate));
+        lastAlertTime = new Date(_nextDate); 
         _nextDate = _nextDate + 600000;
         this.data.alertDate = util.actionDateFormat(new Date(_nextDate));
     }
-    const checkMessage = {action:this.data, alertTime:lastAlertTime};
+    const _lastAlertTime = util.actionDateFormat(lastAlertTime);
+    const checkMessage = {action:this.data, alertTime:_lastAlertTime};
+    //console.log(this.data.alertDate)
+    this.#changeNextAlertDate();
     window.postMessage({msg:"CHECK_ALERT_DATE", data:checkMessage}, location.origin);
+    this.#checkAlertDate();
+  }
 
+  #changeNextAlertDate()
+  {
+    this.querySelector('.alert-date').innerText = this.data.alertDate;
   }
 
   
@@ -103,7 +111,7 @@ class ActionCard extends HTMLElement
                 <strong>${this.data.title}</strong><br>
                 
                 <small class="remain-time">5분 전입니다.</small><br>
-                <small class="text-muted">${this.data.alertDate}</small>
+                <small class="text-muted alert-date">${this.data.alertDate}</small>
                 <div>
                     <span class="badge bg-info">${this.data.groundTitle}</span>
                     <span class="badge bg-success">${this.data.itemTitle}</span>

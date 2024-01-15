@@ -39,3 +39,65 @@ scheduledList[ {id, cardId, checkingDate, scheduledDate}]
 
 카드 정보에 따라서 스케줄을 하나하나 만들어 주는 함수가 필요(카드인포에 인터벌 정보필요, case, value)
 
+액션의 힘
+power of action
+action ability
+실행의 힘, 실행력, 
+
+Object Definition
+
+action : 실제 하는 행동
+
+
+category
+- id
+- title
+- path
+- comment
+
+action
+- id
+- categoryId
+- title
+- path
+- comment
+
+user
+- gender
+- nickname
+- birthyear
+- location
+- lang
+- level
+- point
+- joinedDate
+- id
+- email
+- brand
+- name
+- exp
+- avatarId
+
+card
+- title
+- startDate
+- scheduledDate(nextDate)
+- checkingDate
+- interval
+- gap(checkTime)
+- categoryId
+- actionId(실제 실행 아이디)
+- id
+- userId
+- kind(type user, recommand)
+- level
+- avatarId
+- createDate
+- updateDate
+
+avatar
+- id
+- name
+- level
+- createDate
+- path
