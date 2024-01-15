@@ -64,9 +64,11 @@ class CheckBox extends HTMLElement
 
   #isNotChecked(actionId, lastAlertDate)
   {
-    if(!globalThis.data.checkedList) return true;
-    const checkedAction = globalThis.data.checkedList.find(element => element.actionId === actionId && element.alertDate === lastAlertDate);
-    return (checkedAction)? false:true;
+    if(!globalThis.data.checkedMap.size === 0) return true;
+    const checkedAction = globalThis.data.checkedMap.get(actionId);
+    if(!checkedAction) return true;
+    if(checkedAction.alertDate !== lastAlertDate) return true;
+    else return false;
   }
   
   #hasCheckCard(actionId)

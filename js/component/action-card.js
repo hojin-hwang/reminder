@@ -69,30 +69,27 @@ class ActionCard extends HTMLElement
 
   #isPassAlertDate()
   {
-    const alertDate = new Date(this.data.alertDate + ":00");
-    console.log(this.data.alertDate);
-    console.log(alertDate.getTime());
-    console.log(new Date().getTime());
+    const alertDate = new Date(this.data.alertDate);
     return (alertDate.getTime() > new Date().getTime())? false : true;
   }
 
   #changeAlertDate()
   {
-    let lastAlertTime = new Date(this.data.alertDate + ":00");
-    let _nextDate = lastAlertTime.setSeconds( lastAlertTime.getSeconds() + 600);
+    let lastAlertTime = new Date(this.data.alertDate);
+    let _nextDate = new Date(this.data.alertDate).setSeconds( new Date(this.data.alertDate).getSeconds() + 120);
     
     while(_nextDate < new Date().getTime())
     {
         lastAlertTime = new Date(_nextDate); 
-        _nextDate = _nextDate + 600000;        
+        _nextDate = new Date(_nextDate).setSeconds( new Date(_nextDate).getSeconds() + 120);       
     }
+
     const _lastAlertTime = util.actionDateFormat(lastAlertTime);
     const checkMessage = {action:this.data, alertTime:_lastAlertTime};
     
     window.postMessage({msg:"CHECK_ALERT_DATE", data:checkMessage}, location.origin);
     this.#changeNextAlertDate(_nextDate);
     this.data.alertDate = util.actionDateFormat(new Date(_nextDate));
-    //this.#checkAlertDate();
   }
 
   #changeNextAlertDate(_nextDate)

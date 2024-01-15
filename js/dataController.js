@@ -62,12 +62,13 @@ class DataController{
 
     getCheckedList()
     {
-        globalThis.data.checkedList = [];
+        globalThis.data.checkedMap = new Map();
         const result = util.promiseAjax('GET','/js/data/checked-list.json'); 
-        result.then(list=>{
-        list.forEach(item => {
-            globalThis.data.checkedList.push(item)
-        });
+        result.then(list=>
+        {
+            list.forEach(item => {
+                globalThis.data.checkedMap.set(item.actionId, item);
+            });
         });
     }
 

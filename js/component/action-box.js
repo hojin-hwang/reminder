@@ -17,8 +17,6 @@ class ActionBox extends HTMLElement
   {
     const template = this.#getTemplate();
     if(template) this.appendChild(template.content.cloneNode(true));
-    //if(this.list.length === 0) console.log("make new action")
-    //else this.showAction();
     return;
   }
 
