@@ -69,32 +69,35 @@ class ActionCard extends HTMLElement
 
   #isPassAlertDate()
   {
-    const alertDate = new Date(this.data.alertDate);
+    const alertDate = new Date(this.data.alertDate + ":00");
+    console.log(this.data.alertDate);
+    console.log(alertDate.getTime());
+    console.log(new Date().getTime());
     return (alertDate.getTime() > new Date().getTime())? false : true;
   }
 
   #changeAlertDate()
   {
-    let lastAlertTime = new Date(this.data.alertDate);
+    let lastAlertTime = new Date(this.data.alertDate + ":00");
     let _nextDate = lastAlertTime.setSeconds( lastAlertTime.getSeconds() + 600);
     
     while(_nextDate < new Date().getTime())
     {
         lastAlertTime = new Date(_nextDate); 
-        _nextDate = _nextDate + 600000;
-        this.data.alertDate = util.actionDateFormat(new Date(_nextDate));
+        _nextDate = _nextDate + 600000;        
     }
     const _lastAlertTime = util.actionDateFormat(lastAlertTime);
     const checkMessage = {action:this.data, alertTime:_lastAlertTime};
-    //console.log(this.data.alertDate)
-    this.#changeNextAlertDate();
+    
     window.postMessage({msg:"CHECK_ALERT_DATE", data:checkMessage}, location.origin);
-    this.#checkAlertDate();
+    this.#changeNextAlertDate(_nextDate);
+    this.data.alertDate = util.actionDateFormat(new Date(_nextDate));
+    //this.#checkAlertDate();
   }
 
-  #changeNextAlertDate()
+  #changeNextAlertDate(_nextDate)
   {
-    this.querySelector('.alert-date').innerText = this.data.alertDate;
+    this.querySelector('.alert-date').innerText = util.actionDateFormat(new Date(_nextDate));
   }
 
   
