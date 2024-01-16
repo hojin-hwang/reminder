@@ -56,23 +56,17 @@ class CheckCard extends HTMLElement
 
   #updateCheckedDate()
   {
-    const checkedActionData = this.#getCheckedActionData();
-    if(checkedActionData) checkedActionData.alertDate = this.data.alertDate;
+    if(globalThis.data.checkedMap.has(this.data.actionId))
+    {
+      globalThis.data.checkedMap.get(this.data.actionId).alertDate = this.data.alertDate;
+    }
     else
     {
       const newCheckData = {"actionId":this.data.actionId,"alertDate":this.data.alertDate};
-      globalThis.data.checkedList.push(newCheckData);
+      globalThis.data.checkedMap.set(this.data.actionId, newCheckData)
     }
   }
-
-  #getCheckedActionData()
-  {
-    if(!globalThis.data.checkedList) return null;
-    const checkedActionData = globalThis.data.checkedList.find(element => element.actionId === this.data.actionId);
-    return checkedActionData;
-  }
-
-  
+ 
   getActionId()
   {
     return this.data.actionId;
