@@ -25,9 +25,8 @@ class ActionBox extends HTMLElement
     const _box = this.querySelector('.swiper-wrapper');
     _box.innerHTML = '';
     this.list = this.#sortData();
-    
     this.list.forEach(element => {
-      const actionCard = new ActionCard(element);
+      const actionCard = new ActionCard(element[1]);
       _box.appendChild(actionCard);
     });
 
@@ -38,7 +37,17 @@ class ActionBox extends HTMLElement
 
   #sortData()
   {
-    return globalThis.data.actionList;
+    const mapToArray = [...globalThis.data.actionMap];
+    return mapToArray.sort((a, b) => new Date(a[1].alertDate) - new Date(b[1].alertDate));
+  }
+
+  addActionCard(data)
+  {
+    data.id = `a-${util.secureRandom()}`;
+    data.alertDate = util.actionDateFormat(new Date());
+    globalThis.data.actionList.push(data);
+    globalThis.data.actionMap.set(data.id, data);
+    this.showAction();
   }
 
   
@@ -46,7 +55,7 @@ class ActionBox extends HTMLElement
   {
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
-      <section class="action-box">
+      <section>
         <label>내 액션</label>
         <div class="wrapper">
           <div class="swiper actionSwiper">

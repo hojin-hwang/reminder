@@ -1,3 +1,6 @@
+- action box 객체
+- check box 객체
+
 - add action card
 - interval에 따른 checking card create 
 - checking card sorting 필요 : 체킹 카드 맵 필요.

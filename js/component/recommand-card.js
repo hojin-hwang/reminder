@@ -3,10 +3,25 @@ class RecommandCard extends HTMLElement
   constructor(data = null)
   {
     super();
+    this.addEventListener('click', this.handleClick);
     if(data) this.data = this.#setData(data);
   }
 
   static get observedAttributes(){return [];}
+
+  handleClick(e) {
+    //e.preventDefault();
+    e.composedPath().find((node)=>{
+      if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
+      if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
+      if(node.className.match(/command-add-user-action/))
+      {
+        const actionBox = document.querySelector('action-box');
+        actionBox.addActionCard(this.data)
+        this.remove()
+      }
+    });
+  }
 
   connectedCallback()
   {
@@ -50,6 +65,7 @@ class RecommandCard extends HTMLElement
         <div class="mb-1 text-body-secondary">Since 2023</div>
         <p class="card-text">${this.data.desc}</p>
         <button type="button" class="btn btn-outline-primary">자세한 내용을 살펴보세요</button>
+        <button type="button" class="btn btn-primary command-add-user-action">임시 추가</button>
       </article>
       `;  
       return tempalate;

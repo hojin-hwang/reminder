@@ -17,6 +17,7 @@ class CheckCard extends HTMLElement
 
   render()
   {
+    this.data.title = this.#getActionTitle();
     const template = this.#getTemplate();
     if(template) this.appendChild(template.content.cloneNode(true));
     return;
@@ -72,13 +73,18 @@ class CheckCard extends HTMLElement
     return this.data.actionId;
   }
 
+  #getActionTitle()
+  {
+    return globalThis.data.actionMap.get(this.data.actionId).title;
+  }
+
   #getTemplate()
   {
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
       <article class="card rounded border check ">
         <div>
-          ${util.secureRandom()} <strong>역사 연대표 공부</strong>를 수행하셨나요? 그 결과를 알려주세요 ${this.data.alertDate}
+          ${util.secureRandom()} <strong>${this.data.title}</strong>를 수행하셨나요? 그 결과를 알려주세요 ${this.data.alertDate}
         </div>
         <div>
           <button type="button" class="btn btn-primary command-done-action">수행했어요</button>
