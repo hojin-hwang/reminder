@@ -20,11 +20,11 @@ class ActionBox extends HTMLElement
     return;
   }
 
-  showAction(data)
+  showAction()
   {
     const _box = this.querySelector('.swiper-wrapper');
     _box.innerHTML = '';
-    this.list = this.#sortData(data);
+    this.list = this.#sortData();
     
     this.list.forEach(element => {
       const actionCard = new ActionCard(element);
@@ -36,9 +36,9 @@ class ActionBox extends HTMLElement
     new Swiper(_swiper, swiper_option);
   }
 
-  #sortData(data)
+  #sortData()
   {
-    return data;
+    return globalThis.data.actionList;
   }
 
   

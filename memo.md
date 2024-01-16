@@ -1,3 +1,12 @@
+- add action card
+- interval에 따른 checking card create 
+- checking card sorting 필요 : 체킹 카드 맵 필요.
+- 액션 포스트 필요
+    - view
+    - modify
+    - add to user action
+    - delete
+
 우라의 알람서비스는 고객에게 놀랍고도 긍정적인 라이프 스타일을 경험할 수 있도록 한다.
 
 고객의 생활 패턴, 프로필을 바탕으로 최적의 습관 정보를 제시한다.

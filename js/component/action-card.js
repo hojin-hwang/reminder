@@ -88,13 +88,14 @@ class ActionCard extends HTMLElement
     const checkMessage = {action:this.data, alertTime:_lastAlertTime};
     
     window.postMessage({msg:"CHECK_ALERT_DATE", data:checkMessage}, location.origin);
-    this.#changeNextAlertDate(_nextDate);
+    
     this.data.alertDate = util.actionDateFormat(new Date(_nextDate));
+    this.#changeNextAlertDate();
   }
 
-  #changeNextAlertDate(_nextDate)
+  #changeNextAlertDate()
   {
-    this.querySelector('.alert-date').innerText = util.actionDateFormat(new Date(_nextDate));
+    this.querySelector('.alert-date').innerText = this.data.alertDate;
   }
 
   

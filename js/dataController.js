@@ -60,6 +60,13 @@ class DataController{
        });
     }
 
+    addActionList(item)
+    {
+        globalThis.data.actionList.push(item);
+        const actionBox = document.querySelector('action-box');
+        actionBox.showAction();
+    }
+
     getCheckedList()
     {
         globalThis.data.checkedMap = new Map();
