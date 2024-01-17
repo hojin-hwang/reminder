@@ -20,7 +20,7 @@
     "itemId":"2",
     "title": "10K 달리기",
     "desc": "일주일에 한번씩 도전하세요.",
-    "interval": {"case":"one-week", "title":"주 1회"},
+    "interval":"week",
     "avatar": {},
     "info": {}
   },
@@ -32,7 +32,7 @@
     "itemId":"3",
     "title": "문제풀기",
     "desc": "매일 꾸준히 3문제 이상 풀어보세요.",
-    "interval": {"case":"week", "title":"매일"},
+    "interval":"day",
     "avatar": {},
     "info": {}
   },
@@ -44,7 +44,7 @@
     "itemId": "4",
     "title": "역사 연대 이해",
     "desc": "먼저 국내 역사부터 공부하고 주변 국가 역사로 확장하세요.",
-    "interval": "",
+    "interval": "day",
     "avatar": {},
     "info": {}
   }

@@ -70,6 +70,7 @@ class MakeCard extends HTMLElement
         this.data.groundId = node.dataset.id;
         this.#showItem(this.data.groundId);
         this.#setItemActive();
+        this.#setTitleByItem();
         this.#showItemDesc();
     }
 
@@ -80,11 +81,20 @@ class MakeCard extends HTMLElement
         node.classList.add('active');
         this.data.groundId = node.dataset.groundId;
         this.data.itemId = node.dataset.id;
+        
+        this.#setTitleByItem(this.data.itemId);
         this.#showItemDesc(this.data.itemId);
+
     }
 
     if(node.className.match(/command-create-card/)){
-        console.log(this.data)
+
+        const titleForm = this.querySelector('form.info');
+        this.data.title = titleForm.title.value;
+
+        const intervalForm = this.querySelector('form.interval');
+        this.data.interval = intervalForm.interval.value;
+
         const actionBox = document.querySelector('action-box');
         actionBox.addActionCard(this.data);
         this.remove();
@@ -211,6 +221,15 @@ class MakeCard extends HTMLElement
     });
   }
 
+  #setTitleByItem(itemId = null)
+  {
+    const _buttons = this.querySelectorAll('.item-btn');
+    itemId = (itemId)? itemId : _buttons[0].dataset.id;
+
+    const itemTitle = this.querySelector('form.info').title;
+    itemTitle.value = globalThis.data.itemList.find(item=>item.id === itemId).title;
+  }
+
   #showItemDesc(itemId = null)
   {
     const _buttons = this.querySelectorAll('.item-btn');
@@ -218,6 +237,7 @@ class MakeCard extends HTMLElement
 
     const itemDesc = this.querySelector('.item-desc');
     itemDesc.innerHTML = globalThis.data.itemList.find(item=>item.id === itemId).desc;
+    this.data.desc = itemDesc.innerText;
   }
 
 
@@ -423,62 +443,25 @@ class MakeCard extends HTMLElement
                     <div class="row g-3">
                     <form class="interval">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="0-hour-interval" value="0-hour">
-                            <label class="form-check-label" for="0-hour-interval">
-                            반복없음
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="60-second-interval" value="60-second">
-                            <label class="form-check-label" for="60-second-interval">
-                            15초
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="1-hour-interval" value="1-hour">
-                            <label class="form-check-label" for="1-hour-interval">
-                            1시간
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="3-hour-interval" value="3-hour">
-                            <label class="form-check-label" for="3-hour-interval" >
-                            3시간
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="6-hour-interval" value="6-hour">
-                            <label class="form-check-label" for="6-hour-interval">
-                            6시간
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="12-hour-interval" value="12-hour">
-                            <label class="form-check-label" for="12-hour-interval">
-                            12시간
-                            </label>
-                        </div>
-                        <hr>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="1-day-interval" checked value="1-day">
+                            <input class="form-check-input" type="radio" name="interval" id="1-day-interval" checked value="day">
                             <label class="form-check-label" for="1-day-interval">
                             매일
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="7-day-interval" value="7-day">
+                            <input class="form-check-input" type="radio" name="interval" id="7-day-interval" value="week">
                             <label class="form-check-label" for="7-day-interval">
                             매주
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="1-month-interval" value="1-month">
+                            <input class="form-check-input" type="radio" name="interval" id="1-month-interval" value="month">
                             <label class="form-check-label" for="1-month-interval">
                             매월
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="1-year-interval" value="1-year">
+                            <input class="form-check-input" type="radio" name="interval" id="1-year-interval" value="year">
                             <label class="form-check-label" for="1-year-interval">
                             매년
                             </label>
@@ -488,53 +471,23 @@ class MakeCard extends HTMLElement
                 </div>
                 
                 <div class="carousel-item">
-                    <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
-                        <div class="border-bottom">
-                            <span class="fs-5 fw-semibold">Memo</span>
-                        </div>    
-                        <div class="list-group list-group-flush border-bottom scrollarea" style="max-height: 400px;
-                        overflow-y: auto;">
-                            <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                                <div class=" mb-1 small d-flex w-100 align-items-center justify-content-between">
-                                    <span>2023.12.12 12:22</span>
-                                    <small>Wed</small>
-                                </div>
-                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                    <span class="mb-1">List group item heading</span>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                                <div class=" mb-1 small d-flex w-100 align-items-center justify-content-between">
-                                    <span>2023.12.12 12:22</span>
-                                    <button type="button" class="btn-close" aria-label="Close"></button>
-                                </div>
-                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                    <span class="mb-1">List group item heading</span>
-                                </div>
-                            </a>
-                    </div>
-                    <form class="check-form">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="checktime" id="check-now" value="5">
-                            <label class="form-check-label" for="check-now">동시에</label>
+                    <article class="action border rounded card swiper-slide" id="a-12">
+                        <img src="https://picsum.photos/100/100" style="border-radius: 50%; width:80px; height:80px;">
+                        <div class="action-info">
+                            <div class="">
+                                
+                            </div>
+                            <strong>${this.data.title}</strong><br>
+                            
+                            <small class="remain-time">${this.data.desc}</small><br>
+                            <small class="text-muted alert-date">${this.data.alertDate}</small>
+                            <div>
+                                <span class="badge bg-info">${this.data.groundId}</span>
+                                <span class="badge bg-success">${this.data.itemId}</span>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="checktime" id="check-10-minute" value="600" checked>
-                            <label class="form-check-label" for="check-10-minute">10분후에</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="checktime" id="check-30-minute" value="1800">
-                            <label class="form-check-label" for="check-30-minute">30분 후에</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="checktime" id="check-1-hour" value="3600">
-                            <label class="form-check-label" for="check-1-hour">1시간 후에</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="checktime" id="check-2-hour" value="7200">
-                            <label class="form-check-label" for="check-2-hour">2시간 후에</label>
-                        </div>
-                    </form>
+                    </article>
+                   
                     <button type="button" class="command-create-card btn btn-primary btn-lg px-4 gap-3">Save Card</button>
                 </div>
 
