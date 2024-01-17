@@ -1,14 +1,22 @@
 - action box 객체
 - check box 객체
-
+- swiper custom tag 사용해보기 
 - add action card
 - interval에 따른 checking card create 
 - checking card sorting 필요 : 체킹 카드 맵 필요.
-- 액션 포스트 필요
+- 1. 액션 포스트 필요
     - view
     - modify
     - add to user action
     - delete
+    - 구성요소
+        - 캐릭터 (이미지, 등급, 경험치)
+        - 캐릭터 리스트
+        - 카드 데이터* (스케줄, 제목, 내용)
+        - 한줄 포스트
+        - 응원 메세지
+        - 관련 정보 (유튜브, 블로그, 웹페이지)
+
 
 우라의 알람서비스는 고객에게 놀랍고도 긍정적인 라이프 스타일을 경험할 수 있도록 한다.
 

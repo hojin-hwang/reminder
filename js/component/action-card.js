@@ -59,6 +59,14 @@ class ActionCard extends HTMLElement
   #checkAlertDate()
   {
     clearInterval(this.intervalID);
+
+    setTimeout(() => {
+      if(this.#isPassAlertDate()) 
+        {
+            this.#changeAlertDate();
+        }
+    }, 500);
+
     this.intervalID = setInterval(()=>{
         if(this.#isPassAlertDate()) 
         {
@@ -76,12 +84,12 @@ class ActionCard extends HTMLElement
   #changeAlertDate()
   {
     let lastAlertTime = new Date(this.data.alertDate);
-    let _nextDate = new Date(this.data.alertDate).setSeconds( new Date(this.data.alertDate).getSeconds() + 120);
-    
+    let _nextDate = this.#setAlertDateByInterval(this.data.alertDate, 120)
+
     while(_nextDate < new Date().getTime())
     {
         lastAlertTime = new Date(_nextDate); 
-        _nextDate = new Date(_nextDate).setSeconds( new Date(_nextDate).getSeconds() + 120);       
+        _nextDate = this.#setAlertDateByInterval(_nextDate, 120)      
     }
 
     const _lastAlertTime = util.actionDateFormat(lastAlertTime);
@@ -98,7 +106,14 @@ class ActionCard extends HTMLElement
     this.querySelector('.alert-date').innerText = this.data.alertDate;
   }
 
-  
+  #setAlertDateByInterval(dateTime, interval)
+  {
+    //hour, week, month, year, 
+    
+    const _nextDate = new Date(dateTime).setSeconds( new Date(dateTime).getSeconds() + interval);
+    return _nextDate; 
+  }
+
   #getTemplate()
   {
       const tempalate = document.createElement('template');
