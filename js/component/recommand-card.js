@@ -16,9 +16,11 @@ class RecommandCard extends HTMLElement
       if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
       if(node.className.match(/command-add-user-action/))
       {
-        const actionBox = document.querySelector('action-box');
-        actionBox.addActionCard(this.data)
-        this.remove()
+        // const actionBox = document.querySelector('action-box');
+        // actionBox.addActionCard(this.data);
+        // this.remove()
+        const makeCard = new MakeCard(this.data);
+        document.querySelector('main').appendChild(makeCard)
       }
     });
   }
@@ -37,12 +39,12 @@ class RecommandCard extends HTMLElement
 
   #getGroundData(data)
   {
-    return (globalThis.data.groundList.find((ground) => ground.id === data.ground))
+    return (globalThis.data.groundList.find((ground) => ground.id === data.groundId))
   }
 
   #getItemData(data)
   {
-    return (globalThis.data.itemList.find((item) => item.groundId === data.ground && item.id === data.item ))
+    return (globalThis.data.itemList.find((item) => item.groundId === data.groundId && item.id === data.itemId ))
   }
 
   #setData(data)

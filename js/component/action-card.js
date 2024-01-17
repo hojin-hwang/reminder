@@ -41,12 +41,12 @@ class ActionCard extends HTMLElement
 
   #getGroundData(data)
   {
-    return (globalThis.data.groundList.find((ground) => ground.id === data.ground))
+    return (globalThis.data.groundList.find((ground) => ground.id === data.groundId))
   }
 
   #getItemData(data)
   {
-    return (globalThis.data.itemList.find((item) => item.groundId === data.ground && item.id === data.item ))
+    return (globalThis.data.itemList.find((item) => item.groundId === data.groundId && item.id === data.itemId ))
   }
 
   #setData(data)
@@ -108,9 +108,8 @@ class ActionCard extends HTMLElement
 
   #setAlertDateByInterval(dateTime, interval)
   {
-    //hour, week, month, year, 
-    
-    const _nextDate = new Date(dateTime).setSeconds( new Date(dateTime).getSeconds() + interval);
+    //매일, 매주, 매달, 매년 
+     const _nextDate = new Date(dateTime).setSeconds( new Date(dateTime).getSeconds() + interval);
     return _nextDate; 
   }
 
@@ -118,7 +117,7 @@ class ActionCard extends HTMLElement
   {
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
-        <article class="action border rounded card swiper-slide">
+        <article class="action border rounded card swiper-slide" id="${this.data.id}">
             <img src="https://picsum.photos/100/100" style="border-radius: 50%; width:80px; height:80px;">
             <div class="action-info">
                 <div class="">

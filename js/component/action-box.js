@@ -43,7 +43,7 @@ class ActionBox extends HTMLElement
 
   addActionCard(data)
   {
-    data.id = `a-${util.secureRandom()}`;
+    data.type = "user";
     data.alertDate = util.actionDateFormat(new Date());
     globalThis.data.actionList.push(data);
     globalThis.data.actionMap.set(data.id, data);

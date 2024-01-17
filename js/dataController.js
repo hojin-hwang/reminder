@@ -6,7 +6,7 @@ class DataController{
     {
         console.log("called DataController!!");
         this.getGroundList();
-        this.getMissionList();
+        this.getItemList();
         this.getRecommandList();
         this.getActionList();
         this.getCheckedList();
@@ -23,7 +23,7 @@ class DataController{
        })
     }
 
-    getMissionList()
+    getItemList()
     {
        globalThis.data.itemList = [];
        const result = util.promiseAjax('GET','/js/data/item-list.json'); 
