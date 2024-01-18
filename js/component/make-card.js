@@ -184,8 +184,8 @@ class MakeCard extends HTMLElement
   #showGround()
   {
     let card = '';
-    globalThis.data.groundList.forEach(ground => {
-        card += `<button type="button" data-id="${ground.id}" class="command-select-ground ground-btn btn btn-outline-primary btn-sm">${ground.title}</button>`;
+    globalThis.config.groundMap.getGroundList().forEach((value, key, map) => {
+        card += `<button type="button" data-id="${value.id}" class="command-select-ground ground-btn btn btn-outline-primary btn-sm">${value.title}</button>`;
     });
     const groundBox = this.querySelector('.ground-box');
     groundBox.innerHTML = card;
@@ -204,7 +204,7 @@ class MakeCard extends HTMLElement
   #showItem(groundId)
   {
     let card = '';
-    const _itemList = globalThis.data.itemList.filter(item=>item.groundId === groundId);
+    const _itemList = globalThis.config.itemMap.getItemList(groundId);
     _itemList.forEach(item => {
         card += `<button type="button" data-id="${item.id}" data-ground-id="${item.groundId}" class="command-select-item item-btn btn btn-outline-success btn-sm">${item.title}</button>`;
     });
@@ -227,7 +227,7 @@ class MakeCard extends HTMLElement
     itemId = (itemId)? itemId : _buttons[0].dataset.id;
 
     const itemTitle = this.querySelector('form.info').title;
-    itemTitle.value = globalThis.data.itemList.find(item=>item.id === itemId).title;
+    itemTitle.value = globalThis.config.itemMap.getItem(itemId).title;
   }
 
   #showItemDesc(itemId = null)
@@ -236,145 +236,9 @@ class MakeCard extends HTMLElement
     itemId = (itemId)? itemId : _buttons[0].dataset.id;
 
     const itemDesc = this.querySelector('.item-desc');
-    itemDesc.innerHTML = globalThis.data.itemList.find(item=>item.id === itemId).desc;
+    itemDesc.innerHTML = globalThis.config.itemMap.getItem(itemId).desc;
     this.data.desc = itemDesc.innerText;
   }
-
-
-
-  
-
-  
-
-  #getIntervalDateByHour(preDate, interval, checktime)
-  {
-    const intervalDateSet = {};
-    const _waitingDataArray = [];
-    const _scheduledDataArray = [];
-    let countOfSchedule = 10;
-    if(parseInt(interval) === 0)
-    {
-        const _checkingDate = new Date(preDate).setSeconds( new Date(preDate).getSeconds() + parseInt(checktime))
-        if(util.isFutureDate(preDate)) _scheduledDataArray.push({scheduledDate:new Date(preDate), checkingDate:_checkingDate});
-        else _waitingDataArray.push({scheduledDate:new Date(preDate), checkingDate:_checkingDate});
-
-        intervalDateSet.waitingDataArray = _waitingDataArray;
-        intervalDateSet.scheduledDataArray = _scheduledDataArray;
-        return intervalDateSet;
-    }
-
-    for(let i=0; i< countOfSchedule; i++)
-    {
-        const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setHours( _preDate.getHours() + i * parseInt(interval));
-        const __nextDate = new Date(_nextDate);
-        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
-
-        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
-        else 
-        {
-            _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
-            countOfSchedule++;
-        }
-    }
-
-    intervalDateSet.waitingDataArray = _waitingDataArray;
-    intervalDateSet.scheduledDataArray = _scheduledDataArray;
-    return intervalDateSet;
-  }
-
-  #getIntervalDateByDay(preDate, interval, checktime)
-  {
-    const intervalDateSet = {};
-    const _waitingDataArray = [];
-    const _scheduledDataArray = [];
-
-    for(let i=0; i< 10; i++)
-    {
-        const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setDate( _preDate.getDate() +  i * parseInt(interval));
-        const __nextDate = new Date(_nextDate);
-        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
-
-        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
-        else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
-    }
-    intervalDateSet.waitingDataArray = _waitingDataArray;
-    intervalDateSet.scheduledDataArray = _scheduledDataArray;
-    return intervalDateSet;
-  }
-
-  #getIntervalDateByMonth(preDate, interval, checktime)
-  {
-    const intervalDateSet = {};
-    const _waitingDataArray = [];
-    const _scheduledDataArray = [];
-
-    for(let i=0; i<10; i++)
-    {
-        const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setMonth( _preDate.getMonth() +  i * parseInt(interval));
-        const __nextDate = new Date(_nextDate);
-        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
-
-        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
-        else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
-    }
-    intervalDateSet.waitingDataArray = _waitingDataArray;
-    intervalDateSet.scheduledDataArray = _scheduledDataArray;
-    return intervalDateSet;
-  }
-
-  #getIntervalDateByYear(preDate, interval, checktime)
-  {
-    const intervalDateSet = {};
-    const _waitingDataArray = [];
-    const _scheduledDataArray = [];
-
-    for(let i=0; i<10; i++)
-    {
-        const _preDate = new Date(preDate);
-        const _nextDate = _preDate.setFullYear( _preDate.getFullYear() +  i * parseInt(interval));
-        const __nextDate = new Date(_nextDate);
-        const _checkingDate = __nextDate.setSeconds( __nextDate.getSeconds() + parseInt(checktime))
-
-        if(util.isFutureDate(_nextDate)) _scheduledDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
-        else _waitingDataArray.push({scheduledDate:_nextDate, checkingDate:_checkingDate});
-    }
-    intervalDateSet.waitingDataArray = _waitingDataArray;
-    intervalDateSet.scheduledDataArray = _scheduledDataArray;
-    return intervalDateSet;
-  }
-
-  #makePanelData(intervalDataArray)
-  {
-    const panelDataArray = [];
-    intervalDataArray.forEach(data=>{
-        const _data = {};
-        _data.cardId = this.id;
-        _data.id = self.crypto.randomUUID();
-        _data.scheduledDate = data.scheduledDate;
-        _data.checkingDate =  data.checkingDate;
-        panelDataArray.push(_data);
-    })
-    return panelDataArray;
-  }
-
-  #makeCheckingData(intervalDataArray)
-  {
-    if(intervalDataArray && intervalDataArray.length > 0)
-    {
-        const length = intervalDataArray.length -1;
-        const _data = {};
-        _data.cardId = this.id;
-        _data.id = self.crypto.randomUUID();
-        _data.scheduledDate = intervalDataArray[length].scheduledDate;
-        _data.checkingDate =  intervalDataArray[length].checkingDate;
-        return  _data;
-    }
-    else return null;
-  }  
-
 
   #getTemplate()
   {

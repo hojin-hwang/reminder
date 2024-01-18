@@ -4,7 +4,7 @@
 - add action card
 - interval에 따른 checking card create 
 - checking card sorting 필요 : 체킹 카드 맵 필요.
-- 1. 액션 포스트 필요
+- 1. 액션(사용자, 추천) 포스트 필요
     - view
     - modify
     - add to user action

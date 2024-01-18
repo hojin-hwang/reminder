@@ -39,12 +39,12 @@ class RecommandCard extends HTMLElement
 
   #getGroundData(data)
   {
-    return (globalThis.data.groundList.find((ground) => ground.id === data.groundId))
+    return globalThis.config.groundMap.getGround(data.groundId);
   }
 
   #getItemData(data)
   {
-    return (globalThis.data.itemList.find((item) => item.groundId === data.groundId && item.id === data.itemId ))
+    return globalThis.config.itemMap.getItem(data.itemId);
   }
 
   #setData(data)

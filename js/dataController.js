@@ -14,24 +14,16 @@ class DataController{
 
     getGroundList()
     {
-       globalThis.data.groundList = [];
+       globalThis.config.groundMap = new GroupMap();
        const result = util.promiseAjax('GET','/js/data/ground-list.json'); 
-       result.then(list=>{
-        list.forEach(item => {
-            globalThis.data.groundList.push(item)
-        });
-       })
+       result.then(list=>globalThis.config.groundMap.setList(list))
     }
 
     getItemList()
     {
-       globalThis.data.itemList = [];
+       globalThis.config.itemMap = new ItemMap();
        const result = util.promiseAjax('GET','/js/data/item-list.json'); 
-       result.then(list=>{
-        list.forEach(item => {
-            globalThis.data.itemList.push(item)
-        });
-       });
+       result.then(list=>globalThis.config.itemMap.setList(list));
     }
 
     getRecommandList()
