@@ -25,6 +25,7 @@ class MakeCard extends HTMLElement
     if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
     if(node.className.match(/command-move-prev/))
     {
+        return;
         this.querySelector('.command-move-next').disabled = false;
         this.currentPage--;
         if(this.currentPage <= 0) 
@@ -45,6 +46,7 @@ class MakeCard extends HTMLElement
     }
     if(node.className.match(/command-move-next/))
     {
+        return;
         this.querySelector('.command-close-window').style.display = 'none';
         this.querySelector('.command-move-prev').style.display = 'block';
         this.currentPage++;
@@ -252,107 +254,120 @@ class MakeCard extends HTMLElement
       make-card header .btn-close {}
       make-card header button{border:none; background:none;}  
 
+      .carousel-item > div{padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;}
+
       .ground-box, .item-box{display:flex; gap:12px;}
       </style>
       <section>
-        <header>
-            <button class="btn-close command-close-window" type="button">
-                <span class="" aria-hidden="true"></span>
-             </button>
-            <button class="command-move-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="command-move-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </header>
         <div id="carouselExample" class="carousel slide">
             <div class="carousel-inner">
                 <div class="carousel-item  active">
-                    <h4 class="mb-3">Title</h4>
-                    <form class="info">
-                    <div class="col-sm-6">
-                        <label for="missionTitle" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="missionTitle" name="title" >
-                    </div>
-                    <div> 
-                        <h4 class="mb-3">Ground</h4>
-                        <div class="ground-box"></div>
-
-                        <h4 class="mb-3">Item</h4>
-                        <div class="item-box"></div>
-
+                    <div>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button class="btn-close command-close-window" type="button">
+                            <span class="" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div>
+                            <h4 class="mb-3">Title</h4>
+                            <div class="col-sm-6">
+                                <form class="info">
+                                <input type="text" class="form-control" id="missionTitle" name="title" >
+                                </form>
+                            </div>
+                        </div>
+                        <div> 
+                            <h4 class="mb-3">Ground</h4>
+                            <div class="ground-box"></div>
+                        </div>
+                        <div>
+                            <h4 class="mb-3">Item</h4>
+                            <div class="item-box"></div>
+                        </div>
                         <hr>
                         <div class="item-desc"></div>
-                    </div>
-                    </form>           
+                        <div style="display: flex;gap: 8px;">
+                            <button style="width:100%;" type="button" data-bs-target="#carouselExample" data-bs-slide="next" class="command-move-next btn btn-primary btn-lg px-4 gap-3">Next (1/3) </button>
+                        </div>
+                    </div>              
                 </div>
                 <div class="carousel-item">
-                    <h4 class="mb-3">Schedule Date</h4>
-                    <div class="row g-3">
-                        <div class="col-sm-6">
-                            <label for="alertDate" class="form-label">Date</label>
-                            <input type="text" class="form-control" id="alertDate" data-rome-id="0" readonly="">
+                    <div>
+                        <div>
+                            <h4 class="mb-3">Schedule Date</h4>
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label for="alertDate" class="form-label">Date</label>
+                                    <input type="text" class="form-control" id="alertDate" data-rome-id="0" readonly="">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="missionTime" class="form-label">Time</label>
+                                    <div id="missionTime"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-6">
-                            <label for="missionTime" class="form-label">Time</label>
-                            <div id="missionTime"></div>
+                        <div>
+                        <h4 class="mb-3">반복</h4>
+                            <form class="interval">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="interval" id="1-day-interval" checked value="day">
+                                    <label class="form-check-label" for="1-day-interval">
+                                    매일
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="interval" id="7-day-interval" value="week">
+                                    <label class="form-check-label" for="7-day-interval">
+                                    매주
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="interval" id="1-month-interval" value="month">
+                                    <label class="form-check-label" for="1-month-interval">
+                                    매월
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="interval" id="1-year-interval" value="year">
+                                    <label class="form-check-label" for="1-year-interval">
+                                    매년
+                                    </label>
+                                </div>
+                            </form> 
                         </div>
-                    </div>
-
-                    <hr class="my-4">
-                    <h4 class="mb-3">Payment</h4>
-                    <div class="row g-3">
-                    <form class="interval">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="1-day-interval" checked value="day">
-                            <label class="form-check-label" for="1-day-interval">
-                            매일
-                            </label>
+                        <div style="display: flex;gap: 8px;">
+                            <button type="button" data-bs-target="#carouselExample" data-bs-slide="prev" class="command-move-prev btn btn-secondary btn-lg px-4 gap-3">Back</button>
+                            <button style="width:100%;" type="button" data-bs-target="#carouselExample" data-bs-slide="next" class="command-move-next btn btn-primary btn-lg px-4 gap-3">Next (2/3) </button>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="7-day-interval" value="week">
-                            <label class="form-check-label" for="7-day-interval">
-                            매주
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="1-month-interval" value="month">
-                            <label class="form-check-label" for="1-month-interval">
-                            매월
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="interval" id="1-year-interval" value="year">
-                            <label class="form-check-label" for="1-year-interval">
-                            매년
-                            </label>
-                        </div>
-                    </form>    
-                    </div>
+                    </div>    
                 </div>
-                
                 <div class="carousel-item">
-                    <article class="action border rounded card swiper-slide" id="a-12">
-                        <img src="https://picsum.photos/100/100" style="border-radius: 50%; width:80px; height:80px;">
-                        <div class="action-info">
-                            <div class="">
+                    <div>
+                        <h4 class="mb-3">Action Card</h4>
+                        <article class="action border rounded card swiper-slide" id="a-12">
+                            <img src="https://picsum.photos/100/100" style="border-radius: 50%; width:80px; height:80px;">
+                            <div class="action-info">
+                                <div class="">
+                                    
+                                </div>
+                                <strong>${this.data.title}</strong><br>
                                 
+                                <small class="remain-time">${this.data.desc}</small><br>
+                                <small class="text-muted alert-date">${this.data.alertDate}</small>
+                                <div>
+                                    <span class="badge bg-info">${this.data.groundId}</span>
+                                    <span class="badge bg-success">${this.data.itemId}</span>
+                                </div>
                             </div>
-                            <strong>${this.data.title}</strong><br>
-                            
-                            <small class="remain-time">${this.data.desc}</small><br>
-                            <small class="text-muted alert-date">${this.data.alertDate}</small>
-                            <div>
-                                <span class="badge bg-info">${this.data.groundId}</span>
-                                <span class="badge bg-success">${this.data.itemId}</span>
-                            </div>
+                        </article>
+                        <div style="display: flex;gap: 8px;">
+                            <button type="button" data-bs-target="#carouselExample" data-bs-slide="prev" class="command-move-prev btn btn-secondary btn-lg px-4 gap-3">Back</button>
+                            <button type="button" style="width:100%;" class="command-create-card btn btn-primary btn-lg px-4 gap-3">Save Card</button>
                         </div>
-                    </article>
-                   
-                    <button type="button" class="command-create-card btn btn-primary btn-lg px-4 gap-3">Save Card</button>
+                    </div>
                 </div>
 
                 <div class="carousel-item">
