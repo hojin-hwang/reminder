@@ -14,13 +14,10 @@ class RecommandCard extends HTMLElement
     e.composedPath().find((node)=>{
       if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
       if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
-      if(node.className.match(/command-add-user-action/))
+      if(node.className.match(/command-show-recommand-panel/))
       {
-        // const actionBox = document.querySelector('action-box');
-        // actionBox.addActionCard(this.data);
-        // this.remove()
-        const makeCard = new MakeCard(this.data);
-        document.querySelector('main').appendChild(makeCard)
+        const recommandPanel = new RecommandPanel(this.data);
+        document.querySelector('main').appendChild(recommandPanel)
       }
     });
   }
@@ -66,8 +63,7 @@ class RecommandCard extends HTMLElement
         <h3 class="mb-0">${this.data.title}</h3>
         <div class="mb-1 text-body-secondary">Since 2023</div>
         <p class="card-text">${this.data.desc}</p>
-        <button type="button" class="btn btn-outline-primary">자세한 내용을 살펴보세요</button>
-        <button type="button" class="btn btn-primary command-add-user-action">임시 추가</button>
+        <button type="button" class="btn btn-outline-primary command-show-recommand-panel">자세한 내용을 살펴보세요</button>
       </article>
       `;  
       return tempalate;

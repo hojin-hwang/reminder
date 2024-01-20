@@ -6,6 +6,8 @@ class CheckCard extends HTMLElement
     this.addEventListener('click', this.handleClick);
     window.addEventListener("message", this.onMessage.bind(this), false);
     this.data = {...data};
+
+    this.imageSize = util.randomImageSize();
   }
 
   static get observedAttributes(){return [];}
@@ -89,7 +91,7 @@ class CheckCard extends HTMLElement
         <div>
           <button type="button" class="btn btn-primary command-done-action">수행했어요</button>
           <button type="button" class="btn btn-secondary command-pass-action">다음에 할게요</button>
-          <img src="https://picsum.photos/60/60" style="border-radius: 50%; width:40px; height:40px; float: right!important;">
+          <img src="https://picsum.photos/${this.imageSize}/${this.imageSize}" style="border-radius: 50%; width:40px; height:40px; float: right!important;">
         </div>
       </article>
       `;  

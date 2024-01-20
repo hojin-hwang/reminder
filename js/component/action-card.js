@@ -6,9 +6,26 @@ class ActionCard extends HTMLElement
     if(data) this.data = this.#setData(data);
     this.intervalID = null;
     window.addEventListener("message", this.onMessage.bind(this), false);
+    this.addEventListener('click', this.handleClick);
+
+    this.imageSize = util.randomImageSize();
+    this.imageCardSize = util.randomImageCardSize();
   }
 
   static get observedAttributes(){return [];}
+
+  handleClick(e) {
+    //e.preventDefault();
+    e.composedPath().find((node)=>{
+      if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
+      if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
+      if(node.className.match(/command-show-action-panel/))
+      {
+        const actionPanel = new ActionPanel(this.data);
+        document.querySelector('main').appendChild(actionPanel)
+      }
+    });
+  }
 
   onMessage(event)
   {
@@ -117,21 +134,55 @@ class ActionCard extends HTMLElement
   {
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
-        <article class="action border rounded card swiper-slide" id="${this.data.id}">
-            <img src="https://picsum.photos/100/100" style="border-radius: 50%; width:80px; height:80px;">
-            <div class="action-info">
-                <div class="">
-                    
-                </div>
-                <strong>${this.data.title}</strong><br>
-                
-                <small class="remain-time">5분 전입니다.</small><br>
-                <small class="text-muted alert-date">${this.data.alertDate}</small>
-                <div>
-                    <span class="badge bg-info">${this.data.groundTitle}</span>
-                    <span class="badge bg-success">${this.data.itemTitle}</span>
-                </div>
+        <style>
+          .nav-icon {
+            color: #6c757d;
+            display: block;
+            font-size: 1.5rem;
+            line-height: 1.4;
+            padding: 0.1rem 0.8rem;
+            transition: background .1s ease-in-out,color .1s ease-in-out;
+          }
+          .indicator {
+            background: #3f80ea;
+            border-radius: 50%;
+            box-shadow: 0 0.1rem 0.2rem rgba(0,0,0,.05);
+            color: #fff;
+            display: block;
+            font-size: .675rem;
+            height: 18px;
+            padding: 1px;
+            position: absolute;
+            right: -8px;
+            text-align: center;
+            top: 0;
+            transition: top .1s ease-out;
+            width: 18px;
+          }
+        </style>
+        <article class="card swiper-slide command-show-action-panel" id="${this.data.id}">
+          <img class="card-img-top" src="https://picsum.photos/${this.imageCardSize[0]}/${this.imageCardSize[1]}" alt="action Character">
+          <div class="card-header px-2 pt-2">
+            <h5 class="card-title mb-0">${this.data.title}</h5>
+            <div>
+              <span class="badge bg-info">${this.data.groundTitle}</span>
+              <span class="badge bg-success">${this.data.itemTitle}</span>
+              <span> 12,034명이 참여</span>
             </div>
+          </div>
+          <div class="card-body px-2 pt-2">
+            <div>다음은 <strong class="alert-date">${this.data.alertDate}</strong>이며 <strong>20시간</strong> 남았습니다.</div>
+            
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item px-2 pb-4">
+              <p class="mb-2 fw-bold">현재 3단계입니다. <span class="float-end">65%</span></p>
+              <div class="progress progress-sm">
+                <div class="progress-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
+                </div>
+              </div>
+            </li>
+          </ul>
         </article>
       `;  
       return tempalate;

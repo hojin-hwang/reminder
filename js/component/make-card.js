@@ -14,6 +14,8 @@ class MakeCard extends HTMLElement
       this.id = self.crypto.randomUUID();
       this.currentPage = 0;
       if("recommand" === this.data.type) this.data.id = this.id;
+
+      this.imageCardSize = util.randomImageCardSize();
   }
 
   static get observedAttributes() {return ['type']; }
@@ -296,6 +298,11 @@ class MakeCard extends HTMLElement
                 </div>
                 <div class="carousel-item">
                     <div>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button class="btn-close command-close-window" type="button">
+                            <span class="" aria-hidden="true"></span>
+                            </button>
+                        </div>
                         <div>
                             <h4 class="mb-3">Schedule Date</h4>
                             <div class="row g-3">
@@ -346,22 +353,31 @@ class MakeCard extends HTMLElement
                 </div>
                 <div class="carousel-item">
                     <div>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button class="btn-close command-close-window" type="button">
+                            <span class="" aria-hidden="true"></span>
+                            </button>
+                        </div>
                         <h4 class="mb-3">Action Card</h4>
-                        <article class="action border rounded card swiper-slide" id="a-12">
-                            <img src="https://picsum.photos/100/100" style="border-radius: 50%; width:80px; height:80px;">
-                            <div class="action-info">
-                                <div class="">
-                                    
-                                </div>
-                                <strong>${this.data.title}</strong><br>
-                                
-                                <small class="remain-time">${this.data.desc}</small><br>
-                                <small class="text-muted alert-date">${this.data.alertDate}</small>
+                        <article class="card">
+                            <img class="card-img-top" src="https://picsum.photos/${this.imageCardSize[0]}/${this.imageCardSize[1]}" alt="action Character">
+                            <div class="card-header px-2 pt-2">
+                                <h5 class="card-title mb-0">${this.data.title}</h5>
                                 <div>
-                                    <span class="badge bg-info">${this.data.groundId}</span>
-                                    <span class="badge bg-success">${this.data.itemId}</span>
+                                <span class="badge bg-info">${this.data.groundId}</span>
+                                <span class="badge bg-success">${this.data.itemId}</span>
+                                <span> 12,034명이 참여</span>
                                 </div>
                             </div>
+                            <div class="card-body px-2 pt-2">
+                                <div><strong >${this.data.alertDate}</strong></div>
+                                
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-2 pb-4">
+                                <small class="remain-time">${this.data.desc}</small><br>
+                                </li>
+                            </ul>
                         </article>
                         <div style="display: flex;gap: 8px;">
                             <button type="button" data-bs-target="#carouselExample" data-bs-slide="prev" class="command-move-prev btn btn-secondary btn-lg px-4 gap-3">Back</button>

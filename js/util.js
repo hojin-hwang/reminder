@@ -472,3 +472,21 @@ util.actionDateFormat = function(date) {
 
   return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute;
 }
+
+util.randomImageSize = function()
+{
+  const sizeArray = [100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220];
+
+  const newSizeArray = sizeArray.sort(() => Math.random() - 0.5);
+  
+  return newSizeArray[0];
+}
+
+util.randomImageCardSize = function()
+{
+  const sizeArray = [[90,60], [120,80], [150,100], [180,120], [210,140], [240,160], [270,180], [300,200], [330,220], [360,240], [390,260], [420,280], [450,300]];
+
+  const newSizeArray = sizeArray.sort(() => Math.random() - 0.5);
+  
+  return newSizeArray[0];
+}
