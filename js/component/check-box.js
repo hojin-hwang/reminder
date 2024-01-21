@@ -36,6 +36,9 @@ class CheckBox extends HTMLElement
             case "CHECK_ALERT_DATE":
               this.#appendCheckCard(event.data.data);
             break;
+            case "CHECKED_ALERT":
+              this.#showLabel();
+            break;
         }
     }
   }
@@ -52,6 +55,8 @@ class CheckBox extends HTMLElement
       //기존에 카드가 있는지 확인
       const oldCheckCard = this.#hasCheckCard(data.action.id);
       if(oldCheckCard) oldCheckCard.remove();
+      
+      this.#showLabel(true);
       
       //append check card 
       this.querySelector('.swiper-wrapper').appendChild(checkCard)
@@ -85,6 +90,12 @@ class CheckBox extends HTMLElement
     else return null;
   }
 
+  #showLabel(flag = false)
+  {
+    const count = this.querySelectorAll('check-card').length;
+    if(count === 0) this.querySelector('label').style.display = 'none';
+    if(flag) this.querySelector('label').style.display = 'block';
+  }
 
   #getTemplate()
   {

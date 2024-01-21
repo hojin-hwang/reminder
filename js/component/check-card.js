@@ -47,12 +47,14 @@ class CheckCard extends HTMLElement
       if(node.className.match(/command-done-action/))
       {
         this.#updateCheckedDate();
-        this.remove()
+        this.remove();
+        this.#showActionPanel();
       }
       if(node.className.match(/command-pass-action/))
       {
         this.#updateCheckedDate();
         this.remove();
+        this.#showActionPanel();
       }
     });
   }
@@ -68,6 +70,16 @@ class CheckCard extends HTMLElement
       const newCheckData = {"actionId":this.data.actionId,"alertDate":this.data.alertDate};
       globalThis.data.checkedMap.set(this.data.actionId, newCheckData)
     }
+    window.postMessage({msg:"CHECKED_ALERT", data:null}, location.origin);
+  }
+
+  #showActionPanel()
+  {
+    const memnt = "<strong>경험치가 추가되었습니다.</strong>";
+    document.querySelector('main').appendChild(new ActionAlert(memnt));
+
+    const actionPanel = new ActionPanel(globalThis.data.actionMap.get(this.data.actionId));
+    document.querySelector('main').appendChild(actionPanel)
   }
  
   getActionId()

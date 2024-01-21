@@ -15,7 +15,21 @@ class RecommandBox extends HTMLElement
       if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
       if(node.className.match(/command-add-void-action/))
       {
-        const makeCard = new MakeCard();
+        const void_data = {
+          "id": "r-01",
+          "type":"recommand",
+          "user": "",
+          "groundId": "0",
+          "itemId": "0",
+          "title": "일단 한번 해봐",
+          "desc": "일단 계획을 세우고 뭔가라도 해보세요",
+          "alertDate":"2024-01-17 19:40",
+          "interval": "week",
+          "avatar": {},
+          "info": {}
+        };
+
+        const makeCard = new MakeCard(void_data);
         document.querySelector('main').appendChild(makeCard)
       }
     });
@@ -55,7 +69,7 @@ class RecommandBox extends HTMLElement
       tempalate.innerHTML = `
       <div style="display: flex;      justify-content: space-between;      align-items: center;      padding: 12px 0;">
         <label>추천 액션</label>
-        <button type="button" class="btn btn-sm btn-primary command-add-void-action">빈액션 추가</button>
+        <button type="button" class="btn btn-sm btn-primary command-add-void-action">그냥 액션 추가</button>
       </div>
       
       <section class="recommand-box">

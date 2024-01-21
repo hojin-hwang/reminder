@@ -4,7 +4,7 @@ class ActionPanel extends HTMLElement
   {
     super();
     this.addEventListener('click', this.handleClick);
-    if(data) this.data;
+    if(data) this.data = data;
  }
 
   static get observedAttributes(){return [];}
@@ -33,12 +33,20 @@ class ActionPanel extends HTMLElement
       {
         this.remove();  
       }
+      if(node.className.match(/command-modify-action-card/))
+      {
+        console.log(this.data)
+        const makeCard = new MakeCard(this.data);
+        document.querySelector('main').appendChild(makeCard);
+        this.remove();
+      }
     });
   }
 
   connectedCallback()
   {
     this.render();
+    console.log(this.data)
   }
 
   render()
@@ -80,19 +88,19 @@ class ActionPanel extends HTMLElement
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end" data-bs-popper="static">
-                  <a class="dropdown-item" href="#">수정</a>
+                  <a class="dropdown-item command-modify-action-card" href="#">수정</a>
                 </div>
               </div>
             </div>
-            <h5 class="card-title mb-0">10K 다리기</h5>
+            <h5 class="card-title mb-0">${this.data.title}</h5>
 
             <div>
-              <span class="badge bg-info">스포츠</span>
-              <span class="badge bg-success">10K 달리기</span>
+              <span class="badge bg-info">${this.data.groundTitle}</span>
+              <span class="badge bg-success">${this.data.itemTitle}</span>
               <span> 12,034명이 참여</span>
             </div>
 
-            <div>다음은 <strong class="alert-date">2024-01-20 20:04</strong>이며<br> 간격은<strong>매일</strong> 입니다.</div>
+            <div>다음은 <strong class="alert-date">${this.data.alertDate}</strong>이며<br> 간격은<strong>${this.data.interval}</strong> 입니다.</div>
           </div>
 
           

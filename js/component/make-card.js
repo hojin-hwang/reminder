@@ -385,10 +385,6 @@ class MakeCard extends HTMLElement
                         </div>
                     </div>
                 </div>
-
-                <div class="carousel-item">
-                    <img src="https://picsum.photos/400" class="d-block w-100" alt="...">
-                </div>
             </div>
             
             
