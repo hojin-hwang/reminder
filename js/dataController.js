@@ -43,11 +43,13 @@ class DataController{
     {
        globalThis.data.actionList = [];
        globalThis.data.actionMap = new Map();
+       globalThis.class.actionMap = new Map();
        const result = util.promiseAjax('GET','/js/data/action-list.json'); 
        result.then(list=>{
         list.forEach(item => {
             globalThis.data.actionList.push(item);
             globalThis.data.actionMap.set(item.id, item);
+            globalThis.class.actionMap.set(item.id, new Action(item));
         });
         const actionBox = document.querySelector('action-box');
         actionBox.showAction(list)

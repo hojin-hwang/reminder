@@ -1,9 +1,9 @@
 class ActionCard extends HTMLElement
 {
-  constructor(data = null)
+  constructor(action = null)
   {
     super();
-    if(data) this.data = this.#setData(data);
+    if(action) this.action = this.#setData(action);
     this.intervalID = null;
     window.addEventListener("message", this.onMessage.bind(this), false);
     this.addEventListener('click', this.handleClick);
@@ -68,11 +68,11 @@ class ActionCard extends HTMLElement
     return globalThis.config.itemMap.getItem(data.itemId);
   }
 
-  #setData(data)
+  #setData(action)
   {
-    data.groundTitle = this.#getGroundData(data).title;
-    data.itemTitle = this.#getItemData(data).title;
-    return data;
+    this.data = action.data
+    this.data.groundTitle = this.#getGroundData(this.data).title;
+    this.data.itemTitle = this.#getItemData(this.data).title;
   }
 
   #checkAlertDate()

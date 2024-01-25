@@ -37,7 +37,7 @@ class ActionBox extends HTMLElement
 
   #sortData()
   {
-    const mapToArray = [...globalThis.data.actionMap];
+    const mapToArray = [...globalThis.class.actionMap];
     return mapToArray.sort((a, b) => new Date(a[1].alertDate) - new Date(b[1].alertDate));
   }
 
