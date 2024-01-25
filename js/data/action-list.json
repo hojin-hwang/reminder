@@ -10,7 +10,9 @@
     "createDate": "2023-01-15 19:50",
     "interval": "week",
     "avatar": {},
-    "info": {}
+    "info": {},
+    "level":0,
+    "exp":30
   },
   {
     "id": "a-12",
@@ -23,7 +25,9 @@
     "createDate": "2023-01-15 19:50",
     "interval": "one-week",
     "avatar": {},
-    "info": {}
+    "info": {},
+    "level":1,
+    "exp":20
   },
   {
     "id": "a-13",
@@ -36,6 +40,8 @@
     "createDate": "2023-01-15 19:50",
     "interval": "one-week",
     "avatar": {},
-    "info": {}
+    "info": {},
+    "level":3,
+    "exp":40
   }
 ]

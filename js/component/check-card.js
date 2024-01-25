@@ -52,11 +52,19 @@ class CheckCard extends HTMLElement
       }
       if(node.className.match(/command-pass-action/))
       {
+        this.#updateExp();
         this.#updateCheckedDate();
         this.remove();
         this.#showActionPanel();
       }
     });
+  }
+
+  #updateExp()
+  {
+    const action = globalThis.data.actionMap.get(this.data.actionId);
+    action.exp = action.exp + 44;
+    console.log(globalThis.data.actionMap.get(this.data.actionId))
   }
 
   #updateCheckedDate()

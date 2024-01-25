@@ -10,7 +10,9 @@
     "alertDate":"2024-01-17 19:40",
     "interval": "week",
     "avatar": {},
-    "info": {}
+    "info": {},
+    "level":0,
+    "exp":0
   },
   {
     "id": "r-12",
@@ -22,7 +24,9 @@
     "desc": "일주일에 한번씩 도전하세요.",
     "interval":"week",
     "avatar": {},
-    "info": {}
+    "info": {},
+    "level":0,
+    "exp":0
   },
   {
     "id": "r-21",
@@ -34,7 +38,9 @@
     "desc": "매일 꾸준히 3문제 이상 풀어보세요.",
     "interval":"day",
     "avatar": {},
-    "info": {}
+    "info": {},
+    "level":0,
+    "exp":0
   },
   {
     "id": "r-22",
@@ -46,6 +52,8 @@
     "desc": "먼저 국내 역사부터 공부하고 주변 국가 역사로 확장하세요.",
     "interval": "day",
     "avatar": {},
-    "info": {}
+    "info": {},
+    "level":0,
+    "exp":0
   }
 ]

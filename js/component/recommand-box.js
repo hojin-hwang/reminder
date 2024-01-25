@@ -26,7 +26,9 @@ class RecommandBox extends HTMLElement
           "alertDate":"2024-01-17 19:40",
           "interval": "week",
           "avatar": {},
-          "info": {}
+          "info": {},
+          "level":0,
+          "exp":0
         };
 
         const makeCard = new MakeCard(void_data);

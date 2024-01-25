@@ -35,7 +35,9 @@ class ActionCard extends HTMLElement
     {
         switch(event.data.msg)
         {
-            case "CHECK_ALERT_DATE":
+            case "CHECKED_ALERT":
+              this.innerHTML = '';
+              this.render();
               //this.#checkAlertDate();
             break;
         }
@@ -176,7 +178,7 @@ class ActionCard extends HTMLElement
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item px-2 pb-4">
-              <p class="mb-2 fw-bold">현재 3단계입니다. <span class="float-end">65%</span></p>
+              <p class="mb-2 fw-bold">현재 3단계입니다. <span class="float-end">${this.data.exp}</span></p>
               <div class="progress progress-sm">
                 <div class="progress-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
                 </div>
