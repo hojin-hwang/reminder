@@ -6,7 +6,7 @@ class CheckCard extends HTMLElement
     this.addEventListener('click', this.handleClick);
     window.addEventListener("message", this.onMessage.bind(this), false);
     this.data = {...data};
-
+    this.action = globalThis.class.actionMap.get(this.data.actionId);
     this.imageSize = util.randomImageSize();
   }
 
@@ -46,15 +46,13 @@ class CheckCard extends HTMLElement
       if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
       if(node.className.match(/command-done-action/))
       {
+        this.#updateExp();
         this.#updateCheckedDate();
-        this.remove();
         this.#showActionPanel();
       }
       if(node.className.match(/command-pass-action/))
       {
-        this.#updateExp();
         this.#updateCheckedDate();
-        this.remove();
         this.#showActionPanel();
       }
     });
@@ -62,9 +60,7 @@ class CheckCard extends HTMLElement
 
   #updateExp()
   {
-    const action = globalThis.data.actionMap.get(this.data.actionId);
-    action.exp = action.exp + 44;
-    console.log(globalThis.data.actionMap.get(this.data.actionId))
+    this.action.setData("exp", this.action.getData("exp") + 44);
   }
 
   #updateCheckedDate()
@@ -78,7 +74,7 @@ class CheckCard extends HTMLElement
       const newCheckData = {"actionId":this.data.actionId,"alertDate":this.data.alertDate};
       globalThis.data.checkedMap.set(this.data.actionId, newCheckData)
     }
-    window.postMessage({msg:"CHECKED_ALERT", data:null}, location.origin);
+    window.postMessage({msg:"CHECKED_ALERT", data:this.data.actionId}, location.origin);
   }
 
   #showActionPanel()
@@ -86,7 +82,7 @@ class CheckCard extends HTMLElement
     const memnt = "<strong>경험치가 추가되었습니다.</strong>";
     document.querySelector('main').appendChild(new ActionAlert(memnt));
 
-    const actionPanel = new ActionPanel(globalThis.data.actionMap.get(this.data.actionId));
+    const actionPanel = new ActionPanel(this.action);
     document.querySelector('main').appendChild(actionPanel)
   }
  
@@ -97,7 +93,7 @@ class CheckCard extends HTMLElement
 
   #getActionTitle()
   {
-    return globalThis.data.actionMap.get(this.data.actionId).title;
+    return this.action.getData("title");
   }
 
   #getTemplate()

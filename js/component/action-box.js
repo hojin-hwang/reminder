@@ -25,8 +25,9 @@ class ActionBox extends HTMLElement
     const _box = this.querySelector('.swiper-wrapper');
     _box.innerHTML = '';
     this.list = this.#sortData();
-    this.list.forEach(element => {
-      const actionCard = new ActionCard(element[1]);
+    this.list.forEach(item => {
+      const action = globalThis.class.actionMap.get(item[0]);
+      const actionCard = new ActionCard(action);
       _box.appendChild(actionCard);
     });
 

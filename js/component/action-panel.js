@@ -1,10 +1,10 @@
 class ActionPanel extends HTMLElement
 {
-  constructor(data = null)
+  constructor(action = null)
   {
     super();
     this.addEventListener('click', this.handleClick);
-    if(data) this.data = data;
+    if(action) this.action = action;
  }
 
   static get observedAttributes(){return [];}
@@ -35,8 +35,7 @@ class ActionPanel extends HTMLElement
       }
       if(node.className.match(/command-modify-action-card/))
       {
-        console.log(this.data)
-        const makeCard = new MakeCard(this.data);
+        const makeCard = new MakeCard(this.action);
         document.querySelector('main').appendChild(makeCard);
         this.remove();
       }
@@ -46,7 +45,6 @@ class ActionPanel extends HTMLElement
   connectedCallback()
   {
     this.render();
-    console.log(this.data)
   }
 
   render()
@@ -74,7 +72,7 @@ class ActionPanel extends HTMLElement
           <img class="card-img-top" src="https://picsum.photos/240/160" alt="action Character">
           <ul class="list-group list-group-flush">
             <li class="list-group-item px-2 pb-4">
-              <p class="mb-2 fw-bold">현재 3단계입니다. <span class="float-end">${this.data.exp}</span></p>
+              <p class="mb-2 fw-bold">현재 3단계입니다. <span class="float-end">${this.action.getData("exp")}</span></p>
               <div class="progress progress-sm">
                 <div class="progress-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
                 </div>
@@ -92,15 +90,15 @@ class ActionPanel extends HTMLElement
                 </div>
               </div>
             </div>
-            <h5 class="card-title mb-0">${this.data.title}</h5>
+            <h5 class="card-title mb-0">${this.action.getData("title")}</h5>
 
             <div>
-              <span class="badge bg-info">${this.data.groundTitle}</span>
-              <span class="badge bg-success">${this.data.itemTitle}</span>
+              <span class="badge bg-info">${this.action.getData("groundTitle")}</span>
+              <span class="badge bg-success">${this.action.getData("itemTitle")}</span>
               <span> 12,034명이 참여</span>
             </div>
 
-            <div>다음은 <strong class="alert-date">${this.data.alertDate}</strong>이며<br> 간격은<strong>${this.data.interval}</strong> 입니다.</div>
+            <div>다음은 <strong class="alert-date">${this.action.getData("alertDate")}</strong>이며<br> 간격은<strong>${this.action.getData("interval")}</strong> 입니다.</div>
           </div>
 
           

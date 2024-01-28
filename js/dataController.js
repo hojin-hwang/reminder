@@ -48,7 +48,6 @@ class DataController{
        result.then(list=>{
         list.forEach(item => {
             globalThis.data.actionList.push(item);
-            globalThis.data.actionMap.set(item.id, item);
             globalThis.class.actionMap.set(item.id, new Action(item));
         });
         const actionBox = document.querySelector('action-box');

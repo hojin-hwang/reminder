@@ -18,10 +18,6 @@ class CheckBox extends HTMLElement
   {
     const template = this.#getTemplate();
     if(template) this.appendChild(template.content.cloneNode(true));
-    //if(this.list.length === 0) console.log("make new action")
-    //else this.showAction();
-
-    
     return;
   }
 
@@ -38,6 +34,9 @@ class CheckBox extends HTMLElement
             break;
             case "CHECKED_ALERT":
               this.#showLabel();
+              this.querySelectorAll('check-card').forEach((item)=>{
+                if(item.getActionId() === event.data.data) item.remove();
+              });
             break;
         }
     }
@@ -45,15 +44,15 @@ class CheckBox extends HTMLElement
 
   #appendCheckCard(data)
   {
-    if(this.#isNotChecked(data.action.id, data.alertTime))
+    if(this.#isNotChecked(data.action.data.id, data.alertTime))
     {
       //make check-data
-      const checkData = {"actionId":data.action.id,"alertDate":data.alertTime}
+      const checkData = {"actionId":data.action.data.id,"alertDate":data.alertTime}
       const checkCard =  new CheckCard(checkData);
       checkCard.classList.add('swiper-slide');
       
       //기존에 카드가 있는지 확인
-      const oldCheckCard = this.#hasCheckCard(data.action.id);
+      const oldCheckCard = this.#hasCheckCard(data.action.data.id);
       if(oldCheckCard) oldCheckCard.remove();
       
       this.#showLabel(true);
@@ -63,7 +62,7 @@ class CheckBox extends HTMLElement
 
       const _swiper = this.querySelector('.checkSwiper');
       const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
-      new Swiper(_swiper, swiper_option);
+      this.swiper = new Swiper(_swiper, swiper_option);
     }
   }
 
