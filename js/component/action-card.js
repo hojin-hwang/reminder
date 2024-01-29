@@ -145,7 +145,7 @@ class ActionCard extends HTMLElement
           }
         </style>
         <article class="card swiper-slide command-show-action-panel" id="${this.action.getData("id")}">
-          <img class="card-img-top" src="https://picsum.photos/${this.imageCardSize[0]}/${this.imageCardSize[1]}" alt="action Character">
+          <img class="card-img-top" src="/images/avatars/level_${this.action.getData("level")}.png" alt="action Character">
           <div class="card-header px-2 pt-2">
             <h5 class="card-title mb-0">${this.action.getData("title")}</h5>
             <div>
@@ -160,9 +160,9 @@ class ActionCard extends HTMLElement
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item px-2 pb-4">
-              <p class="mb-2 fw-bold">현재 3단계입니다. <span class="float-end">${this.action.getData("exp")}</span></p>
+              <p class="mb-2 fw-bold">현재 ${this.action.getData("level")}단계입니다. <span class="float-end">${this.action.getData("exp")}</span></p>
               <div class="progress progress-sm">
-                <div class="progress-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
+                <div class="progress-bar" role="progressbar" aria-valuenow="${this.action.getData("exp")}" aria-valuemin="0" aria-valuemax="100" style="width: ${this.action.getData("exp")}%;">
                 </div>
               </div>
             </li>

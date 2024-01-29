@@ -11,7 +11,7 @@
     "interval": "week",
     "avatar": {},
     "info": {},
-    "level":0,
+    "level":1,
     "exp":30
   },
   {
@@ -19,14 +19,14 @@
     "user": "1234",
     "groundId": "23",
     "itemId":"2",
-    "title": "10K 달리기",
-    "desc": "일주일에 한번씩 도전하세요.",
+    "title": "1.6K 달리기(15분)",
+    "desc": "매일 도전하세요.",
     "alertDate": "2024-01-15 12:50",
     "createDate": "2023-01-15 19:50",
-    "interval": "one-week",
+    "interval": "day",
     "avatar": {},
     "info": {},
-    "level":1,
+    "level":2,
     "exp":20
   },
   {

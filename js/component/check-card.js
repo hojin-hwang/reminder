@@ -46,7 +46,7 @@ class CheckCard extends HTMLElement
       if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
       if(node.className.match(/command-done-action/))
       {
-        this.#updateExp();
+        this.action.updateExp()
         this.#updateCheckedDate();
         this.#showActionPanel();
       }
@@ -58,10 +58,6 @@ class CheckCard extends HTMLElement
     });
   }
 
-  #updateExp()
-  {
-    this.action.setData("exp", this.action.getData("exp") + 44);
-  }
 
   #updateCheckedDate()
   {

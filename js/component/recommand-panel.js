@@ -5,6 +5,8 @@ class RecommandPanel extends HTMLElement
     super();
     this.addEventListener('click', this.handleClick);
     if(data) this.data = data;
+    this.data.groundTitle = this.#getGroundData(data).title;
+    this.data.itemTitle = this.#getItemData(data).title;
  }
 
   static get observedAttributes(){return [];}
@@ -55,7 +57,16 @@ class RecommandPanel extends HTMLElement
     return;
   }
 
-  
+  #getGroundData(data)
+  {
+    return globalThis.config.groundMap.getGround(data.groundId);
+  }
+
+  #getItemData(data)
+  {
+    return globalThis.config.itemMap.getItem(data.itemId);
+  }
+
   #getTemplate()
   {
       const tempalate = document.createElement('template');
@@ -73,10 +84,10 @@ class RecommandPanel extends HTMLElement
         <article class="card">
           <img class="card-img-top" src="https://picsum.photos/240/160" alt="action Character">
           <div class="card-header">
-            <h5 class="card-title mb-0">10K 달리기</h5>
+            <h5 class="card-title mb-0">${this.data.title}</h5>
             <div>
-              <span class="badge bg-info">스포츠</span>
-              <span class="badge bg-success">10K 달리기</span>
+              <span class="badge bg-info">${this.data.groundTitle}</span>
+              <span class="badge bg-success">${this.data.itemTitle}</span>
               <span> 12,034명이 참여</span>
             </div>
 

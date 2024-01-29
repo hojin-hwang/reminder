@@ -25,42 +25,7 @@ class MakeCard extends HTMLElement
     e.composedPath().find((node)=>{
     if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
     if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
-    if(node.className.match(/command-move-prev/))
-    {
-        return;
-        this.querySelector('.command-move-next').disabled = false;
-        this.currentPage--;
-        if(this.currentPage <= 0) 
-        {
-            this.querySelector('.command-close-window').style.display = 'block';
-            node.style.display = 'none';
-        }
-        else
-        {
-            this.querySelector('.command-close-window').style.display = 'none';
-            node.style.display = 'block';
-        }
-        
-        const card_info_list = this.querySelectorAll('article.card-info');
-        card_info_list.forEach((card, index)=>{
-            card.style.left = `${(this.currentPage-index) * 100}vw`;
-        })
-    }
-    if(node.className.match(/command-move-next/))
-    {
-        return;
-        this.querySelector('.command-close-window').style.display = 'none';
-        this.querySelector('.command-move-prev').style.display = 'block';
-        this.currentPage++;
- 
-        if(this.currentPage >= 3)  node.disabled = true;
-        else node.disabled = false;
-        
-        const card_info_list = this.querySelectorAll('article.card-info');
-        card_info_list.forEach((card, index)=>{
-            card.style.left = `${(this.currentPage-index) * -100}vw`;
-         })
-    }
+    
     if(node.className.match(/command-close-window/))
     {
         this.remove();
@@ -76,6 +41,7 @@ class MakeCard extends HTMLElement
         this.#setItemActive();
         this.#setTitleByItem();
         this.#showItemDesc();
+        this.#setGroundTitle(this.data.groundId)
     }
 
     if(node.className.match(/command-select-item/))
@@ -83,11 +49,11 @@ class MakeCard extends HTMLElement
         const _categoryButtons = this.querySelectorAll('.item-btn');
         _categoryButtons.forEach(button=>button.classList.remove('active'));
         node.classList.add('active');
-        this.data.groundId = node.dataset.groundId;
         this.data.itemId = node.dataset.id;
         
         this.#setTitleByItem(this.data.itemId);
         this.#showItemDesc(this.data.itemId);
+        this.#setItemTitle(this.data.itemId)
 
     }
 
@@ -223,6 +189,18 @@ class MakeCard extends HTMLElement
     _buttons.forEach(button => {
         if(button.dataset.id === itemId) button.classList.add('active')
     });
+  }
+
+  #setGroundTitle(id)
+  {
+    this.querySelector('.grond-title').innerHTML = globalThis.config.groundMap.getGround(id).title;
+  }
+
+  #setItemTitle(id)
+  {
+    const _buttons = this.querySelectorAll('.item-btn');
+    const itemId = (id)? id : _buttons[0].dataset.id;
+    this.querySelector('.item-title').innerHTML = globalThis.config.itemMap.getItem(itemId).title;
   }
 
   #setTitleByItem(itemId = null)
@@ -364,8 +342,8 @@ class MakeCard extends HTMLElement
                             <div class="card-header px-2 pt-2">
                                 <h5 class="card-title mb-0">${this.data.title}</h5>
                                 <div>
-                                <span class="badge bg-info">${this.data.groundId}</span>
-                                <span class="badge bg-success">${this.data.itemId}</span>
+                                <span class="badge bg-info grond-title"></span>
+                                <span class="badge bg-success item-title"></span>
                                 <span> 12,034명이 참여</span>
                                 </div>
                             </div>

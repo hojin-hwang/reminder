@@ -46,8 +46,8 @@ class ActionBox extends HTMLElement
   {
     data.type = "user";
     data.alertDate = util.actionDateFormat(new Date());
-    globalThis.data.actionList.push(data);
-    globalThis.data.actionMap.set(data.id, data);
+    const newAction  = new Action(data);
+    globalThis.class.actionMap.set(data.id, newAction);
     this.showAction();
   }
 
