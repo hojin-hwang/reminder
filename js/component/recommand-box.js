@@ -1,4 +1,4 @@
-class RecommandBox extends HTMLElement
+class RecommandBox extends AbstractComponent
 {
   constructor()
   {
@@ -51,13 +51,20 @@ class RecommandBox extends HTMLElement
 
   showRecommandAction(data)
   {
-    const _box = this.querySelector('.recommand-box');
-    _box.innerHTML = '';
     this.list = this.#sortData(data);
-    this.list.forEach(element => {
-      const recommandCard = new RecommandCard(element);
-      _box.appendChild(recommandCard);
+    this.#appendRecommandCard();
+  }
+
+  moveRecommandCard(recommadData)
+  {
+    let selectedData = null;
+    
+    this.list = this.list.filter((data) =>{
+      if(data.id === recommadData.recommandId) selectedData = data;
+      else return data;
     });
+    this.list.push(selectedData);
+    this.#appendRecommandCard();
   }
 
   #sortData(data)
@@ -65,6 +72,17 @@ class RecommandBox extends HTMLElement
     return data;
   }
   
+  #appendRecommandCard()
+  {
+    const _box = this.querySelector('.recommand-box');
+    _box.innerHTML = '';
+
+    this.list.forEach(element => {
+      const recommandCard = new RecommandCard(element);
+      _box.appendChild(recommandCard);
+    });
+  }
+
   #getTemplate()
   {
       const tempalate = document.createElement('template');

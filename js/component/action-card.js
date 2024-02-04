@@ -1,10 +1,10 @@
-class ActionCard extends HTMLElement
+class ActionCard extends AbstractComponent
 {
   constructor(action = null)
   {
     super();
     this.action = action;
-    this.intervalID = null;
+    this.id = this.action.getData("id");
     window.addEventListener("message", this.onMessage.bind(this), false);
     this.addEventListener('click', this.handleClick);
 
@@ -39,6 +39,14 @@ class ActionCard extends HTMLElement
               this.innerHTML = '';
               this.render();
             break;
+            case "UPDATE_ACTION_DATA":
+              if(event.data.data.id === this.id)
+              {
+                this.innerHTML = '';
+                this.render();
+               }
+            break;
+            
         }
     }
   }
@@ -46,7 +54,6 @@ class ActionCard extends HTMLElement
   connectedCallback()
   {
     this.render();
-    this.#checkAlertDate();
   }
 
   render()
@@ -55,63 +62,6 @@ class ActionCard extends HTMLElement
     if(template) this.appendChild(template.content.cloneNode(true));
     this.classList.add('swiper-slide');
     return;
-  }
-
-  #checkAlertDate()
-  {
-    clearInterval(this.intervalID);
-
-    setTimeout(() => {
-      if(this.#isPassAlertDate()) 
-        {
-            this.#changeAlertDate();
-        }
-    }, 500);
-
-    this.intervalID = setInterval(()=>{
-        if(this.#isPassAlertDate()) 
-        {
-            this.#changeAlertDate();
-        }
-    }, 10000);
-  }
-
-  #isPassAlertDate()
-  {
-    const alertDate = new Date(this.action.getData("alertDate"));
-    return (alertDate.getTime() > new Date().getTime())? false : true;
-  }
-
-  #changeAlertDate()
-  {
-    let lastAlertTime = new Date(this.action.getData("alertDate"));
-    let _nextDate = this.#setAlertDateByInterval(this.action.getData("alertDate"), 120)
-
-    while(_nextDate < new Date().getTime())
-    {
-        lastAlertTime = new Date(_nextDate); 
-        _nextDate = this.#setAlertDateByInterval(_nextDate, 120)      
-    }
-
-    const _lastAlertTime = util.actionDateFormat(lastAlertTime);
-    const checkMessage = {action:this.action, alertTime:_lastAlertTime};
-    
-    window.postMessage({msg:"CHECK_ALERT_DATE", data:checkMessage}, location.origin);
-    
-    this.action.setData("alertDate", util.actionDateFormat(new Date(_nextDate)));
-    this.#changeNextAlertDate();
-  }
-
-  #changeNextAlertDate()
-  {
-    this.querySelector('.alert-date').innerText = this.action.getData("alertDate");
-  }
-
-  #setAlertDateByInterval(dateTime, interval)
-  {
-    //매일, 매주, 매달, 매년 
-     const _nextDate = new Date(dateTime).setSeconds( new Date(dateTime).getSeconds() + interval);
-    return _nextDate; 
   }
 
   #getTemplate()

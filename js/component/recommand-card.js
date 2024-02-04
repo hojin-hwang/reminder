@@ -1,10 +1,11 @@
-class RecommandCard extends HTMLElement
+class RecommandCard extends AbstractComponent
 {
   constructor(data = null)
   {
     super();
     this.addEventListener('click', this.handleClick);
     if(data) this.data = this.#setData(data);
+    this.#setId();
   }
 
   static get observedAttributes(){return [];}
@@ -32,6 +33,11 @@ class RecommandCard extends HTMLElement
     const template = this.#getTemplate();
     if(template) this.appendChild(template.content.cloneNode(true));
     return;
+  }
+
+  #setId()
+  {
+    this.setAttribute('id', this.data.id);
   }
 
   #getGroundData(data)

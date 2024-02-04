@@ -4,11 +4,6 @@ class StoreController{
     constructor()
     {
         window.addEventListener("message", this.onMessage.bind(this), false);
-        globalThis.store.cardMap = new Map();
-        globalThis.store.scheduledMap = new Map();
-        globalThis.store.scheduledList = [];
-        globalThis.store.checkingMap  = new Map();
-        //window.postMessage({msg:"DONE_UPDATE_CHECKING_LIST_DATA", data:null}, location.origin);
     }
 
     onMessage(event)
@@ -26,4 +21,6 @@ class StoreController{
         }
       }
     }
+
+    
 }

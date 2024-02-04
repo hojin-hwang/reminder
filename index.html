@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Action Bear</title>
     <link href="/css/bootrap/bootstrap.min.css" rel="stylesheet" >
     <link rel="stylesheet" href="/css/jquery-ui.min.css">
     <link rel="stylesheet" href="/css/swiper-bundle.min.css">
@@ -73,51 +73,21 @@
         .flex-row{display: flex; flex-direction: row;}
         .justify-content-between{justify-content: space-between;}
         .card-header{background-color:white;}
+
+        @media screen and (max-width: 600px) {
+          main, .action-bear-component {
+            max-width : 100%;
+          }
+        }
+        main, .action-bear-component, .btn-bottom {
+          max-width : 414px;
+        }
     </style>
   </head>
 
   <body>
       <main>
-        <action-profile style="display: none;">
-          <style>
-            action-profile{position:fixed; top:0; left:0; right:0; height:100vh;z-index:100; background-color:white;}
-            action-profile .command-close-window{position: fixed;top: 12px;right: 12px;z-index:1024;}
-            .badge-soft-success{background-color: rgba(75,191,115,.175);color: #4bbf73;}
-          </style>
-          <button class="btn-close command-close-window right-close" type="button">
-            <span class="" aria-hidden="true"></span>
-          </button>
-          <section style="margin-top: 48px; padding:12px;">
-            <div class="card flex-fill">
-              <div class="card-body py-4">
-                <div class="d-flex align-items-start">
-                  <div class="flex-grow-1">
-                    <h3 class="mb-2">10Km 달리기</h3>
-                    <p class="mb-2">매주 5일씩 달리기</p>
-                    <div class="mb-0">
-                      <span class="badge badge-soft-success me-2"> +65% </span>
-                      <span class="text-muted">Since 2021.12.23 (734 Days)</span>
-                    </div>
-                  </div>
-                  <div class="d-inline-block ms-3">
-                    <div class="stat">
-                      Level 3
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </action-profile>
-        
-        <reminder-header>
-          <style>
-            reminder-header{position:fixed;top: 0;right: 0;padding: 6px;z-index: 90;}
-          </style>
-          <div>
-            <button type="button" class="btn btn-sm btn-warning command-show-profile">프로필 보기</button>
-          </div>
-        </reminder-header>
+        <button class="button command-reset" type="button">reset</button>
         <check-box></check-box>
         <action-box></action-box>
         <recommand-box></recommand-box>
@@ -143,7 +113,7 @@
 
     <script src="/js/bootstrap/bootstrap-timepicker.js" ></script>
 
-
+    <script src="/js/component/abs-component.js"></script> 
     <script src="/js/component/recommand-box.js"></script> 
     <script src="/js/component/recommand-card.js"></script> 
     <script src="/js/component/recommand-panel.js"></script>
@@ -159,7 +129,7 @@
     <script src="/js/component/make-card.js"></script>
 
     <script src="/js/component/action-alert.js"></script>
-
+    <script src="/js/component/void-card.js"></script>
 
 
     <script src="checking-box.js"></script>
@@ -181,12 +151,25 @@
         globalThis.data.controll = new DataController(); 
     });
 
+    window.addEventListener('click', (e)=>{
+      e.composedPath().find((node)=>{
+        if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
+        if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
+        
+        if(node.className.match(/command-reset/))
+        {
+          console.log("command-reset");
+          localStorage.clear();
+          location.reload();
+        }
+      });
+    });
+
     window.addEventListener("visibilitychange",()=>{
       
       if(document.visibilityState === "visible")
       {
         console.log("visibility is back");
-        //window.postMessage({msg:"CHECK_ALERT_DATE", data:null}, location.origin);
       }
     });
 

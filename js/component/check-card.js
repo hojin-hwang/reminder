@@ -1,4 +1,4 @@
-class CheckCard extends HTMLElement
+class CheckCard extends AbstractComponent
 {
   constructor(data)
   {
@@ -33,7 +33,7 @@ class CheckCard extends HTMLElement
     {
         switch(event.data.msg)
         {
-            case "CHECK_ALERT_DATE":
+            case "SOMETHING_MESSAGE":
             break;
         }
     }
@@ -96,7 +96,7 @@ class CheckCard extends HTMLElement
   {
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
-      <article class="card rounded border check ">
+      <article class="card rounded border check">
         <div>
           ${util.secureRandom()} <strong>${this.data.title}</strong>를 수행하셨나요? 그 결과를 알려주세요 ${this.data.alertDate}
         </div>

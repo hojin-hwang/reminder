@@ -1,4 +1,4 @@
-class RecommandPanel extends HTMLElement
+class RecommandPanel extends AbstractComponent
 {
   constructor(data = null)
   {
@@ -73,7 +73,7 @@ class RecommandPanel extends HTMLElement
       tempalate.innerHTML = `
       <style>
         recommand-panel{position:fixed; top:0; left:0; right:0; height:100vh;z-index:200; background-color:white;overflow: scroll;}
-        recommand-panel .command-close-window{position: fixed;top: 12px;right: 12px;z-index:1024;}
+        recommand-panel .command-close-window{position: fixed;top: 12px;left: 12px;z-index:1024;}
         recommand-panel .command-add-recommand-action{position: fixed; bottom: 0px;right: 0px;left:0px; z-index:1024;border-radius: unset;}
         .recommand-panel{display: flex;flex-direction: column;padding-bottom: 48px;}
       </style>
@@ -91,7 +91,7 @@ class RecommandPanel extends HTMLElement
               <span> 12,034명이 참여</span>
             </div>
 
-            <div>다음은 <strong class="alert-date">2024-01-20 20:04</strong>이며<br> 간격은<strong>매일</strong> 입니다.</div>
+            <div>다음은 <strong class="alert-date">2024-01-20 20:04</strong>이며<br> 간격은<strong>${this.data.interval}</strong> 입니다.</div>
           </div>
 
           
@@ -100,7 +100,7 @@ class RecommandPanel extends HTMLElement
         <div style="padding: 12px;display: flex;flex-direction: column;gap: 12px;">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title">달리기 도움이 되는 영상</h5>
+              <h5 class="card-title">${this.data.title} 도움이 되는 영상</h5>
               <h6 class="card-subtitle text-muted">21:9 aspect ratio</h6>
             </div>
             <div class="card-body pt-0" style="padding:0;">
@@ -113,10 +113,10 @@ class RecommandPanel extends HTMLElement
           <div class="card">
             <img class="card-img-top" src="/images/unsplash-2.jpg" alt="Unsplash">
             <div class="card-header">
-              <h5 class="card-title mb-0">달리기에 도움이 되는 블로그</h5>
+              <h5 class="card-title mb-0">${this.data.title} 도움이 되는 블로그</h5>
             </div>
             <div class="card-body">
-              <p class="card-text">달리기는 어떻게 하는지 보여주는 네이버 블로그</p>
+              <p class="card-text">네이버 블로그 제목</p>
               <a href="#" class="card-link">Card link</a>
             </div>
           </div>
@@ -124,16 +124,16 @@ class RecommandPanel extends HTMLElement
           <div class="card">
             <img class="card-img-top" src="/images/unsplash-3.jpg" alt="Unsplash">
             <div class="card-header">
-              <h5 class="card-title mb-0">달리기에 도움이 되는 운동화</h5>
+              <h5 class="card-title mb-0">${this.data.title} 도움이 되는 쇼핑</h5>
             </div>
             <div class="card-body">
-              <p class="card-text">당신의 달리기에 최적의 운동화를 소개합니다.</p>
+              <p class="card-text">${this.data.title} 관련 아이템을 소개합니다.</p>
               <a href="#" class="card-link">Shop link</a>
             </div>
           </div>
         </div>
 
-        <button type="button" class="btn btn-primary command-add-recommand-action">추가후 수정하기</button>
+        <button type="button" class="btn btn-primary btn-bottom command-add-recommand-action">추가후 수정하기</button>
       </section>
       `;  
       return tempalate;

@@ -12,7 +12,6 @@ class ItemMap
         data.forEach(element => {
             this.map.set(element.id, element);
         });
-        this.getItemList('23');
     }
 
     getItemList(groundId)

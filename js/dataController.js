@@ -8,8 +8,10 @@ class DataController{
         this.getGroundList();
         this.getItemList();
         this.getRecommandList();
-        this.getActionList();
-        this.getCheckedList();
+        setTimeout(() => {
+            this.getActionList();
+            this.getCheckedList();
+        }, 20);
     }
 
     getGroundList()
@@ -28,38 +30,45 @@ class DataController{
 
     getRecommandList()
     {
+        const recommandBox = document.querySelector('recommand-box')
         const result = util.promiseAjax('GET','/js/data/recommand-list.json'); 
-        result.then(list=>{
-         list.forEach(item => {
-             //globalThis.data.recommandList.push(item)
-         });
-         const recommandBox = document.querySelector('recommand-box');
-         recommandBox.showRecommandAction(list);
-        });
-
+        result.then(list=>recommandBox.showRecommandAction(list));
     }
 
     getActionList()
     {
-       globalThis.data.actionList = [];
-       globalThis.data.actionMap = new Map();
        globalThis.class.actionMap = new Map();
-       const result = util.promiseAjax('GET','/js/data/action-list.json'); 
-       result.then(list=>{
-        list.forEach(item => {
-            globalThis.data.actionList.push(item);
-            globalThis.class.actionMap.set(item.id, new Action(item));
-        });
-        const actionBox = document.querySelector('action-box');
-        actionBox.showAction(list)
+
+       const localData = localStorage.getItem('actionList');
+       const _list = (localData)? JSON.parse(localData) : [];
+
+       _list.forEach(item => {
+          globalThis.class.actionMap.set(item.id, new Action(item));
        });
+
+       const actionBox = document.querySelector('action-box');
+       actionBox.showActionList(_list);
+       
+       return;
+     }
+
+    addAction(data)
+    {
+        const newAction  = new Action(data);
+        globalThis.class.actionMap.set(data.id, newAction);
+        this.#saveActionList();
     }
 
-    addActionList(item)
+    #saveActionList()
     {
-        globalThis.data.actionList.push(item);
-        const actionBox = document.querySelector('action-box');
-        actionBox.showAction();
+        const _list = [];
+        globalThis.class.actionMap.forEach(value => _list.push(value.data));
+        this.#setLocalStorageSet('actionList', JSON.stringify(_list))
+    }
+
+    #setLocalStorageSet(key, value)
+    {
+        localStorage.setItem(key, value);
     }
 
     getCheckedList()

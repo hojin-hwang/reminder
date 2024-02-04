@@ -1,19 +1,17 @@
-// Data
-// title
-// alertDate (alertDay and alertTime)
-// interval
-// checkTime
-
-class MakeCard extends HTMLElement
+class MakeCard extends AbstractComponent
 {
   constructor(data = null)
   {
       super();
       this.addEventListener('click', this.handleClick);
-      this.data =  {...data};
-      this.id = self.crypto.randomUUID();
-      this.currentPage = 0;
-      if("recommand" === this.data.type) this.data.id = this.id;
+      
+      if(data.constructor.name === 'Action') this.data =  {...data.data};
+      else this.data =  {...data};
+      
+      if("recommand" === this.data.type) {
+        this.data.recommandId = this.data.id;
+        this.data.id = self.crypto.randomUUID();
+      }
 
       this.imageCardSize = util.randomImageCardSize();
   }
@@ -67,6 +65,9 @@ class MakeCard extends HTMLElement
 
         const actionBox = document.querySelector('action-box');
         actionBox.addActionCard(this.data);
+
+        const recommandBox = document.querySelector('recommand-box');
+        recommandBox.moveRecommandCard(this.data);
         this.remove();
      }
     
@@ -99,9 +100,16 @@ class MakeCard extends HTMLElement
 
     this.#setGroundActive();
 
+    
+    this.#setInterval();
+    
+
+
+
     this.#showItem(this.data.groundId)
     this.#setItemActive(this.data.itemId);
     this.#showItemDesc(this.data.itemId);
+    this.#showActiveDate();
   }
 
   #setDatePicker()
@@ -110,7 +118,7 @@ class MakeCard extends HTMLElement
     
     const selectDay = this.querySelector('#alertDate');
     selectDay.value = this.data.alertDay;
-    
+    this.#showActiveDate();
   }
 
   #setTimePicker(){
@@ -119,7 +127,7 @@ class MakeCard extends HTMLElement
     const _minute = (this.data.alertDate)? this.#getMinute() : 30;
     
     this.data.alertDate = (this.data.alertDate)? this.data.alertDate : this.data.alertDay +" "+ _hour + ":" + _minute;
-
+    
     const tpSpinboxWithStep = new tui.TimePicker('#missionTime', {
         initialHour: _hour,
         initialMinute: _minute,
@@ -131,8 +139,19 @@ class MakeCard extends HTMLElement
 
     tpSpinboxWithStep.on('change', (e) => {
         this.data.alertDate = `${this.data.alertDay} ${e.hour}:${e.minute}`;
-        console.log(this.data.alertDate);
+        this.#showActiveDate()
     });
+  }
+
+  #setInterval()
+  {
+    const _interval_radio = this.querySelectorAll('input[name=interval]');
+    _interval_radio.forEach(radio => {
+        if(radio.value === this.data.interval)
+        {
+            radio.checked = true;
+        }
+    })
   }
 
   #getHour()
@@ -220,6 +239,12 @@ class MakeCard extends HTMLElement
     const itemDesc = this.querySelector('.item-desc');
     itemDesc.innerHTML = globalThis.config.itemMap.getItem(itemId).desc;
     this.data.desc = itemDesc.innerText;
+  }
+
+  #showActiveDate()
+  {
+    const _date = this.querySelector('.aletDate');
+    _date.innerHTML = this.data.alertDate;
   }
 
   #getTemplate()
@@ -348,7 +373,7 @@ class MakeCard extends HTMLElement
                                 </div>
                             </div>
                             <div class="card-body px-2 pt-2">
-                                <div><strong >${this.data.alertDate}</strong></div>
+                                <div><strong class="aletDate">${this.data.alertDate}</strong></div>
                                 
                             </div>
                             <ul class="list-group list-group-flush">

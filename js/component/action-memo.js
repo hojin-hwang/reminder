@@ -1,4 +1,4 @@
-class ActionMemo extends HTMLElement
+class ActionMemo extends AbstractComponent
 {
   constructor(data = null)
   {
@@ -58,7 +58,7 @@ class ActionMemo extends HTMLElement
             flex-shrink: 0;
         }
       </style>
-      <div class="col-12 col-lg-7 col-xl-9 mt-4">
+      <div class="col-12 col-xl-9 mt-4">
         <div class="px-4"><label>메모</label></div>
         <div class="position-relative">
           <div class="chat-messages p-4">

@@ -1,4 +1,4 @@
-class ActionPanel extends HTMLElement
+class ActionPanel extends AbstractComponent
 {
   constructor(action = null)
   {
@@ -61,7 +61,7 @@ class ActionPanel extends HTMLElement
       tempalate.innerHTML = `
       <style>
         action-panel{position:fixed; top:0; left:0; right:0; height:100vh;z-index:200; background-color:white;overflow: scroll;}
-        action-panel .command-close-window{position: fixed;top: 12px;right: 12px;z-index:1024;}
+        action-panel .command-close-window{position: fixed;top: 12px;left: 12px;z-index:1024;}
         .action-panel{display: flex;flex-direction: column;}
       </style>
       <button class="btn-close command-close-window right-close" type="button">
@@ -107,7 +107,7 @@ class ActionPanel extends HTMLElement
         <div style="padding: 12px;display: flex;flex-direction: column;gap: 12px;">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title">달리기 도움이 되는 영상</h5>
+              <h5 class="card-title">${this.action.getData("itemTitle")} 도움이 되는 영상</h5>
               <h6 class="card-subtitle text-muted">21:9 aspect ratio</h6>
             </div>
             <div class="card-body pt-0" style="padding:0;">
@@ -120,10 +120,10 @@ class ActionPanel extends HTMLElement
           <div class="card">
             <img class="card-img-top" src="/images/unsplash-2.jpg" alt="Unsplash">
             <div class="card-header">
-              <h5 class="card-title mb-0">달리기에 도움이 되는 블로그</h5>
+              <h5 class="card-title mb-0">${this.action.getData("itemTitle")} 도움이 되는 블로그</h5>
             </div>
             <div class="card-body">
-              <p class="card-text">달리기는 어떻게 하는지 보여주는 네이버 블로그</p>
+              <p class="card-text">블로그 제목</p>
               <a href="#" class="card-link">Card link</a>
             </div>
           </div>
@@ -131,10 +131,10 @@ class ActionPanel extends HTMLElement
           <div class="card">
             <img class="card-img-top" src="/images/unsplash-3.jpg" alt="Unsplash">
             <div class="card-header">
-              <h5 class="card-title mb-0">달리기에 도움이 되는 운동화</h5>
+              <h5 class="card-title mb-0">${this.action.getData("itemTitle")} 도움이 되는 상품들</h5>
             </div>
             <div class="card-body">
-              <p class="card-text">당신의 달리기에 최적의 운동화를 소개합니다.</p>
+              <p class="card-text">${this.action.getData("itemTitle")}과 관련된 아이템을 소개합니다.</p>
               <a href="#" class="card-link">Shop link</a>
             </div>
           </div>

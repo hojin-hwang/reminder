@@ -1,4 +1,4 @@
-class ActionAlert extends HTMLElement
+class ActionAlert extends AbstractComponent
 {
   constructor(data)
   {

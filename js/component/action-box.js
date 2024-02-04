@@ -1,4 +1,4 @@
-class ActionBox extends HTMLElement
+class ActionBox extends AbstractComponent
 {
   constructor()
   {
@@ -20,20 +20,45 @@ class ActionBox extends HTMLElement
     return;
   }
 
-  showAction()
+  showActionList()
   {
     const _box = this.querySelector('.swiper-wrapper');
     _box.innerHTML = '';
+    
     this.list = this.#sortData();
+    if(this.list.length === 0)
+    {
+      this.#showVoidCard();
+      return;
+    }
+
     this.list.forEach(item => {
       const action = globalThis.class.actionMap.get(item[0]);
       const actionCard = new ActionCard(action);
       _box.appendChild(actionCard);
     });
 
-    const _swiper = this.querySelector('.actionSwiper');
-    const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
-    new Swiper(_swiper, swiper_option);
+    this.#makeSwiper()
+  }
+
+  #makeSwiper()
+  {
+    setTimeout(() => {
+      const _swiper = this.querySelector('.actionSwiper');
+      if(this.swiper) this.swiper.init(_swiper);
+      const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
+      this.swiper = new Swiper(_swiper, swiper_option);
+    }, 30);
+  }
+
+  #showVoidCard()
+  {
+    this.querySelector('.void-card').appendChild(new VoidCard());
+  }
+
+  cleanVoidCard()
+  {
+    this.querySelector('.void-card').innerHTML = '';
   }
 
   #sortData()
@@ -46,9 +71,9 @@ class ActionBox extends HTMLElement
   {
     data.type = "user";
     data.alertDate = util.actionDateFormat(new Date());
-    const newAction  = new Action(data);
-    globalThis.class.actionMap.set(data.id, newAction);
-    this.showAction();
+    globalThis.data.controll.addAction(data)
+    this.showActionList();
+    this.cleanVoidCard();
   }
 
   
@@ -58,6 +83,7 @@ class ActionBox extends HTMLElement
       tempalate.innerHTML = `
       <section>
         <label>내 액션</label>
+        <div class="void-card"></div>
         <div class="wrapper">
           <div class="swiper actionSwiper">
             <div class="swiper-wrapper">

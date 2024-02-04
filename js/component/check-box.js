@@ -1,9 +1,10 @@
-class CheckBox extends HTMLElement
+class CheckBox extends AbstractComponent
 {
   constructor()
   {
     super();
     window.addEventListener("message", this.onMessage.bind(this), false);
+    this.checkSet = new Set();
   }
 
   static get observedAttributes(){return [];}
@@ -11,7 +12,7 @@ class CheckBox extends HTMLElement
   connectedCallback()
   {
     this.render();
-    
+    this.#showLabel();
   }
 
   render()
@@ -30,40 +31,74 @@ class CheckBox extends HTMLElement
         switch(event.data.msg)
         {
             case "CHECK_ALERT_DATE":
-              this.#appendCheckCard(event.data.data);
+              this.#showLabel(true);
+              if(this.#addCheckSet(event.data.data)) this.#appendCheckCard();
             break;
             case "CHECKED_ALERT":
               this.#showLabel();
-              this.querySelectorAll('check-card').forEach((item)=>{
-                if(item.getActionId() === event.data.data) item.remove();
-              });
+              this.#deleteCheckSet(event.data.data);
+              this.#appendCheckCard();
+
             break;
         }
     }
   }
 
-  #appendCheckCard(data)
+  #addCheckSet(data)
   {
     if(this.#isNotChecked(data.action.data.id, data.alertTime))
     {
-      //make check-data
       const checkData = {"actionId":data.action.data.id,"alertDate":data.alertTime}
-      const checkCard =  new CheckCard(checkData);
-      checkCard.classList.add('swiper-slide');
-      
-      //기존에 카드가 있는지 확인
-      const oldCheckCard = this.#hasCheckCard(data.action.data.id);
-      if(oldCheckCard) oldCheckCard.remove();
-      
-      this.#showLabel(true);
-      
-      //append check card 
-      this.querySelector('.swiper-wrapper').appendChild(checkCard)
 
+      this.checkSet.forEach(item=>{
+        if(item.actionId === checkData.actionId) this.checkSet.delete(item);
+      });
+      this.checkSet.add(checkData);
+      return true;
+    }
+    else return false;
+  }
+
+  #deleteCheckSet(id)
+  {
+    this.checkSet.forEach(item=>{
+      if(item.actionId === id) this.checkSet.delete(item);
+    }); 
+  }
+
+  #appendCheckCard()
+  {
+    {
+      const _wrapper = this.querySelector('.wrapper');
+      _wrapper.innerHTML = '';
+
+      const swiper_div = document.createElement('div');
+      swiper_div.classList.add("swiper", "checkSwiper");
+      _wrapper.appendChild(swiper_div);
+
+      const swiper_wrapper = document.createElement('div');
+      swiper_wrapper.classList.add("swiper-wrapper");
+
+      swiper_div.appendChild(swiper_wrapper);
+
+      this.checkSet.forEach(item=>{
+        const checkCard =  new CheckCard(item);
+        checkCard.classList.add('swiper-slide');
+        swiper_wrapper.appendChild(checkCard);
+      });
+
+      this.#makeSwiper();
+    }
+  }
+
+  #makeSwiper()
+  {
+    setTimeout(() => {
       const _swiper = this.querySelector('.checkSwiper');
+      if(this.swiper) this.swiper.init(_swiper);
       const swiper_option = {sliderPerView:'auto', spaceBetween:12,}
       this.swiper = new Swiper(_swiper, swiper_option);
-    }
+    }, 30);
   }
 
   #isNotChecked(actionId, lastAlertDate)
@@ -75,19 +110,6 @@ class CheckBox extends HTMLElement
     else return false;
   }
   
-  #hasCheckCard(actionId)
-  {
-    const _list = this.querySelectorAll('check-card');
-    if(_list.length > 0)
-    {
-      let oldCheckCard = null;
-      _list.forEach(element => {
-        if(element.getActionId() === actionId) oldCheckCard = element;
-      });
-      return oldCheckCard;
-    }
-    else return null;
-  }
 
   #showLabel(flag = false)
   {
@@ -103,10 +125,6 @@ class CheckBox extends HTMLElement
       <section class="check-box">
           <label>Check</label>
           <div class="wrapper">
-            <div class="swiper checkSwiper">
-              <div class="swiper-wrapper">
-              </div>
-            </div>
           </div>
       </section>    
       `;  
