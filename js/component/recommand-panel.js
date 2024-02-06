@@ -7,6 +7,7 @@ class RecommandPanel extends AbstractComponent
     if(data) this.data = data;
     this.data.groundTitle = this.#getGroundData(data).title;
     this.data.itemTitle = this.#getItemData(data).title;
+    this.data.itemImage = this.#getItemData(data).image;
  }
 
   static get observedAttributes(){return [];}
@@ -82,7 +83,7 @@ class RecommandPanel extends AbstractComponent
       </button>
       <section class="recommand-panel">
         <article class="card">
-          <img class="card-img-top" src="https://picsum.photos/240/160" alt="action Character">
+          <img class="card-img-top" src="${this.data.itemImage}" alt="action Character">
           <div class="card-header">
             <h5 class="card-title mb-0">${this.data.title}</h5>
             <div>
