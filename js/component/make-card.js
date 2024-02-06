@@ -51,8 +51,8 @@ class MakeCard extends AbstractComponent
         
         this.#setTitleByItem(this.data.itemId);
         this.#showItemDesc(this.data.itemId);
-        this.#setItemTitle(this.data.itemId)
-
+        this.#setItemTitle(this.data.itemId);
+        this.#setItemImage(this.data.itemId);
     }
 
     if(node.className.match(/command-create-card/)){
@@ -109,6 +109,7 @@ class MakeCard extends AbstractComponent
     this.#showItem(this.data.groundId)
     this.#setItemActive(this.data.itemId);
     this.#showItemDesc(this.data.itemId);
+    this.#showItemImage(this.data.itemId);
     this.#showActiveDate();
   }
 
@@ -222,6 +223,13 @@ class MakeCard extends AbstractComponent
     this.querySelector('.item-title').innerHTML = globalThis.config.itemMap.getItem(itemId).title;
   }
 
+  #setItemImage(id)
+  {
+    const _buttons = this.querySelectorAll('.item-btn');
+    const itemId = (id)? id : _buttons[0].dataset.id;
+    this.querySelector('.item-image').innerHTML = globalThis.config.itemMap.getItem(itemId).image;
+  }
+
   #setTitleByItem(itemId = null)
   {
     const _buttons = this.querySelectorAll('.item-btn');
@@ -239,6 +247,16 @@ class MakeCard extends AbstractComponent
     const itemDesc = this.querySelector('.item-desc');
     itemDesc.innerHTML = globalThis.config.itemMap.getItem(itemId).desc;
     this.data.desc = itemDesc.innerText;
+  }
+
+  #showItemImage(itemId = null)
+  {
+    const _buttons = this.querySelectorAll('.item-btn');
+    itemId = (itemId)? itemId : _buttons[0].dataset.id;
+
+    this.data.itemImage = globalThis.config.itemMap.getItem(itemId).image;
+    const itemImage = this.querySelector('.item-image');
+    itemImage.src = this.data.itemImage;
   }
 
   #showActiveDate()
@@ -363,7 +381,7 @@ class MakeCard extends AbstractComponent
                         </div>
                         <h4 class="mb-3">Action Card</h4>
                         <article class="card">
-                            <img class="card-img-top" src="https://picsum.photos/${this.imageCardSize[0]}/${this.imageCardSize[1]}" alt="action Character">
+                            <img class="card-img-top item-image" src="${this.data.itemImage}" alt="action Character">
                             <div class="card-header px-2 pt-2">
                                 <h5 class="card-title mb-0">${this.data.title}</h5>
                                 <div>

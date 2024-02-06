@@ -54,6 +54,7 @@ class RecommandCard extends AbstractComponent
   {
     data.groundTitle = this.#getGroundData(data).title;
     data.itemTitle = this.#getItemData(data).title;
+    data.itemImage = this.#getItemData(data).image;
     return data;
   }
   
@@ -62,6 +63,7 @@ class RecommandCard extends AbstractComponent
       const tempalate = document.createElement('template');
       tempalate.innerHTML = `
       <article class="recommand border rounded">
+        <img class="card-img-top" src="${this.data.itemImage}" alt="action Character">
         <div class="flex-row justify-content-between">
           <strong class="d-inline-block mb-2 text-primary-emphasis">${this.data.groundTitle} > ${this.data.itemTitle}</strong>
           <span>2,343명 수행중</span>
