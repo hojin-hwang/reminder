@@ -65,9 +65,12 @@ class MakeCard extends AbstractComponent
 
         const actionBox = document.querySelector('action-box');
         actionBox.addActionCard(this.data);
-
-        const recommandBox = document.querySelector('recommand-box');
-        recommandBox.moveRecommandCard(this.data);
+        
+        if(this.data.groundId !== "0" || this.data.itemId !=="0") 
+        {
+            const recommandBox = document.querySelector('recommand-box');
+            recommandBox.moveRecommandCard(this.data);
+        }
         this.remove();
      }
     

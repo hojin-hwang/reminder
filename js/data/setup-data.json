@@ -1,7 +1,7 @@
 {
     "grounds":[{"id":"0","title":"아무거나"},{"id":"23","title":"스포츠"},{"id":"24","title":"공부"}],
     "items":[
-        {"id":"0", "groundId":"0", "title":"일단 한번 해봐", "desc":"일단 계획을 세우고 뭔가라도 해보세요","image":"/images/anything.jpg"},
+        {"id":"0", "groundId":"0", "title":"일단 한번 해봐", "desc":"일단 계획을 세우고 뭔가라도 해보세요","image":"/images/doing.jpg"},
         {"id":"1", "groundId":"23", "title":"테니스", "desc":"일주일에 5회 정도 연습이 필요합니다.","image":"/images/tennis.jpg"},
         {"id":"2", "groundId":"23", "title":"10K 달리기", "desc":"일주일에 한번씩 도전하세요.","image":"/images/running.jpg"},
         {"id":"3", "groundId":"24", "title":"수학", "desc":"매일 꾸준히 3문제 이상 풀어보세요.","image":"/images/math.jpg"},
