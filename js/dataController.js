@@ -5,34 +5,24 @@ class DataController{
     constructor()
     {
         console.log("called DataController!!");
-        this.getGroundList();
-        this.getItemList();
-        this.getRecommandList();
+        this.getSetupData();
+    }
+
+    getSetupData()
+    {
+       globalThis.config.groundMap = new GroupMap();
+       globalThis.config.itemMap = new ItemMap();
+       const recommandBox = document.querySelector('recommand-box')
+       const result = util.promiseAjax('GET','/js/data/setup-data.json'); 
+       result.then(data=>{
+        globalThis.config.groundMap.setList(data.grounds);
+        globalThis.config.itemMap.setList(data.items);
+        recommandBox.showRecommandAction(data.recommands);
         setTimeout(() => {
             this.getActionList();
             this.getCheckedList();
         }, 20);
-    }
-
-    getGroundList()
-    {
-       globalThis.config.groundMap = new GroupMap();
-       const result = util.promiseAjax('GET','/js/data/ground-list.json'); 
-       result.then(list=>globalThis.config.groundMap.setList(list))
-    }
-
-    getItemList()
-    {
-       globalThis.config.itemMap = new ItemMap();
-       const result = util.promiseAjax('GET','/js/data/item-list.json'); 
-       result.then(list=>globalThis.config.itemMap.setList(list));
-    }
-
-    getRecommandList()
-    {
-        const recommandBox = document.querySelector('recommand-box')
-        const result = util.promiseAjax('GET','/js/data/recommand-list.json'); 
-        result.then(list=>recommandBox.showRecommandAction(list));
+       })
     }
 
     getActionList()
