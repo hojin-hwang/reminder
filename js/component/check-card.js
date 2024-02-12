@@ -106,6 +106,7 @@ class CheckCard extends AbstractComponent
           <img src="https://picsum.photos/${this.imageSize}/${this.imageSize}" style="border-radius: 50%; width:40px; height:40px; float: right!important;">
         </div>
       </article>
+      
       `;  
       return tempalate;
   }

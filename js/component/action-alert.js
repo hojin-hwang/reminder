@@ -57,6 +57,7 @@ class ActionAlert extends AbstractComponent
           <strong>${this.data}</strong>
         </div>
       </div>  
+      
       `;  
       return tempalate;
   }

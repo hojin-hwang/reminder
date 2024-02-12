@@ -24,6 +24,11 @@ class MakeCard extends AbstractComponent
     if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
     if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
     
+    if(node.className.match(/command-select-interval/))
+    {
+        this.#checkedInterval(node)
+    }
+
     if(node.className.match(/command-close-window/))
     {
         this.remove();
@@ -59,9 +64,6 @@ class MakeCard extends AbstractComponent
 
         const titleForm = this.querySelector('form.info');
         this.data.title = titleForm.title.value;
-
-        const intervalForm = this.querySelector('form.interval');
-        this.data.interval = intervalForm.interval.value;
 
         const actionBox = document.querySelector('action-box');
         actionBox.addActionCard(this.data);
@@ -106,9 +108,6 @@ class MakeCard extends AbstractComponent
     
     this.#setInterval();
     
-
-
-
     this.#showItem(this.data.groundId)
     this.#setItemActive(this.data.itemId);
     this.#showItemDesc(this.data.itemId);
@@ -149,13 +148,19 @@ class MakeCard extends AbstractComponent
 
   #setInterval()
   {
-    const _interval_radio = this.querySelectorAll('input[name=interval]');
-    _interval_radio.forEach(radio => {
-        if(radio.value === this.data.interval)
-        {
-            radio.checked = true;
-        }
+    this.data.interval = (this.data.interval)? this.data.interval :'day';
+    const _interval_button = this.querySelectorAll('button.btn-interval');
+    _interval_button.forEach(button =>{
+        if(button.value === this.data.interval) this.#checkedInterval(button);
     })
+  }
+
+  #checkedInterval(node)
+  {
+    this.data.interval = node.value;
+    const _interval_button = this.querySelectorAll('button.btn-interval');
+    _interval_button.forEach(button =>button.classList.remove('active'))
+    node.classList.add('active');
   }
 
   #getHour()
@@ -342,32 +347,10 @@ class MakeCard extends AbstractComponent
                         </div>
                         <div>
                         <h4 class="mb-3">반복</h4>
-                            <form class="interval">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="interval" id="1-day-interval" checked value="day">
-                                    <label class="form-check-label" for="1-day-interval">
-                                    매일
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="interval" id="7-day-interval" value="week">
-                                    <label class="form-check-label" for="7-day-interval">
-                                    매주
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="interval" id="1-month-interval" value="month">
-                                    <label class="form-check-label" for="1-month-interval">
-                                    매월
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="interval" id="1-year-interval" value="year">
-                                    <label class="form-check-label" for="1-year-interval">
-                                    매년
-                                    </label>
-                                </div>
-                            </form> 
+                            <button type="button" value="day" class="command-select-interval btn-interval btn btn-outline-primary btn-sm active">매일</button>
+                            <button type="button" value="week"  class="command-select-interval btn-interval btn btn-outline-primary btn-sm ">매주</button>
+                            <button type="button" value="month"  class="command-select-interval btn-interval btn btn-outline-primary btn-sm ">매월</button>
+                            <button type="button" value="year"  class="command-select-interval btn-interval btn btn-outline-primary btn-sm ">매년</button>
                         </div>
                         <div style="display: flex;gap: 8px;">
                             <button type="button" data-bs-target="#carouselExample" data-bs-slide="prev" class="command-move-prev btn btn-secondary btn-lg px-4 gap-3">Back</button>

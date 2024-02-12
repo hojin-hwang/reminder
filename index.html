@@ -134,6 +134,7 @@
     window.addEventListener('DOMContentLoaded', ()=>
     {
         console.log("DOMContentLoaded");
+        console.log(new Date().toLocaleTimeString());
         globalThis.store = {};
         globalThis.store.controll = new StoreController();
         globalThis.user = {};
