@@ -8,6 +8,7 @@ class RecommandPanel extends AbstractComponent
     this.data.groundTitle = this.#getGroundData(data).title;
     this.data.itemTitle = this.#getItemData(data).title;
     this.data.itemImage = this.#getItemData(data).image;
+    this.classList.add('action-modal');
  }
 
   static get observedAttributes(){return [];}

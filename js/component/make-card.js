@@ -14,6 +14,7 @@ class MakeCard extends AbstractComponent
       }
 
       this.imageCardSize = util.randomImageCardSize();
+      this.classList.add('action-modal');
   }
 
   static get observedAttributes() {return ['type']; }
@@ -44,7 +45,9 @@ class MakeCard extends AbstractComponent
         this.#setItemActive();
         this.#setTitleByItem();
         this.#showItemDesc();
-        this.#setGroundTitle(this.data.groundId)
+        this.#setGroundTitle(this.data.groundId);
+        this.#showItemImage();
+        this.#setItemTitle();
     }
 
     if(node.className.match(/command-select-item/))
@@ -57,7 +60,7 @@ class MakeCard extends AbstractComponent
         this.#setTitleByItem(this.data.itemId);
         this.#showItemDesc(this.data.itemId);
         this.#setItemTitle(this.data.itemId);
-        this.#setItemImage(this.data.itemId);
+        this.#showItemImage(this.data.itemId);
     }
 
     if(node.className.match(/command-create-card/)){
@@ -113,6 +116,9 @@ class MakeCard extends AbstractComponent
     this.#showItemDesc(this.data.itemId);
     this.#showItemImage(this.data.itemId);
     this.#showActiveDate();
+
+    this.#setGroundTitle(this.data.groundId);
+    this.#setItemTitle();
   }
 
   #setDatePicker()
@@ -228,14 +234,8 @@ class MakeCard extends AbstractComponent
   {
     const _buttons = this.querySelectorAll('.item-btn');
     const itemId = (id)? id : _buttons[0].dataset.id;
+    this.data.itemId = (id)? id :_buttons[0].dataset.id;
     this.querySelector('.item-title').innerHTML = globalThis.config.itemMap.getItem(itemId).title;
-  }
-
-  #setItemImage(id)
-  {
-    const _buttons = this.querySelectorAll('.item-btn');
-    const itemId = (id)? id : _buttons[0].dataset.id;
-    this.querySelector('.item-image').innerHTML = globalThis.config.itemMap.getItem(itemId).image;
   }
 
   #setTitleByItem(itemId = null)
@@ -302,14 +302,7 @@ class MakeCard extends AbstractComponent
                             <span class="" aria-hidden="true"></span>
                             </button>
                         </div>
-                        <div>
-                            <h4 class="mb-3">Title</h4>
-                            <div class="col-sm-6">
-                                <form class="info">
-                                <input type="text" class="form-control" id="missionTitle" name="title" >
-                                </form>
-                            </div>
-                        </div>
+                        
                         <div> 
                             <h4 class="mb-3">Ground</h4>
                             <div class="ground-box"></div>
@@ -318,11 +311,23 @@ class MakeCard extends AbstractComponent
                             <h4 class="mb-3">Item</h4>
                             <div class="item-box"></div>
                         </div>
+
+                        <div>
+                            <h4 class="mb-3">Title</h4>
+                            <div class="col-sm-6">
+                                <form class="info">
+                                <input type="text" class="form-control" id="missionTitle" name="title" >
+                                </form>
+                            </div>
+                        </div>
+                        
                         <hr>
                         <div class="item-desc"></div>
                         <div style="display: flex;gap: 8px;">
                             <button style="width:100%;" type="button" data-bs-target="#carouselExample" data-bs-slide="next" class="command-move-next btn btn-primary btn-lg px-4 gap-3">Next (1/3) </button>
                         </div>
+
+                        
                     </div>              
                 </div>
                 <div class="carousel-item">

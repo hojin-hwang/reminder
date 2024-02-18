@@ -42,5 +42,9 @@ class AbstractComponent extends HTMLElement
     window.postMessage(message, location.href);
   }
 
+  removeModalComponent()
+  {
+    document.querySelector('.action-modal')?.remove();
+  }
   
 }

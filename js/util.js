@@ -402,6 +402,18 @@ util.formatDate = function(dateTime) {
     _date.getMinutes() + '분';
 }
 
+util.formatDateDay = function(dateTime) {
+  const _date = new Date(dateTime)
+  return _date.getFullYear() + '년 ' + 
+    (_date.getMonth() + 1) + '월 ' + 
+    _date.getDate() + '일';
+}
+
+util.formatDateTime = function(dateTime) {
+  const _date = new Date(dateTime)
+  return _date.getHours() + '시 ' + _date.getMinutes() + '분';
+}
+
 util.getNextDateByValue = function(preDate, interval, flag)
 {
   const _preDate = new Date(preDate);

@@ -5,6 +5,8 @@ class ActionPanel extends AbstractComponent
     super();
     this.addEventListener('click', this.handleClick);
     if(action) this.action = action;
+    this.avatar = globalThis.config.avatarMap.getAvatar(this.action.data.avatar);
+    this.classList.add('action-modal');
  }
 
   static get observedAttributes(){return [];}
@@ -69,7 +71,7 @@ class ActionPanel extends AbstractComponent
       </button>
       <section class="action-panel">
         <article class="card">
-          <img class="card-img-top" src="/images/avatars/level_${this.action.getData("level")}.png" alt="action Character">
+        <img class="card-img-top" src="/images/avatars/${this.avatar.filePrefix}${this.action.getData("level")}.${this.avatar.fileExtend}" alt="action Character">
           <ul class="list-group list-group-flush">
             <li class="list-group-item px-2 pb-4">
               <p class="mb-2 fw-bold">현재 ${this.action.getData("level")}단계입니다. <span class="float-end">${this.action.getData("exp")}</span></p>

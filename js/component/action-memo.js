@@ -4,9 +4,27 @@ class ActionMemo extends AbstractComponent
   {
     super();
     if(data) this.data;
+    this.addEventListener('click', this.handleClick);
  }
 
   static get observedAttributes(){return [];}
+
+  handleClick(e) {
+    e.composedPath().find((node)=>{
+      if(node.nodeName === 'A') 
+      {
+        globalThis.open(node.href, "_blank");
+        return;
+      }
+      if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
+      if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
+      if(node.className.match(/command-add-memo/))
+      {
+        this.#appendMessage();
+        
+      }
+    });
+  }
 
   onMessage(event)
   {
@@ -35,7 +53,22 @@ class ActionMemo extends AbstractComponent
     return;
   }
 
-  
+  #appendMessage()
+  {
+    const message = this.querySelector('input[name=my_message]').value;
+    this.querySelector('input[name=my_message]').value = "";
+    const messageBox = document.createElement('div');
+    messageBox.classList.add("chat-message-right", "pb-4")
+    messageBox.innerHTML = `<div>
+                              <img src="/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
+                              <div class="text-muted small text-nowrap mt-2">${util.formatDateTime(new Date())}</div>
+                            </div>
+                            <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
+                              ${message} <br> ${util.formatDateDay(new Date())}
+                            </div>`
+    this.querySelector('.chat-messages').prepend(messageBox);               
+  }
+
   #getTemplate()
   {
       const tempalate = document.createElement('template');
@@ -43,7 +76,7 @@ class ActionMemo extends AbstractComponent
       <style>
         .chat-messages{
           height: 200px;
-          overflow: scroll;
+          overflow-y: scroll;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -58,7 +91,7 @@ class ActionMemo extends AbstractComponent
             flex-shrink: 0;
         }
       </style>
-      <div class="col-12 col-xl-9 mt-4">
+      <div class="col-12 mt-4">
         <div class="px-4"><label>메모</label></div>
         <div class="position-relative">
           <div class="chat-messages p-4">
@@ -195,8 +228,8 @@ class ActionMemo extends AbstractComponent
 
         <div class="flex-grow-0 py-3 px-2 border-top">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Type your message">
-            <button class="btn btn-primary">Send</button>
+            <input type="text" name="my_message" class="form-control" placeholder="Type your message">
+            <button type="button" class="btn btn-primary command-add-memo">Send</button>
           </div>
         </div>
 

@@ -7,6 +7,11 @@
         {"id":"3", "groundId":"24", "title":"수학", "desc":"매일 꾸준히 3문제 이상 풀어보세요.","image":"/images/math.jpg"},
         {"id":"4", "groundId":"24", "title":"역사", "desc":"먼저 국내 역사부터 공부하고 주변 국가 역사로 확장하세요.","image":"/images/history.jpg"}
     ],
+    "avatars":[
+      {"id":"1000","name":"기본 액션베어", "filePrefix":"level-", "fileExtend":"png"},
+      {"id":"1111","name":"달리는 액션베어", "filePrefix":"running-", "fileExtend":"jpg"},
+      {"id":"2222","name":"테니스 치는 액션베어", "filePrefix":"tennis-", "fileExtend":"jpg"}
+    ],
     "recommands":[
         {
           "id": "r-11",
@@ -17,7 +22,7 @@
           "title": "테니스 레슨",
           "desc": "일주일에 5회 정도 연습이 필요합니다.",
           "interval": "week",
-          "avatar": {},
+          "avatar": "2222",
           "info": {},
           "level":0,
           "exp":0
@@ -31,7 +36,7 @@
           "title": "10K 달리기",
           "desc": "일주일에 한번씩 도전하세요.",
           "interval":"week",
-          "avatar": {},
+          "avatar": "1111",
           "info": {},
           "level":0,
           "exp":0
@@ -45,7 +50,7 @@
           "title": "문제풀기",
           "desc": "매일 꾸준히 3문제 이상 풀어보세요.",
           "interval":"day",
-          "avatar": {},
+          "avatar": "1000",
           "info": {},
           "level":0,
           "exp":0
@@ -59,7 +64,7 @@
           "title": "역사 연대 이해",
           "desc": "먼저 국내 역사부터 공부하고 주변 국가 역사로 확장하세요.",
           "interval": "day",
-          "avatar": {},
+          "avatar": "1000",
           "info": {},
           "level":0,
           "exp":0

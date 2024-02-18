@@ -35,10 +35,9 @@ class CheckBox extends AbstractComponent
               if(this.#addCheckSet(event.data.data)) this.#appendCheckCard();
             break;
             case "CHECKED_ALERT":
-              this.#showLabel();
               this.#deleteCheckSet(event.data.data);
               this.#appendCheckCard();
-
+              this.#showLabel();
             break;
         }
     }

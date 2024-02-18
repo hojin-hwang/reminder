@@ -12,11 +12,13 @@ class DataController{
     {
        globalThis.config.groundMap = new GroupMap();
        globalThis.config.itemMap = new ItemMap();
+       globalThis.config.avatarMap = new AvatarMap();
        const recommandBox = document.querySelector('recommand-box')
        const result = util.promiseAjax('GET','/js/data/setup-data.json'); 
        result.then(data=>{
         globalThis.config.groundMap.setList(data.grounds);
         globalThis.config.itemMap.setList(data.items);
+        globalThis.config.avatarMap.setList(data.avatars);
         recommandBox.showRecommandAction(data.recommands);
         setTimeout(() => {
             this.getActionList();

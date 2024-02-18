@@ -15,6 +15,7 @@ class RecommandBox extends AbstractComponent
       if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
       if(node.className.match(/command-add-void-action/))
       {
+        this.removeModalComponent();
         const void_data = {
           "id": "r-01",
           "type":"recommand",
@@ -25,14 +26,15 @@ class RecommandBox extends AbstractComponent
           "desc": "일단 계획을 세우고 뭔가라도 해보세요",
           "alertDate":"2024-01-17 19:40",
           "interval": "week",
-          "avatar": {},
+          "avatar": "1000",
           "info": {},
           "level":0,
           "exp":0
         };
 
         const makeCard = new MakeCard(void_data);
-        document.querySelector('main').appendChild(makeCard)
+        document.querySelector('main').appendChild(makeCard);
+        
       }
     });
   }

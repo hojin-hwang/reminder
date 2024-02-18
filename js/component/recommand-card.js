@@ -17,6 +17,7 @@ class RecommandCard extends AbstractComponent
       if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
       if(node.className.match(/command-show-recommand-panel/))
       {
+        this.removeModalComponent();
         const recommandPanel = new RecommandPanel(this.data);
         document.querySelector('main').appendChild(recommandPanel)
       }
