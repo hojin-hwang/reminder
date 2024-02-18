@@ -96,7 +96,7 @@ class ActionCard extends AbstractComponent
           }
         </style>
         <article class="card swiper-slide command-show-action-panel" id="${this.action.getData("id")}">
-          <img class="card-img-top" src="/images/avatars/${this.avatar.filePrefix}${this.action.getData("level")}.${this.avatar.fileExtend}" alt="action Character">
+          <img class="card-img-top" src="/skin/ko/remind/images/avatars/${this.avatar.filePrefix}${this.action.getData("level")}.${this.avatar.fileExtend}" alt="action Character">
           <div class="card-header px-2 pt-2">
             <h5 class="card-title mb-0">${this.action.getData("title")}</h5>
             <div>

@@ -25,9 +25,16 @@ class MakeCard extends AbstractComponent
     if(node.nodeName === 'svg' || node.nodeName === 'path') return false;
     if(typeof(node.className) === 'object' || !node.className || !node.className?.match(/command/)) return false;
     
+    if(node.className.match(/command-move-next/))
+    {
+        //갱신 title
+        this.#setTitleByNextButton();
+    }
+    
     if(node.className.match(/command-select-interval/))
     {
-        this.#checkedInterval(node)
+        this.#checkedInterval(node);
+        this.#showIntevalInfo();
     }
 
     if(node.className.match(/command-close-window/))
@@ -169,6 +176,11 @@ class MakeCard extends AbstractComponent
     node.classList.add('active');
   }
 
+  #showIntevalInfo()
+  {
+    this.querySelector('.interval-time').innerHTML = this.data.interval;
+  }
+
   #getHour()
   {
     return parseInt(this.data.alertDate.split(" ")[1].split(":")[0]);
@@ -235,7 +247,7 @@ class MakeCard extends AbstractComponent
     const _buttons = this.querySelectorAll('.item-btn');
     const itemId = (id)? id : _buttons[0].dataset.id;
     this.data.itemId = (id)? id :_buttons[0].dataset.id;
-    this.querySelector('.item-title').innerHTML = globalThis.config.itemMap.getItem(itemId).title;
+    this.querySelectorAll('.item-title').forEach(title=> title.innerHTML = globalThis.config.itemMap.getItem(itemId).title);
   }
 
   #setTitleByItem(itemId = null)
@@ -247,14 +259,20 @@ class MakeCard extends AbstractComponent
     itemTitle.value = globalThis.config.itemMap.getItem(itemId).title;
   }
 
+  #setTitleByNextButton()
+  {
+    const itemTitle = this.querySelector('form.info').title;
+    this.querySelectorAll('.item-title').forEach(title=> title.innerHTML = itemTitle.value);
+  }
+
   #showItemDesc(itemId = null)
   {
     const _buttons = this.querySelectorAll('.item-btn');
     itemId = (itemId)? itemId : _buttons[0].dataset.id;
 
-    const itemDesc = this.querySelector('.item-desc');
-    itemDesc.innerHTML = globalThis.config.itemMap.getItem(itemId).desc;
-    this.data.desc = itemDesc.innerText;
+    const itemDesc = this.querySelectorAll('.item-desc');
+    this.data.desc = globalThis.config.itemMap.getItem(itemId).desc;
+    itemDesc.forEach(desc => desc.innerHTML = this.data.desc);
   }
 
   #showItemImage(itemId = null)
@@ -374,7 +392,7 @@ class MakeCard extends AbstractComponent
                         <article class="card">
                             <img class="card-img-top item-image" src="${this.data.itemImage}" alt="action Character">
                             <div class="card-header px-2 pt-2">
-                                <h5 class="card-title mb-0">${this.data.title}</h5>
+                                <h5 class="card-title item-title mb-0">${this.data.title}</h5>
                                 <div>
                                 <span class="badge bg-info grond-title"></span>
                                 <span class="badge bg-success item-title"></span>
@@ -387,7 +405,7 @@ class MakeCard extends AbstractComponent
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item px-2 pb-4">
-                                <small class="remain-time">${this.data.desc}</small><br>
+                                <small class="interval-time">${this.data.interval}</small><br>
                                 </li>
                             </ul>
                         </article>

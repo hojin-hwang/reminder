@@ -14,7 +14,7 @@ class DataController{
        globalThis.config.itemMap = new ItemMap();
        globalThis.config.avatarMap = new AvatarMap();
        const recommandBox = document.querySelector('recommand-box')
-       const result = util.promiseAjax('GET','/js/data/setup-data.json'); 
+       const result = util.promiseAjax('GET','/skin/ko/remind/js/data/setup-data.json'); 
        result.then(data=>{
         globalThis.config.groundMap.setList(data.grounds);
         globalThis.config.itemMap.setList(data.items);

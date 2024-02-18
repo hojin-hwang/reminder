@@ -71,7 +71,7 @@ class ActionPanel extends AbstractComponent
       </button>
       <section class="action-panel">
         <article class="card">
-        <img class="card-img-top" src="/images/avatars/${this.avatar.filePrefix}${this.action.getData("level")}.${this.avatar.fileExtend}" alt="action Character">
+        <img class="card-img-top" src="/skin/ko/remind/images/avatars/${this.avatar.filePrefix}${this.action.getData("level")}.${this.avatar.fileExtend}" alt="action Character">
           <ul class="list-group list-group-flush">
             <li class="list-group-item px-2 pb-4">
               <p class="mb-2 fw-bold">현재 ${this.action.getData("level")}단계입니다. <span class="float-end">${this.action.getData("exp")}</span></p>
@@ -120,7 +120,7 @@ class ActionPanel extends AbstractComponent
           </div>
 
           <div class="card">
-            <img class="card-img-top" src="/images/unsplash-2.jpg" alt="Unsplash">
+            <img class="card-img-top" src="/skin/ko/remind/images/unsplash-2.jpg" alt="Unsplash">
             <div class="card-header">
               <h5 class="card-title mb-0">${this.action.getData("itemTitle")} 도움이 되는 블로그</h5>
             </div>
@@ -131,7 +131,7 @@ class ActionPanel extends AbstractComponent
           </div>
 
           <div class="card">
-            <img class="card-img-top" src="/images/unsplash-3.jpg" alt="Unsplash">
+            <img class="card-img-top" src="/skin/ko/remind/images/unsplash-3.jpg" alt="Unsplash">
             <div class="card-header">
               <h5 class="card-title mb-0">${this.action.getData("itemTitle")} 도움이 되는 상품들</h5>
             </div>

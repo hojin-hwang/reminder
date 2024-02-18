@@ -113,7 +113,7 @@ class RecommandPanel extends AbstractComponent
           </div>
 
           <div class="card">
-            <img class="card-img-top" src="/images/unsplash-2.jpg" alt="Unsplash">
+            <img class="card-img-top" src="/skin/ko/remind/images/unsplash-2.jpg" alt="Unsplash">
             <div class="card-header">
               <h5 class="card-title mb-0">${this.data.title} 도움이 되는 블로그</h5>
             </div>
@@ -124,7 +124,7 @@ class RecommandPanel extends AbstractComponent
           </div>
 
           <div class="card">
-            <img class="card-img-top" src="/images/unsplash-3.jpg" alt="Unsplash">
+            <img class="card-img-top" src="/skin/ko/remind/images/unsplash-3.jpg" alt="Unsplash">
             <div class="card-header">
               <h5 class="card-title mb-0">${this.data.title} 도움이 되는 쇼핑</h5>
             </div>

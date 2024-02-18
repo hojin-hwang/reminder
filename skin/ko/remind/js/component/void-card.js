@@ -37,7 +37,7 @@ class VoidCard extends AbstractComponent
                         </div>
                     </div>
                     <div class="col-6 align-self-end text-end">
-                        <img src="/images/customer-support.png" alt="Customer Support" class="img-fluid illustration-img">
+                        <img src="/skin/ko/remind/images/customer-support.png" alt="Customer Support" class="img-fluid illustration-img">
                     </div>
                 </div>
             </div>

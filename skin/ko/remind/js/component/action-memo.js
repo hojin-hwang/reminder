@@ -60,7 +60,7 @@ class ActionMemo extends AbstractComponent
     const messageBox = document.createElement('div');
     messageBox.classList.add("chat-message-right", "pb-4")
     messageBox.innerHTML = `<div>
-                              <img src="/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
+                              <img src="/skin/ko/remind/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
                               <div class="text-muted small text-nowrap mt-2">${util.formatDateTime(new Date())}</div>
                             </div>
                             <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
@@ -97,7 +97,7 @@ class ActionMemo extends AbstractComponent
           <div class="chat-messages p-4">
             <div class="chat-message-right pb-4">
               <div>
-                <img src="/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:33 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
@@ -107,7 +107,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-left pb-4">
               <div>
-                <img src="/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:34 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 ms-3">
@@ -118,7 +118,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-right pb-4">
               <div>
-                <img src="/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:35 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
@@ -128,7 +128,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-left pb-4">
               <div>
-                <img src="/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:36 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 ms-3">
@@ -140,7 +140,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-left pb-4">
               <div>
-                <img src="/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:37 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 ms-3">
@@ -151,7 +151,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-right pb-4">
               <div>
-                <img src="/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:38 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
@@ -161,7 +161,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-left pb-4">
               <div>
-                <img src="/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:39 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 ms-3">
@@ -172,7 +172,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-right pb-4">
               <div>
-                <img src="/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:40 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
@@ -182,7 +182,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-right pb-4">
               <div>
-                <img src="/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:41 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
@@ -192,7 +192,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-left pb-4">
               <div>
-                <img src="/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:42 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 ms-3">
@@ -204,7 +204,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-right pb-4">
               <div>
-                <img src="/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar.jpg" class="rounded-circle me-1" alt="Chris Wood" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:43 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 me-3">
@@ -214,7 +214,7 @@ class ActionMemo extends AbstractComponent
 
             <div class="chat-message-left pb-4">
               <div>
-                <img src="/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
+                <img src="/skin/ko/remind/images/avatars/avatar-3.jpg" class="rounded-circle me-1" alt="Bertha Martin" width="40" height="40">
                 <div class="text-muted small text-nowrap mt-2">2:44 am</div>
               </div>
               <div class="flex-shrink-1 bg-light rounded py-2 px-3 ms-3">
